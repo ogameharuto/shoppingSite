@@ -1,0 +1,215 @@
+.body{
+    -webkit-text-size-adjust: 100%;
+    word-wrap: break-word;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    color: #434343;
+    line-height: inherit;
+    word-break: break-all;
+}
+.topTitle{
+    font-size: 28px;
+    font-weight: 700;
+}
+.aa{
+    border: 1px solid #868686;
+}
+.whole{
+    min-width: 1054px;
+    max-width: 1054px;
+    margin: 0 auto;
+}
+.deletBtn{
+    background: #0000;
+    border: 1px solid #0000;
+    color: #0260ea;    font-size: 12px;
+    font-weight: 700;
+    margin-left: 4px;
+}
+.pri,.amo{
+    border-left: 1px solid #d9d9d9;
+}
+.pro,.pri,.amo{
+    padding: 4px 16px;
+    background-color: #ebebeb;
+    vertical-align: middle;
+}
+th.pri{
+    width: 140px;
+}
+th.amo{
+    width: 142px;
+}
+.priceNunber
+{
+    font-size: 16px;
+    white-space: nowrap;
+}
+.priceDelete{
+    align-items: center;
+    white-space: nowrap;
+}
+a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, .15);
+    color: #0260ea;
+    text-decoration: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.Button{
+    --Button-padding: 8px 12px;
+    --Button-width: auto;
+    --Button-min-height: auto;
+    --Button-border-radius: 6px;
+    --Button-cursor: inherit;
+    align-items: center;
+    border-radius: var(--Button-border-radius);
+    cursor: default;
+    display: inline-flex;
+    justify-content: center;
+    min-height: var(--Button-min-height);
+    padding: var(--Button-padding);
+    text-align: center;
+    width: var(--Button-width);
+}
+.productName,.price,.amount{
+    padding: 16px;
+}
+.textFild{
+    width: 60px;
+    text-align: right;
+    font-size: 16px;
+    --Textfield-height: 44px;
+    --Textfield-padding: 12px;
+    --Textfield-width: 100%;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    height: var(--Textfield-height);
+}
+.productImage{
+    display: flex;
+    align-items: flex-start;
+}
+.image{
+    flex-shrink: 0;
+}
+.productDetail{
+    flex-grow: 1;
+    flex-basis: 0px;
+    margin-left: 8px;
+}
+.productaa{
+    vertical-align: baseline;
+    font-size: 16px;
+    font-weight: 700
+}
+.advertisement{
+    background-color: grey;
+    text-align: center;
+    aspect-ratio: auto 950 / 85;
+}
+.productList{
+    border-top: 1px solid #d9d9d9;
+    aspect-ratio: auto 950 / 85;
+}
+.price,.amount{
+    border-left: 1px solid #d9d9d9;
+    text-align: center;
+    vertical-align: middle;
+}
+.promotion{
+    position: relative;
+    padding: 32px 24px;
+    background-color: #fff;
+    text-align: center;
+}
+.cartListText{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #d9d9d9;
+    margin-top: 48px;
+    padding-bottom: 24px;
+}
+.cartNone{
+    padding: 48px 0 32px;
+    text-align: center;
+    line-height: 1.4;
+}
+.syopping{
+    margin-top: 40px;
+}
+.totalAmount{
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    margin: 0 auto;
+}
+.couponReflection{
+    display: flex;
+    align-items: center;
+}
+.couponBtn{
+    margin-left: 12px;
+    color: #0260ea;
+}
+.couponItem{
+    background-color: #f4f4f4;
+    margin-left: 12px;
+    position: relative;
+    overflow: hidden;
+    width: 260px;
+    display: block;
+    border-radius: 8px;
+}
+.couponAmount{
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 0 auto;
+}
+.couponList,.order_pleaseNoteGroup{
+    border-top: 1px solid #d9d9d9;
+}
+.couponList,.totalAmount,.couponAmount,.order{
+    margin: 0 auto;
+}
+.order_pleaseNoteGroup{
+    padding: 24px 16px;
+    background-color: #fff8e6;
+}
+.orderConfirm{
+    display: grid;
+    grid-template-columns: 1fr 1fr 270px;
+    place-items: center normal;
+}
+.order{
+    width: 270px;
+}
+.orderBtn{
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+}
+.ButtonFilled{
+    background: #ff8400;
+    border: 1px solid #0000;
+    color: #fff;
+}
+.shopping{
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    height: 30px;
+    min-width: 50%;
+}
+.topicList{
+    background-color: grey;
+    aspect-ratio: auto 950 / 85;
+}
+.topicLook{
+    text-align: right;
+}

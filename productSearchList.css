@@ -1,0 +1,189 @@
+body {
+    -webkit-text-size-adjust: 100%;
+    word-wrap: break-word;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    color: #434343;
+    line-height: inherit;
+    word-break: break-all;
+}
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, main, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: initial;
+}
+.searchResults{
+    display: flex;
+    line-height: 36px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #434343;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.searchText{
+    font-size: 35px;
+    color: #6a6a6a;
+    font-weight: 400;
+    margin-left: 6px;
+}
+.results{
+    color: #6a6a6a;
+    font-size: 22px;
+    font-weight: 400;
+    margin-left: 6px;
+}
+
+.pageFrame {
+    width: 100%;
+    padding: 32px 0 40px;
+    background-color: #ebebeb;
+    background-image: var(--PageFrame-main-background-image);
+    flex-grow: 1;
+    margin-top: var(--PageFrame-main-margin-top, 0);
+    min-width: 1054px;
+    padding-bottom: var(--PageFrame-main-padding-bottom, 16px);
+    padding-top: var(--PageFrame-main-padding-top, 16px);
+}
+.CenteredContainer {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1544px;
+    min-width: 1054px;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+.searchTemplate{
+    --Column-left-column-gutter: 20px;
+    --Column-left-column-width: 200px;
+    --Column-right-column-gutter: 20px;
+    --Column-right-column-width: 320px;
+    display: grid;
+    grid-template-columns: var(--Column-left-column-width) 1fr auto;
+    grid-template-rows: 1fr;
+}
+.searchList{
+    background-color: #fff;
+    border-radius: 12px;
+    margin-bottom: auto;
+    padding-bottom: 32px;
+}
+.search{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 32px;
+    border-radius: 12px 12px 0 0;
+    background-color: #f4f4f4;
+}
+.searchNumber{
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    display: inline-flex;
+    margin: auto 0;
+    line-height: 1;
+    font-size: 16px;
+    font-weight: 700;
+}
+.select{
+    display: flex;
+    white-space: nowrap;
+}
+.displayInformation{
+    align-items: flex-start;
+    font-size: 11px;
+    margin: 0 32px;
+}
+.Column .searchList_Left {
+    grid-column: 1;
+    grid-row: 1;
+    order: 1;
+    padding-right: var(--Column-left-column-gutter);
+}
+.productList{
+    flex-wrap: wrap;
+    display: flex;
+}
+.product{
+    width: 25%;
+}
+.productImage{
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+}
+.width{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 12px;
+}
+.text{
+    color: #434343;
+    display: flex;
+    flex-direction: row;
+    display: block;
+    display: -webkit-box;
+    max-height: 2.8em;
+    overflow: hidden;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+}
+a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, .15);
+    color: #0260ea;
+    text-decoration: none;
+}
+.price{
+    font-size: 22px;
+    font-weight: 700;
+    color: #c13832;
+    margin-right: 2px;
+}
+.postage{
+    display: flex;
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 8px;
+    color: #868686;
+}
+.favoriteBtn{
+    background-color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    bottom: 20px;
+    right: 16px;
+    display: inline-block;
+    border-radius: 16px;
+    border-style: none;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    --Symbol-size: 24px;
+    --Symbol-color: #d9d9d9;
+    vertical-align: middle;
+}
+.Symbol{
+    --Symbol-color: inherit;
+    --Symbol-size: inherit;
+    fill: currentColor;
+    color: var(--Symbol-color, inherit);
+    display: inline-block;
+    flex-shrink: 0;
+    height: var(--Symbol-size, 1em);
+    width: auto;
+}
+
+.favoriteBtn:hover {
+    background-color: #f0f0f0;
+}
+
+.favoriteBtn.favorite {
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+}
