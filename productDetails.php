@@ -53,14 +53,8 @@ $couponNumber = 0;
                         case 0:
                     ?>
                             <div class="couponList">
-                                <div class="couponReflection">
-                                    <p>以下のクーポンを適用します</p>
-                                    <button type="button" class="couponBtn">
-                                        <span>クーポンを変更する</span>
-                                    </button>
-                                </div>
                                 <div class="coupoNone">
-                                <p>適用されているクーポンはありません</p>
+                                <p>クーポンはありません</p>
                                 </div>
                             </div>
                             <?php
