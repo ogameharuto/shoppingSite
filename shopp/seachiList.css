@@ -1,0 +1,92 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.gdColumns {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.gd3ColumnItem {
+    width: 100%;
+}
+
+.gd3ColumnItemA,
+.gd3ColumnItemB {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.uiItemImage {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.uiItemImageInner {
+    display: flex;
+    flex-direction: column;
+}
+
+.mdItemImage {
+    position: relative;
+}
+
+.elPanel {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.elPanelImage {
+    width: 100%;
+}
+
+.elFavoriteButton {
+    background: url('favorite_icon.png') no-repeat;
+    width: 24px;
+    height: 24px;
+}
+
+.mdItemName p.elName {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.mdItemPrice {
+    margin-top: 20px;
+}
+
+.elPriceName {
+    font-size: 16px;
+}
+
+.elPriceArea {
+    margin-top: 10px;
+}
+
+.elItemInfo {
+    margin-top: 20px;
+}
+
+.elQuantityInput {
+    width: 50px;
+}
+
+.elAddToCartButton {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.elAddToCartButton:hover {
+    background-color: #cc5200;
+}
+
+/* More styles as needed */
