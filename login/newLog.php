@@ -11,42 +11,11 @@
         <h2>社情報登録</h2>
         <form action="com.php" method="post">
             <div class="form-group">
-                <label for="business_type">事業形態<span class="required">必須</span></label>
-                <select id="business_type" name="business_type" required>
-                    <option value="">選択してください</option>
-                    <option value="corporation">法人</option>
-                    <option value="sole_proprietor">個人事業主</option>
-                </select>
-            </div>
-            <div class="form-group" id="company_type_container">
-                <label for="company_type">企業形態<span class="required">必須</span></label>
-                <select id="company_type" name="company_type" required>
-                <option value="" selected="selected">選択してください</option>
-                  <option value="株式会社">株式会社</option>
-                  <option value="有限会社">有限会社</option>
-                  <option value="合資会社">合資会社</option>
-                  <option value="財団法人">財団法人</option>
-                  <option value="社団法人">社団法人</option>
-                  <option value="宗教法人">宗教法人</option>
-                  <option value="学校法人">学校法人</option>
-                  <option value="合名会社">合名会社</option>
-                  <option value="特定非営利活動法人">特定非営利活動法人</option>
-                  <option value="合同会社">合同会社</option>
-                  <option value="協同組合">協同組合</option>
-                  <option value="その他法人">その他法人</option>
-                </select>
-            </div>
-            <div class="form-group" id="corporate_number_container">
-                <label for="corporate_number">法人番号<span class="optional">条件付必須</span></label>
-                <input type="text" id="corporate_number" name="corporate_number" placeholder="例）1234567890123">
-                <small>13桁の法人番号を入力してください。</small>
-            </div>
-            <div class="form-group">
                 <label for="company_name">会社名<span class="required">必須</span></label>
                 <input type="text" id="company_name" name="company_name" placeholder="例）矢風商事" required>
             </div>
             <div class="form-group">
-                <label for="postal_code">郵便番号<span class="required">必須</span></label>
+                <label for="postal_code">会社郵便番号<span class="required">必須</span></label>
                 <input type="text" id="postal_code" name="postal_code" placeholder="例）102-8282" required>
             </div>
             <div class="form-group">
@@ -66,15 +35,27 @@
                 <input type="text" id="street_address" name="street_address" placeholder="例）1-3" required>
             </div>
             <div class="form-group">
-                <label for="building_name">ビル名<span class="optional">任意</span></label>
-                <input type="text" id="building_name" name="building_name" placeholder="例）紀尾井町タワー">
+                <label for="representativeName">会社代表者<span class="required">必須</span></label>
+                <input type="text" id="representativeName" name="representativeName" placeholder="例）太郎" required>
+            </div>
+            <div class="form-group">
+                <label for="storeName">店舗名<span class="required">必須</span></label>
+                <input type="text" id="storeName" name="storeName" placeholder="例">
+            </div>
+            <div class="form-group">
+                <label for="storeNameFurigana">店舗名(フリガナ)<span class="required">必須</span></label>
+                <input type="text" id="storeNameFurigana" name="storeNameFurigana" placeholder="例">
             </div>
             <div class="form-group">
                 <label for="phone_number">電話番号<span class="required">必須</span></label>
                 <input type="text" id="phone_number" name="phone_number" placeholder="例）03-1234-5678" required>
             </div>
             <div class="form-group">
-                <label for="establishment_date">設立年月<span class="required">必須</span></label>
+                <label for="mailAddres">メールアドレス<span class="required">必須</span></label>
+                <input type="email" id="mailAddres" name="mailAddres" placeholder="例）aaaaa@gmail.com">
+            </div>
+            <div class="form-group">
+                <label for="establishment_date">開店年月<span class="required">必須</span></label>
                 <div class="date-container">
                     <div class="date-item">
                         <label for="establishment_year">年</label>
@@ -103,39 +84,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="capital">資本金<span class="required">必須</span></label>
-                <input type="number" id="capital" name="capital" placeholder="例）1000" required> 万円
+                <label for="storeIntroduction">店舗紹介文<span class="optional">任意</span></label>
+                <input type="text" id="storeIntroduction" class="storeIntroduction"></input>
             </div>
             <div class="form-group">
-                <label for="revenue">売上高（前期）<span class="optional">任意</span></label>
-                <input type="number" id="revenue" name="revenue" placeholder="例）10"> 百万円
+                <label for="storeImageURl"><span class="required"></label>
             </div>
             <button type="submit">登録する</button>
         </form>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const businessTypeSelect = document.getElementById('business_type');
-            const companyTypeContainer = document.getElementById('company_type_container');
-            const corporateNumberContainer = document.getElementById('corporate_number_container');
-
-            function toggleBusinessFields() {
-                const selectedBusinessType = businessTypeSelect.value;
-                if (selectedBusinessType === 'sole_proprietor') {
-                    companyTypeContainer.style.display = 'none';
-                    corporateNumberContainer.style.display = 'none';
-                } else {
-                    companyTypeContainer.style.display = 'block';
-                    corporateNumberContainer.style.display = 'block';
-                }
-            }
-
-            businessTypeSelect.addEventListener('change', toggleBusinessFields);
-
-            // 初期表示設定
-            toggleBusinessFields();
-        });
-    </script>
     <script src="addressAutoFill.js"></script>
 </body>
 </html>
