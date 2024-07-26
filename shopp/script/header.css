@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    margin: 0 10%;
+    border-bottom: 1px solid #ccc;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.logo img {
+    width: 1000px;
+    height: auto;
+}
+
+.user-info p {
+    margin: 0;
+    font-size: 14px;
+}
+
+
+
+.middle-bar {
+    background-color: #f5f5f5;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.middle-bar p {
+    margin: 0;
+    font-size: 14px;
+}
+
+
+.bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.search-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-container input {
+    width: 60%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-container button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.nav-icons a {
+    margin-left: 15px;
+    font-size: 14px;
+    color: black;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.nav-icons .icon {
+    display: flex;
+    align-items: center;
+}
+
+.nav-icons .icon.cart:before {
+    content: '🛒';
+    margin-right: 5px;
+}
+
+.nav-icons .icon.favorites:before {
+    content: '❤️';
+    margin-right: 5px;
+}
+
+.nav-icons .icon.orders:before {
+    content: '📦';
+    margin-right: 5px;
+}
+
+.nav-icons .icon.notifications:before {
+    content: '🔔';
+    margin-right: 5px;
+}
+
+.nav-icons .icon.profile:before {
+    content: '👤';
+    margin-right: 5px;
+}
