@@ -1,11 +1,4 @@
 <?php
-/*
- companyDBCreate.php（データベース初期化）
-
- @author  大亀陽斗
- @version 1.0
- @date    2024/07/25
-*/
 
 /* インポート */
 require_once('utilConnDB.php');
@@ -38,7 +31,7 @@ if ($findSW == true) {
 }
 /* company_infoテーブル生成 */
 $sql   = 'create table stores('
-       . 'storeNumber VARCHAR(10) NOT NULL PRIMARY KEY, '
+       . 'storeNumber INT NOT NULL AUTO_INCREMENT PRIMARY KEY, '  // 自動インクリメントに変更
        . 'companyName VARCHAR(50),' 
        . 'companyPostalCode VARCHAR(50),'
        . 'companyAddress VARCHAR(50),'
@@ -76,16 +69,16 @@ $pdo   = null;
  * company_infoテーブルにデータ登録
  */
 function insCompanyInfo($pdo) {
-    $sql   = "insert into stores (    storeNumber, companyName, companyPostalCode, companyAddress, companyRepresentative, 
+    $sql   = "insert into stores (companyName, companyPostalCode, companyAddress, companyRepresentative, 
     storeName, furigana, telephoneNumber, mailAddress, storeDescription, 
     storeImageURL, storeAdditionalInfo, operationsManager, contactAddress, contactPostalCode, 
     contactPhoneNumber, contactEmailAddress, password) "
     
-           . "values ('001', 'Sample Company', '123-4567', '123 Sample Street, City', 'John Doe', 
+           . "values ('Sample Company', '123-4567', '123 Sample Street, City', 'John Doe', 
            'Sample Store', 'サンプル ストア', '123-456-7890', 'sample@example.com', 'This is a sample store description.', 
            'http://example.com/image.jpg', 'Additional information about the store.', 'Jane Smith', '123 Contact Street, City', '234-5678', 
            '234-567-8901', 'contact@example.com', 'password123'),
-          ('002', 'Another Company', '234-5678', '456 Another Street, City', 'Alice Johnson', 
+          ('Another Company', '234-5678', '456 Another Street, City', 'Alice Johnson', 
            'Another Store', 'アナザー ストア', '234-567-8901', 'another@example.com', 'Description for another store.', 
            'http://example.com/another_image.jpg', 'Additional info about another store.', 'Bob Brown', '456 Contact Street, City', '345-6789', 
            '345-678-9012', 'another_contact@example.com', 'password456');";

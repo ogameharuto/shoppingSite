@@ -84,3 +84,14 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #0056b3;
 }
+.dateContainer {
+    display: flex;
+    gap: 10px;
+}
+.dateItem {
+    display: flex;
+    align-items: center;
+}
+.dateItem label {
+    margin-right: 31px;
+}
