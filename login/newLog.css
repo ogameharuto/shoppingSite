@@ -1,113 +1,86 @@
-/* 全体のスタイル */
+/* newLog.css */
+
 body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
+    background-color: #f7f7f7;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-/* コンテナスタイル */
 .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
+    background-color: #fff;
+    padding: 20px 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
 }
 
-/* ヘッダー */
 h2 {
     text-align: center;
     color: #333;
+    margin-bottom: 20px;
 }
 
-/* フォームグループ */
-.form-group {
-    margin-bottom: 15px;
+.group {
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
     color: #333;
 }
 
 .required {
     color: red;
+    font-weight: normal;
+    margin-left: 4px;
 }
 
-.optional {
-    color: gray;
-}
-
-/* 入力フィールド */
 input[type="text"],
-input[type="number"],
+input[type="email"],
+input[type="password"],
 select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 10px 0;
-    border: 1px solid #ddd;
+    width: calc(100% - 40px); /* Adjust width to make space for the toggle icon */
+    padding: 8px;
+    border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
-input[type="text"]:focus,
-input[type="number"]:focus,
-select:focus {
-    border-color: #0056b3;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
+.passwordGroup {
+    position: relative;
 }
 
-/* 年月の横並び */
-.date-container {
+.passwordContainer {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
-.date-item {
-    flex: 1;
+.togglePassword {
+    margin-left: 10px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.2em;
 }
 
-.date-item label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.date-item select {
-    width: 100%;
-}
-
-/* ボタン */
-button {
-    display: block;
+button[type="submit"] {
     width: 100%;
     padding: 10px;
+    background-color: #007bff;
     border: none;
+    color: white;
     border-radius: 4px;
-    background-color: #0056b3;
-    color: #fff;
-    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 16px;
 }
 
-button:hover {
-    background-color: #004494;
-}
-
-button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-}
-
-small {
-    display: block;
-    color: #666;
-    font-size: 0.9em;
+button[type="submit"]:hover {
+    background-color: #0056b3;
 }

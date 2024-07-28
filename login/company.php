@@ -1,71 +1,87 @@
 <?php
 // データベース接続設定
-$host = 'localhost'; // データベースサーバーのホスト名
-$dbname = 'syain_db'; // データベース名
-$username = 's20225002'; // データベースのユーザー名
-$password = '20040106'; // データベースのパスワード
+$host = 'localhost';
+$dbname = 'syain_db';
+$username = 's20225002';
+$password = '20040106';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // POSTデータを受け取る
-    $business_type = $_POST['business_type'];
-    $company_type = $_POST['company_type'];
-    $corporate_number = $_POST['corporate_number'];
-    $company_name = $_POST['company_name'];
-    $postal_code = $_POST['postal_code'];
-    $prefecture = $_POST['prefecture'];
-    $city = $_POST['city'];
-    $town = $_POST['town'];
-    $street_address = $_POST['street_address'];
-    $building_name = $_POST['building_name'];
-    $phone_number = $_POST['phone_number'];
-    $establishment_year = $_POST['establishment_year'];
-    $establishment_month = $_POST['establishment_month'];
-    $capital = $_POST['capital'];
-    $revenue = isset($_POST['revenue']) ? $_POST['revenue'] : null;
-
-    // 設立年月を「YYYY-MM」の形式に変換
-    $establishment_date = $establishment_year . '-' . $establishment_month;
+    $companyName = $_POST['companyName'];
+    $companyPostalCode = $_POST['postalCode'];
+    $companyAddress = $_POST['fullAddress'];
+    $companyRepresentative = $_POST['representativeName'];
+    $storeName = $_POST['storeName'];
+    $furigana = $_POST['storeNameFurigana'];
+    $telephoneNumber = $_POST['phoneNumber'];
+    $mailAddress = $_POST['mailAddres'];
+    $storeDescription = $_POST['storeIntroduction'];
+    $storeImageURL = $_POST['storeImageURL'];
+    $storeAdditionalInfo = $_POST['storeAdditionalInfo'];
+    $operationsManager = $_POST['operationsManager'];
+    $invoice_registration = "not_registered";
+    $contactAddress = $_POST['contactAddress'];
+    $contactPostalCode = $_POST['contactPostalCode'];
+    $contactPhoneNumber = $_POST['contactPhoneNumber'];
+    $contactEmailAddress = $_POST['contactEmailAddress'];
+    $password = $_POST['pass'];
+    // storeNumberの生成
+    $storeNumber = '番号' . sprintf('%04d', getLastStoreNumber($pdo) + 1);
 
     // SQLクエリの準備
-    $sql = "INSERT INTO company_info (
-                business_type, company_type, corporate_number, company_name,
-                postal_code, prefecture, city, town, street_address, building_name,
-                phone_number, establishment_date, capital, revenue
+    $sql = "INSERT INTO stores (
+                storeNumber, companyName, companyPostalCode, companyAddress, companyRepresentative, 
+                storeName, furigana, telephoneNumber, mailAddress, storeDescription, 
+                storeImageURL, storeAdditionalInfo, operationsManager, invoice_registration, 
+                contactAddress, contactPostalCode, contactPhoneNumber, contactEmailAddress, password
             ) VALUES (
-                :business_type, :company_type, :corporate_number, :company_name,
-                :postal_code, :prefecture, :city, :town, :street_address, :building_name,
-                :phone_number, :establishment_date, :capital, :revenue
+                :storeNumber, :companyName, :companyPostalCode, :companyAddress, :companyRepresentative, 
+                :storeName, :furigana, :telephoneNumber, :mailAddress, :storeDescription, 
+                :storeImageURL, :storeAdditionalInfo, :operationsManager, :invoice_registration, 
+                :contactAddress, :contactPostalCode, :contactPhoneNumber, :contactEmailAddress, :password
             )";
 
-    // SQLクエリの実行
+    // データベースにデータを挿入
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        ':business_type' => $business_type,
-        ':company_type' => $company_type,
-        ':corporate_number' => $corporate_number,
-        ':company_name' => $company_name,
-        ':postal_code' => $postal_code,
-        ':prefecture' => $prefecture,
-        ':city' => $city,
-        ':town' => $town,
-        ':street_address' => $street_address,
-        ':building_name' => $building_name,
-        ':phone_number' => $phone_number,
-        ':establishment_date' => $establishment_date,
-        ':capital' => $capital,
-        ':revenue' => $revenue
+        ':storeNumber' => $storeNumber,
+        ':companyName' => $companyName,
+        ':companyPostalCode' => $companyPostalCode,
+        ':companyAddress' => $companyAddress,
+        ':companyRepresentative' => $companyRepresentative,
+        ':storeName' => $storeName,
+        ':furigana' => $furigana,
+        ':telephoneNumber' => $telephoneNumber,
+        ':mailAddress' => $mailAddress,
+        ':storeDescription' => $storeDescription,
+        ':storeImageURL' => $storeImageURL,
+        ':storeAdditionalInfo' => $storeAdditionalInfo,
+        ':operationsManager' => $operationsManager,
+        ':invoice_registration' => $invoice_registration,
+        ':contactAddress' => $contactAddress,
+        ':contactPostalCode' => $contactPostalCode,
+        ':contactPhoneNumber' => $contactPhoneNumber,
+        ':contactEmailAddress' => $contactEmailAddress,
+        ':password' => $password
     ]);
 
-    // 成功メッセージを表示
-    echo "登録が完了しました。<br>";
-    echo "<a href='index.php'>戻る</a>"; // 適切なリンク先に変更
+    echo "データベースにデータが正常に登録されました。";
 
 } catch (PDOException $e) {
     echo "エラー: " . $e->getMessage();
 }
-//header('Location: newLog.php');
-?>
 
+// 最後のstoreNumberを取得する関数
+function getLastStoreNumber($pdo) {
+    $stmt = $pdo->query("SELECT storeNumber FROM stores ORDER BY storeNumber DESC LIMIT 1");
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row && preg_match('/番号(\d+)/', $row['storeNumber'], $matches)) {
+        return (int)$matches[1];
+    } else {
+        return 0; // データが存在しない場合は0を返す
+    }
+}
+?>

@@ -1,4 +1,4 @@
-/* newLog.css */
+/* com.css */
 
 /* 全体のスタイル */
 body {
@@ -22,56 +22,61 @@ h2 {
     text-align: center;
     color: #333;
     margin-bottom: 1.5rem;
+    font-size: 1.5rem;
 }
 
 /* フォームグループ */
-.form-group {
+.group {
     margin-bottom: 1rem;
 }
 
-.form-group label {
+.group label {
     display: block;
     font-weight: bold;
     margin-bottom: 0.5rem;
+    font-size: 1rem;
 }
 
-.form-group p {
+.group p {
     margin: 0;
     padding: 0.5rem;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
+    font-size: 0.9rem;
 }
 
-.form-group input[type="hidden"] {
+.group input[type="hidden"] {
     display: none;
 }
 
-.form-actions {
-    text-align: center;
+button {
+    display: block;
+    width: 100%;
     margin-top: 2rem;
-}
-
-.form-actions button {
-    background-color: #007bff;
+    padding: 0.75rem;
+    font-size: 1rem;
     color: #fff;
+    background-color: #007bff;
     border: none;
     border-radius: 4px;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
     cursor: pointer;
-    margin: 0 0.5rem;
     transition: background-color 0.3s ease;
 }
 
-.form-actions button:hover {
+button:hover {
     background-color: #0056b3;
 }
 
-.form-actions button[type="button"] {
+button[type="button"] {
     background-color: #6c757d;
 }
 
-.form-actions button[type="button"]:hover {
+button[type="button"]:hover {
     background-color: #5a6268;
+}
+
+/* フォーム内のボタン */
+form {
+    margin-bottom: 1rem;
 }

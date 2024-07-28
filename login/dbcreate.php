@@ -24,36 +24,39 @@ $pdo   = $utilConnDB->connect();   // null:not found
  * 会社情報（company_info）テーブル作成
  */
 /* 登録済みの確認 */
-$sql    = "show tables like 'company_info';";
+$sql    = "show tables like 'stores';";
 $ret    = $pdo->query($sql);
 $findSW = false;
 while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-  if ($row[0] == 'company_info') {
+  if ($row[0] == 'stores') {
     $findSW = true;
   }
 }
 if ($findSW == true) {
-  $sql   = 'drop table company_info;';
+  $sql   = 'drop table stores;';
   $count = $pdo->query($sql);
 }
 /* company_infoテーブル生成 */
-$sql   = 'create table company_info('
-       . 'id INT AUTO_INCREMENT PRIMARY KEY, '
-       . 'business_type VARCHAR(255) NOT NULL, '
-       . 'company_type VARCHAR(255) NOT NULL, '
-       . 'corporate_number VARCHAR(13), '
-       . 'company_name VARCHAR(255) NOT NULL, '
-       . 'postal_code VARCHAR(10) NOT NULL, '
-       . 'prefecture VARCHAR(255) NOT NULL, '
-       . 'city VARCHAR(255) NOT NULL, '
-       . 'town VARCHAR(255) NOT NULL, '
-       . 'street_address VARCHAR(255) NOT NULL, '
-       . 'building_name VARCHAR(255), '
-       . 'phone_number VARCHAR(20) NOT NULL, '
+$sql   = 'create table stores('
+       . 'storeNumber VARCHAR(10) NOT NULL PRIMARY KEY, '
+       . 'companyName VARCHAR(50),' 
+       . 'companyPostalCode VARCHAR(50),'
+       . 'companyAddress VARCHAR(50),'
+       . 'companyRepresentative VARCHAR(50),'
+       . 'storeName VARCHAR(50), '
+       . 'furigana VARCHAR(50), '
+       . 'telephoneNumber VARCHAR(50),'
+       . 'mailAddress VARCHAR(50),'
+       . 'storeDescription VARCHAR(2000),'
+       . 'storeImageURL VARCHAR(255),'
+       . 'storeAdditionalInfo VARCHAR(2000),'
+       . 'operationsManager VARCHAR(50), '
        . 'invoice_registration ENUM("registered", "not_registered") NOT NULL, '
-       . 'establishment_date DATE NOT NULL, '
-       . 'capital INT NOT NULL, '
-       . 'revenue INT'
+       . 'contactAddress VARCHAR(50),'
+       . 'contactPostalCode VARCHAR(50),'
+       . 'contactPhoneNumber VARCHAR(50),'
+       .'contactEmailAddress VARCHAR(50),'
+       .'password VARCHAR(50)'
        . ');';
 $count = $pdo->query($sql);
 
@@ -73,12 +76,19 @@ $pdo   = null;
  * company_infoテーブルにデータ登録
  */
 function insCompanyInfo($pdo) {
-    $sql   = "insert into company_info (business_type, company_type, corporate_number, company_name, postal_code, prefecture, city, town, street_address, building_name,phone_number, invoice_registration, establishment_date, capital, revenue) "
-           . "values ('株式会社', '法人', '1234567890123', 'サンプル株式会社', '100-0001', '東京都', '千代田区', '神田', '1-1', 'サンプルビル', '03-1234-5678', 'registered', '2024-01-01', 1000000, 5000000);";
-    $count = sql_exec($pdo, $sql);
-
-    $sql   = "insert into company_info (business_type, company_type, corporate_number, company_name, postal_code, prefecture, city, town, street_address, building_name, phone_number, invoice_registration, establishment_date, capital, revenue) "
-           . "values ('株式会社', '法人', '0987654321098', 'テスト株式会社', '150-0001', '東京都', '渋谷区', '宇田川町', '2-2', 'テストビル','03-9876-5432', 'not_registered', '2023-06-15', 2000000, 10000000);";
+    $sql   = "insert into stores (    storeNumber, companyName, companyPostalCode, companyAddress, companyRepresentative, 
+    storeName, furigana, telephoneNumber, mailAddress, storeDescription, 
+    storeImageURL, storeAdditionalInfo, operationsManager, contactAddress, contactPostalCode, 
+    contactPhoneNumber, contactEmailAddress, password) "
+    
+           . "values ('001', 'Sample Company', '123-4567', '123 Sample Street, City', 'John Doe', 
+           'Sample Store', 'サンプル ストア', '123-456-7890', 'sample@example.com', 'This is a sample store description.', 
+           'http://example.com/image.jpg', 'Additional information about the store.', 'Jane Smith', '123 Contact Street, City', '234-5678', 
+           '234-567-8901', 'contact@example.com', 'password123'),
+          ('002', 'Another Company', '234-5678', '456 Another Street, City', 'Alice Johnson', 
+           'Another Store', 'アナザー ストア', '234-567-8901', 'another@example.com', 'Description for another store.', 
+           'http://example.com/another_image.jpg', 'Additional info about another store.', 'Bob Brown', '456 Contact Street, City', '345-6789', 
+           '345-678-9012', 'another_contact@example.com', 'password456');";
     $count = sql_exec($pdo, $sql);
 }
 
