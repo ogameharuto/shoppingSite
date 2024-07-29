@@ -11,73 +11,70 @@
 require_once('utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 
-/* データベース作成 */
-$dbSW = $utilConnDB->createDB();  // false:not create
-if (!$dbSW) {
-    die('データベース作成に失敗しました。');
+/*
+ * データベース作成
+ */
+$dbSW  = $utilConnDB->createDB();  // false:not create
+/*
+ * データベースに接続
+ */
+$pdo   = $utilConnDB->connect();   // null:not found
+
+/*
+ * 外部キー制約を一時的に無効にする
+ */
+$pdo->exec('SET FOREIGN_KEY_CHECKS = 0;');
+
+/*
+ * テーブルを削除する関数
+ */
+function dropTableIfExists($pdo, $tableName) {
+    $sql = "SHOW TABLES LIKE '$tableName';";
+    $ret = $pdo->query($sql);
+    if ($ret->fetch(PDO::FETCH_NUM)) {
+        $sql = "DROP TABLE $tableName;";
+        $pdo->exec($sql);
+    }
 }
 
-/* データベースに接続 */
-$pdo = $utilConnDB->connect();
-if ($pdo === null) {
-    die('データベースに接続できませんでした。');
+/*
+ * テーブルを削除
+ */
+$tables = [
+    'review',
+    'cart',
+    'orderDetail',
+    'orderTable',
+    'product',
+    'dateAndTimeSettings',
+    'store',
+    'customer',
+    'category'
+];
+
+foreach ($tables as $table) {
+    dropTableIfExists($pdo, $table);
 }
+
+/*
+ * 外部キー制約を再度有効にする
+ */
+$pdo->exec('SET FOREIGN_KEY_CHECKS = 1;');
 
 /*
  * カテゴリテーブル作成
  */
-$sql = "SHOW TABLES LIKE 'category';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'category') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE category;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* カテゴリテーブル生成 */
 $sql = 'CREATE TABLE category (
   categoryNumber INT AUTO_INCREMENT PRIMARY KEY,
   categoryName VARCHAR(50),
   parentCategoryNumber INT,
   FOREIGN KEY (parentCategoryNumber) REFERENCES category(categoryNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* カテゴリテーブルにデータ登録  */
-insCategory($pdo);
+$pdo->exec($sql);
 
 /*
  * 顧客テーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'customer';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'customer') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE customer;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* 顧客テーブル生成 */
 $sql = 'CREATE TABLE customer (
   customerNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerName VARCHAR(50),
@@ -89,35 +86,11 @@ $sql = 'CREATE TABLE customer (
   telephoneNumber VARCHAR(20),
   password VARCHAR(50)
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* 顧客テーブルにデータ登録  */
-insCustomer($pdo);
+$pdo->exec($sql);
 
 /*
  * 店舗テーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'store';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'store') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE store;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* 店舗テーブル生成 */
 $sql = 'CREATE TABLE store (
   storeNumber INT AUTO_INCREMENT PRIMARY KEY,
   companyName VARCHAR(50),
@@ -138,35 +111,11 @@ $sql = 'CREATE TABLE store (
   contactEmailAddress VARCHAR(50),
   password VARCHAR(50)
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* 店舗テーブルにデータ登録  */
-insStore($pdo);
+$pdo->exec($sql);
 
 /*
  * 商品テーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'product';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'product') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE product;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* 商品テーブル生成 */
 $sql = 'CREATE TABLE product (
   productNumber INT AUTO_INCREMENT PRIMARY KEY,
   productName VARCHAR(50),
@@ -182,35 +131,11 @@ $sql = 'CREATE TABLE product (
   FOREIGN KEY (categoryNumber) REFERENCES category(categoryNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* 商品テーブルにデータ登録  */
-insProduct($pdo);
+$pdo->exec($sql);
 
 /*
  * 注文テーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'orderTable';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'orderTable') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE orderTable;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* 注文テーブル生成 */
 $sql = 'CREATE TABLE orderTable (
   orderNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerNumber INT,
@@ -222,35 +147,11 @@ $sql = 'CREATE TABLE orderTable (
   billingAddress VARCHAR(100),
   FOREIGN KEY (customerNumber) REFERENCES customer(customerNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* 注文テーブルにデータ登録  */
-insOrder($pdo);
+$pdo->exec($sql);
 
 /*
  * 注文詳細テーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'orderDetail';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'orderDetail') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE orderDetail;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* 注文詳細テーブル生成 */
 $sql = 'CREATE TABLE orderDetail (
   orderDetailNumber INT AUTO_INCREMENT PRIMARY KEY,
   orderNumber INT,
@@ -260,35 +161,11 @@ $sql = 'CREATE TABLE orderDetail (
   FOREIGN KEY (orderNumber) REFERENCES orderTable(orderNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* 注文詳細テーブルにデータ登録  */
-insOrderDetail($pdo);
+$pdo->exec($sql);
 
 /*
  * カートテーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'cart';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'cart') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE cart;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* カートテーブル生成 */
 $sql = 'CREATE TABLE cart (
   customerNumber INT,
   productNumber INT,
@@ -298,35 +175,11 @@ $sql = 'CREATE TABLE cart (
   FOREIGN KEY (customerNumber) REFERENCES customer(customerNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* カートテーブルにデータ登録  */
-insCart($pdo);
+$pdo->exec($sql);
 
 /*
  * お問い合わせ対応日時設定番号テーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'dateAndTimeSettings';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'dateAndTimeSettings') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE dateAndTimeSettings;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* お問い合わせ対応日時設定番号テーブル生成 */
 $sql = 'CREATE TABLE dateAndTimeSettings (
   dateAndTimeSettingsNumber INT AUTO_INCREMENT PRIMARY KEY,
   storeNumber INT,
@@ -336,35 +189,11 @@ $sql = 'CREATE TABLE dateAndTimeSettings (
   supportEndTime TIME,
   FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* お問い合わせ対応日時設定番号テーブルにデータ登録  */
-insDateAndTimeSettings($pdo);
+$pdo->exec($sql);
 
 /*
  * レビューテーブル作成
  */
-/* 登録済みの確認 */
-$sql = "SHOW TABLES LIKE 'review';";
-$ret = $pdo->query($sql);
-$findSW = false;
-while ($row = $ret->fetch(PDO::FETCH_NUM)) {
-    if ($row[0] == 'review') {
-        $findSW = true;
-    }
-}
-if ($findSW) {
-    $sql = 'DROP TABLE review;';
-    $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "テーブル削除エラー: " . implode(", ", $pdo->errorInfo());
-    }
-}
-
-/* レビューテーブル生成 */
 $sql = 'CREATE TABLE review (
   reviewNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerNumber INT,
@@ -375,91 +204,14 @@ $sql = 'CREATE TABLE review (
   FOREIGN KEY (customerNumber) REFERENCES customer(customerNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
-$count = $pdo->exec($sql);
-if ($count === false) {
-    echo "テーブル作成エラー: " . implode(", ", $pdo->errorInfo());
-}
-
-/* レビューテーブルにデータ登録  */
-insReview($pdo);
-
-/*
- * データ登録関数
- */
-function insCategory($pdo) {
-    $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES ('Books', NULL);";
-    sql_exec($pdo, $sql);
-
-    $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES ('Electronics', NULL);";
-    sql_exec($pdo, $sql);
-
-    $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES ('Fiction', 1);";
-    sql_exec($pdo, $sql);
-
-    $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES ('Non-Fiction', 1);";
-    sql_exec($pdo, $sql);
-
-    $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES ('Mobile Phones', 2);";
-    sql_exec($pdo, $sql);
-
-    $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES ('Laptops', 2);";
-    sql_exec($pdo, $sql);
-}
-
-function insCustomer($pdo) {
-    $sql = "INSERT INTO customer (customerName, furigana, address, postCode, dateOfBirth, mailAddress, telephoneNumber, password) VALUES ('John Doe', 'ジョン・ドウ', '123 Elm Street', '12345', '1990-01-01', 'john.doe@example.com', '123-456-7890', 'password123');";
-    sql_exec($pdo, $sql);
-
-    $sql = "INSERT INTO customer (customerName, furigana, address, postCode, dateOfBirth, mailAddress, telephoneNumber, password) VALUES ('Jane Smith', 'ジェーン・スミス', '456 Oak Avenue', '67890', '1985-05-15', 'jane.smith@example.com', '098-765-4321', 'password456');";
-    sql_exec($pdo, $sql);
-}
-
-function insStore($pdo) {
-    $sql = "INSERT INTO store (companyName, companyPostalCode, companyAddress, companyRepresentative, storeName, furigana, telephoneNumber, mailAddress, storeDescription, storeImageURL, storeAdditionalInfo, operationsManager, contactAddress, contactPostalCode, contactPhoneNumber, contactEmailAddress, password) VALUES ('TechWorld', '11111', '789 Maple Road', 'Alice Johnson', 'TechWorld Store', 'テックワールド', '555-1234', 'techworld@example.com', 'A store for all your tech needs.', 'http://example.com/image.jpg', 'Additional store info.', 'Bob Brown', '101 Pine Street', '22222', '555-5678', 'bob.brown@example.com', 'storepass');";
-    sql_exec($pdo, $sql);
-}
-
-function insProduct($pdo) {
-    $sql = "INSERT INTO product (productName, productImageURL, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus) VALUES ('Book A', 'http://example.com/bookA.jpg', 19.99, 1, 100, 'A great book.', '2024-07-29', '2024-07-29', 1, TRUE);";
-    sql_exec($pdo, $sql);
-
-    $sql = "INSERT INTO product (productName, productImageURL, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus) VALUES ('Smartphone X', 'http://example.com/smartphoneX.jpg', 299.99, 5, 50, 'Latest smartphone.', '2024-07-29', '2024-07-29', 1, TRUE);";
-    sql_exec($pdo, $sql);
-}
-
-function insOrder($pdo) {
-    $sql = "INSERT INTO orderTable (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES (1, '2024-07-29 14:00:00', 'Processing', '123 Elm Street', 'Credit Card', 'John Doe', '123 Elm Street');";
-    sql_exec($pdo, $sql);
-}
-
-function insOrderDetail($pdo) {
-    $sql = "INSERT INTO orderDetail (orderNumber, productNumber, quantity, price) VALUES (1, 1, 2, 19.99);";
-    sql_exec($pdo, $sql);
-}
-
-function insCart($pdo) {
-    $sql = "INSERT INTO cart (customerNumber, productNumber, quantity, dateAdded) VALUES (1, 1, 1, '2024-07-29 14:00:00');";
-    sql_exec($pdo, $sql);
-}
-
-function insDateAndTimeSettings($pdo) {
-    $sql = "INSERT INTO dateAndTimeSettings (storeNumber, businessStartDate, businessEndDate, supportStartTime, supportEndTime) VALUES (1, '2024-01-01', '2024-12-31', '09:00:00', '17:00:00');";
-    sql_exec($pdo, $sql);
-}
-
-function insReview($pdo) {
-    $sql = "INSERT INTO review (customerNumber, productNumber, reviewText, purchaseFlag, evaluation) VALUES (1, 1, 'Excellent product!', TRUE, '5');";
-    sql_exec($pdo, $sql);
-}
+$pdo->exec($sql);
 
 /*
  * SQL文実行
  */
 function sql_exec($pdo, $sql) {
     $count = $pdo->exec($sql);
-    if ($count === false) {
-        echo "SQL Error: " . implode(", ", $pdo->errorInfo());
-    }
+
     return $count;
 }
 ?>
@@ -473,7 +225,7 @@ function sql_exec($pdo, $sql) {
 
 <form name="myForm1" action="index.php" method="post">
   <h2>実習No.3 データベース初期化（デバッグ用）</h2>
-　データベースを初期化しました。<p />
+  データベースを初期化しました。<p />
   <input type="submit" value="戻る" />
 </form>
 </body>
