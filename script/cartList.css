@@ -92,6 +92,26 @@ table {
     display: flex;
     align-items: flex-start;
 }
+.productName {
+    width: 67%; /* 幅を調整 */
+    overflow: hidden; /* 溢れた部分は非表示 */
+    white-space: normal; /* 折り返しを許可 */
+    word-wrap: break-word; /* 単語の途中で折り返し */
+    text-overflow: clip; /* 溢れたテキストは切り捨て */
+    box-sizing: border-box; /* 幅にパディングとボーダーを含む */
+}
+
+.productName .productDetail {
+    width: 100%;
+    display: block;
+}
+
+.productName .productDetail .productaa {
+    display: inline-block;
+    width: 100%;
+    word-wrap: break-word; /* 単語の途中で折り返し */
+}
+
 .image{
     flex-shrink: 0;
 }

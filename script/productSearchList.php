@@ -34,7 +34,7 @@ $searchNumber;
 <body>
     <div class="header">
         <div class="CenteredContainer">
-            <div class="whole"><?php require_once("header.php"); ?></div>
+            <div class="whole"><?php require_once("../login/header.php"); ?></div>
             <div class="searchResults">
                 <h1 class="searchText">時計</h1>
                 <span class="results">の検索結果</span>
