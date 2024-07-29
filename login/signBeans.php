@@ -21,7 +21,6 @@ class StoreBeans{
     private $contactPhoneNumber; // お問い合わせ先電話番号
     private $contactEmailAddress; // お問い合わせ先メールアドレス
     private $password; // パスワード
-    private $invoiceRegistration;
 
     /* コンストラクタ */
     public function __construct() {
@@ -43,7 +42,6 @@ class StoreBeans{
         $this->contactPhoneNumber = '';
         $this->contactEmailAddress = '';
         $this->password = '';
-        $this->invoiceRegistration = '';
     }
 
     /* クリアメソッド */
@@ -66,7 +64,6 @@ class StoreBeans{
         $this->contactPhoneNumber = '';
         $this->contactEmailAddress = '';
         $this->password = '';
-        $this->invoiceRegistration = '';
     }
 
     /* 店舗番号 */
@@ -229,13 +226,6 @@ class StoreBeans{
 
     public function setPassword($password) {
         $this->password = $password;
-    }
-    public function getInvoiceRegistration() {
-        return $this->invoiceRegistration;
-    }
-
-    public function setInvoiceRegistration($invoiceRegistration) {
-        $this->invoiceRegistration = $invoiceRegistration;
     }
 }
 ?>

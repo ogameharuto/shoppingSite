@@ -3,49 +3,27 @@
 header('Content-Type:text/plain; charset=utf-8');
 
 class StoreSQL{
-    /*
-    店舗表からすべての店舗情報を取得する
-    店舗データを配列に登録して表す
-
-    @param $pdo   データベース接続オブジェクト
-    @return $storeList 店舗データ
-    */
-    public function selectAll($pdo){
-        $storeList = array();
-
-        // SQL文生成
-        $sql = 'SELECT * FROM stores ORDER BY storeNumber ASC';
-        $stmt = $pdo->prepare($sql);
-
-        // SQL文実行
-        $stmt->execute();
-
-        // 検索結果を配列に登録
-        foreach($stmt as $row){
-            $storeList[] = $row;
-        }
-
-        return $storeList;
-    }
 
     /* 店舗表から指定した店舗情報を取得する
     　店舗データを配列に登録して戻す
     @param  $pdo　データベース接続オブジェクト
-    @param  $storeNumber 店舗番号
+    @param  $loginData ログイン情報
     @return  $store  検索結果
     */
-    public function select($pdo, $storeNumber){
+    public function select($pdo, $loginData) {
         // SQL文生成
-        $sql = 'SELECT * FROM stores WHERE storeNumber=?';
+        $sql = 'SELECT * FROM store WHERE mailAddress = :email AND password = :password';
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(1, $storeNumber, PDO::PARAM_STR);
-
-        // SQL文実行
+        $stmt->bindValue(':email', $loginData->getMailAddress(), PDO::PARAM_STR);
+        $stmt->bindValue(':password', $loginData->getPassword(), PDO::PARAM_STR);
+        
         $stmt->execute();
         $store = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
         return $store;
     }
+    
+    
 
     /*
     店舗表に店舗情報を登録する
@@ -57,23 +35,20 @@ class StoreSQL{
         $recCount = 0;
     
         // SQL文生成
-        $sql = 'INSERT INTO stores (
-                    storeNumber, companyName, companyPostalCode, companyAddress, 
-                    companyRepresentative, storeName, furigana, telephoneNumber, 
-                    mailAddress, storeDescription, storeImageURL, storeAdditionalInfo, 
-                    operationsManager, invoice_registration, contactAddress, 
-                    contactPostalCode, contactPhoneNumber, contactEmailAddress, password
+        $sql = 'INSERT INTO store (
+                    companyName, companyPostalCode, companyAddress, companyRepresentative, storeName, furigana, telephoneNumber, 
+                    mailAddress, storeDescription, storeImageURL, storeAdditionalInfo, operationsManager, contactAddress, contactPostalCode, 
+                    contactPhoneNumber, contactEmailAddress, password
                 ) VALUES (
-                    :storeNumber, :companyName, :companyPostalCode, :companyAddress, 
+                    :companyName, :companyPostalCode, :companyAddress, 
                     :companyRepresentative, :storeName, :furigana, :telephoneNumber, 
                     :mailAddress, :storeDescription, :storeImageURL, :storeAdditionalInfo, 
-                    :operationsManager, :invoice_registration, :contactAddress, 
+                    :operationsManager, :contactAddress, 
                     :contactPostalCode, :contactPhoneNumber, :contactEmailAddress, :password
                 )';
         $stmt = $pdo->prepare($sql);
     
         // 各プレースホルダーに対応する値をバインド
-        $stmt->bindValue(':storeNumber', $storeData->getStoreNumber(), PDO::PARAM_STR);
         $stmt->bindValue(':companyName', $storeData->getCompanyName(), PDO::PARAM_STR);
         $stmt->bindValue(':companyPostalCode', $storeData->getCompanyPostalCode(), PDO::PARAM_STR);
         $stmt->bindValue(':companyAddress', $storeData->getCompanyAddress(), PDO::PARAM_STR);
@@ -86,7 +61,6 @@ class StoreSQL{
         $stmt->bindValue(':storeImageURL', $storeData->getStoreImageURL(), PDO::PARAM_STR);
         $stmt->bindValue(':storeAdditionalInfo', $storeData->getStoreAdditionalInfo(), PDO::PARAM_STR);
         $stmt->bindValue(':operationsManager', $storeData->getOperationsManager(), PDO::PARAM_STR);
-        $stmt->bindValue(':invoice_registration', $storeData->getInvoiceRegistration(), PDO::PARAM_STR);
         $stmt->bindValue(':contactAddress', $storeData->getContactAddress(), PDO::PARAM_STR);
         $stmt->bindValue(':contactPostalCode', $storeData->getContactPostalCode(), PDO::PARAM_STR);
         $stmt->bindValue(':contactPhoneNumber', $storeData->getContactPhoneNumber(), PDO::PARAM_STR);
@@ -95,16 +69,12 @@ class StoreSQL{
     
         // SQL文実行
         try {
-            $stmt->execute();
+            /* SQL文実行 */
+            $ret = $stmt->execute();
+
+            /* 件数を取得 */
             $recCount = $stmt->rowCount();
-            if ($recCount > 0) {
-                echo "データが正常に登録されました。";
-            } else {
-                echo "データの登録に失敗しました。";
-            }
-        } catch(PDOException $e) {
-            echo "エラー: " . $e->getMessage();
-        }
+        } catch(PDOException $e){}
     
         return $recCount;
     }

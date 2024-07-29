@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fetch(`https://api.zipaddress.net/?zipcode=${postalCode}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('API Response:', data); // レスポンスを確認
+                    console.log('API Response:', data);
                     if (data.code === 200) {
                         const address = data.data;
                         const fullAddress = `${address.pref}${address.city}${address.town}`;

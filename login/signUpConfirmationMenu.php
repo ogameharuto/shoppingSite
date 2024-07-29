@@ -52,12 +52,6 @@
                 <input type="hidden" name="mailAddres" value="<?php echo htmlspecialchars($_POST['mailAddres']); ?>">
             </div>
             <div class="group">
-                <label for="establishmentDate">開店年月</label>
-                <p><?php echo htmlspecialchars($_POST['establishmentYear'] . '年 ' . $_POST['establishmentMonth'] . '月'); ?></p>
-                <input type="hidden" name="establishmentYear" value="<?php echo htmlspecialchars($_POST['establishmentYear']); ?>">
-                <input type="hidden" name="establishmentMonth" value="<?php echo htmlspecialchars($_POST['establishmentMonth']); ?>">
-            </div>
-            <div class="group">
                 <label for="storeIntroduction">店舗紹介文</label>
                 <p><?php echo htmlspecialchars($_POST['storeIntroduction']); ?></p>
                 <input type="hidden" name="storeIntroduction" value="<?php echo htmlspecialchars($_POST['storeIntroduction']); ?>">

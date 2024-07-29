@@ -47,7 +47,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 select {
-    width: calc(100% - 40px); /* Adjust width to make space for the toggle icon */
+    width: calc(100% - 40px);
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;

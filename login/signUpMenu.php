@@ -44,37 +44,6 @@
                 <input type="email" id="mailAddres" name="mailAddres" value="<?php echo htmlspecialchars($_POST['mailAddres'] ?? ''); ?>" required>
             </div>
             <div class="group">
-                <label for="establishmentDate">開店年月<span class="required">必須</span></label>
-                <div class="dateContainer">
-                    <div class="dateItem">
-                        <label for="establishmentYear">年</label>
-                        <select id="establishmentYear" name="establishmentYear" required>
-                            <option value="" selected="selected">年を選択してください</option>
-                            <?php
-                            $currentYear = date("Y");
-                            for ($year = $currentYear; $year >= 1900; $year--) {
-                                $selected = isset($_POST['establishmentYear']) && $_POST['establishmentYear'] == $year ? 'selected' : '';
-                                echo "<option value=\"$year\" $selected>$year</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="dateItem">
-                        <label for="establishmentMonth">月</label>
-                        <select id="establishmentMonth" name="establishmentMonth" required>
-                            <option value="" selected="selected">月を選択してください</option>
-                            <?php
-                            for ($month = 1; $month <= 12; $month++) {
-                                $monthFormatted = str_pad($month, 2, '0', STR_PAD_LEFT);
-                                $selected = isset($_POST['establishmentMonth']) && $_POST['establishmentMonth'] == $monthFormatted ? 'selected' : '';
-                                echo "<option value=\"$monthFormatted\" $selected>$monthFormatted</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="group">
                 <label for="storeIntroduction">店舗紹介文<span class="optional">任意</span></label>
                 <input type="text" id="storeIntroduction" name="storeIntroduction" value="<?php echo htmlspecialchars($_POST['storeIntroduction'] ?? ''); ?>">
             </div>
