@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.orderbody{
+    margin: 0 15%;
+}
+h3{
+    margin: 1% 0;
+}
+h2{
+    margin-top: 1.5%;
+}
+span{
+    color: red;
+}
+.hidden {
+    display: none;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin: 3% 0;
+}
+.form-group label {
+    width: 15em; /* ラベルの幅を固定 */
+}
+.form-group input, .form-group select {
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.radiolabel{
+    display: block;            /* ブロック化 */
+    padding: 2% 2%;        /* 内側の余白量 */
+    margin-bottom: 2%;
+    background-color: #c2c2c2; /* 背景色 */
+    cursor: pointer;           /* マウスを指形に */
+    width: 40%; /* ラベルの幅を固定 */
+}
+
+.orderbody .center{
+    text-align: center;
+    color: red;
+    font-size: 130%;
+    margin: 1% 0 3% 0;
+}
+
+.flex,.flex label{
+    display: flex;
+}
+.flex label{
+    margin-bottom: 2%;
+}
+.flex h4{
+    margin-right: 5%;
+}
+.contents1,.contents2,.contents3{
+    display: block;
+    width: 50%;
+    margin-right: 3%;
+}
+#cardNumber{
+    width: 10%;
+}
