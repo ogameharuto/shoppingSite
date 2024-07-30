@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>aaa
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在庫管理</title>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="category-list">
                     <h3>カテゴリリスト</h3>
-                    <?php echo $categoryListHTML; ?>
+                    <!-- カテゴリリストの表示 -->
                 </div>
             </div>
             <div class="main-content">
@@ -43,7 +43,6 @@
                     <h3>商品一覧</h3>
                     <button class="edit-button" onclick="handleEditButtonClick()">編集</button>
                 </div>
-                <form method="POST" id="productForm">
                     <table class="product-table">
                         <thead>
                             <tr>
@@ -56,17 +55,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="checkbox" name="product[]"></td>
-                                <td>012345</td>
-                                <td>数字商品テスト</td>
-                                <td>テスト商品</td>
-                                <td>10</td>
-                                <td>公開中</td>
-                            </tr>
+                            <?php include 'fetchProducts.php'; ?>
                         </tbody>
                     </table>
-                </form>
             </div>
         </div>
     </div>
@@ -88,5 +79,3 @@
     </script>
 </body>
 </html>
-
-

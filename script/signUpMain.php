@@ -2,8 +2,8 @@
 header('Content-Type:text/plain; charset=utf-8');
 
 /* インポート */
-require_once('siginSql.php');
-require_once('signBeans.php');
+require_once('storeSQL.php');
+require_once('companyBeans.php');
 require_once('utilConnDB.php');
 
 /* セッションの開始 */
@@ -41,7 +41,7 @@ $storeBeans->setPassword(htmlspecialchars($_POST['pass'] ?? '', ENT_QUOTES, 'utf
     $retCount = $storeSQL->insert($pdo, $storeBeans);
     if ($retCount == 1) {
         $pdo->commit();
-        $storeBeans->clear(); // 登録成功時にデータをクリア
+        $storeBeans->clear();
         $_SESSION['message'] = "登録が成功しました。";
     } else {
         $pdo->rollback();

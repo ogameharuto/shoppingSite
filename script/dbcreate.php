@@ -152,8 +152,8 @@ $pdo->exec($sql);
 // 商品データ挿入
 $sql = "INSERT INTO product (productName, productImageURL, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus) VALUES
   ('iPhone 13', 'https://example.com/iphone13.jpg', 799.99, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1),
-  ('MacBook Air', 'https://example.com/macbookair.jpg', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 1),
-  ('Harry Potterqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqaaaaaaaqqqqqqq', 'https://example.com/harrypotter.jpg', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 1);";
+  ('MacBook Air', 'https://example.com/macbookair.jpg', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0),
+  ('Harry Potterqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqaaaaaaaqqqqqqq', 'https://example.com/harrypotter.jpg', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0);";
 $pdo->exec($sql);
 
 // 注文テーブル作成

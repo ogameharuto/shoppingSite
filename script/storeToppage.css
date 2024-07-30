@@ -102,6 +102,11 @@ body {
 .content-header {
     font-size: 1.2em;
     margin-bottom: 20px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    border: solid 1px;
 }
 
 .content-header span {
@@ -129,7 +134,9 @@ body {
     padding: 20px;
     border-radius: 5px;
 }
-
+.name{
+    padding-left: 54%;
+}
 .notifications {
     margin-bottom: 20px;
 }
