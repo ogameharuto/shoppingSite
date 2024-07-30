@@ -7,15 +7,13 @@ require_once('utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-// お客様番号に基づいて商品データを取得するクエリ
+// 商品データを取得するクエリ
 $sql = "SELECT productNumber, productName, categoryNumber, stockQuantity, pageDisplayStatus 
         FROM product 
         WHERE storeNumber = :storeNumber";
 $statement = $pdo->prepare($sql);
 $statement->bindParam(':storeNumber', $storeNumber['storeNumber'], PDO::PARAM_INT);
 $statement->execute();
-
-// 結果を取得
 $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 // カテゴリ情報を取得
@@ -56,7 +54,6 @@ foreach ($products as $product) {
         <td>{$status} $statusToggle</td>
     </tr>";
 }
-
 
 // 商品リストを含むHTMLを表示する
 echo $productListHTML;
