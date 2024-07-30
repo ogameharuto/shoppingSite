@@ -1,28 +1,7 @@
 <?php
 session_start();
-
-// 商品一覧ページから送信された選択された商品のIDを取得
-if (isset($_POST['product'])) {
-    $_SESSION['selected_products'] = $_POST['product'];
-}
-
-// セッションから選択された商品のIDを取得
-$selectedProductNumbers = isset($_SESSION['selected_products']) ? $_SESSION['selected_products'] : [];
-
-// データベース接続設定
-require_once('utilConnDB.php');
-$utilConnDB = new UtilConnDB();
-$pdo = $utilConnDB->connect();
-
-// 選択された商品データを取得するクエリ
-$sql = "SELECT productNumber AS product_code, productName AS product_name, stockQuantity AS stock 
-        FROM product 
-        WHERE productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
-$statement = $pdo->prepare($sql);
-$statement->execute($selectedProductNumbers);
-$products = $statement->fetchAll(PDO::FETCH_ASSOC);
+$products = $_SESSION['product'];
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,8 +21,8 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC);
             <button type="button" onclick="window.history.back();">キャンセル</button>
         </div>
         <div class="content">
-            <form action="update_inventory.php" method="POST">
-                <table class="edit-table">
+            <form action="updateInventory.php" method="POST">
+                <table class="editTable">
                     <thead>
                         <tr>
                             <th>商品コード</th>
@@ -57,24 +36,24 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                         <?php foreach ($products as $product): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($product['product_code']); ?></td>
-                            <td><?php echo htmlspecialchars($product['product_name']); ?></td>
+                            <td><?php echo htmlspecialchars($product['productNumber']); ?></td>
+                            <td><?php echo htmlspecialchars($product['productName']); ?></td>
                             <td>
-                                <input type="text" name="stock[<?php echo htmlspecialchars($product['product_code']); ?>]" value="<?php echo htmlspecialchars($product['stock']); ?>">
+                                <?php echo htmlspecialchars($product['stock']); ?>
                             </td>
                             <td>
-                                <select name="method[<?php echo htmlspecialchars($product['product_code']); ?>]">
+                                <select name="method[<?php echo htmlspecialchars($product['productNumber']); ?>]">
                                     <option value="add">足す</option>
                                     <option value="subtract">引く</option>
                                     <option value="set">値にする</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="text" name="value[<?php echo htmlspecialchars($product['product_code']); ?>]">
+                                <input type="text" name="value[<?php echo htmlspecialchars($product['productNumber']); ?>]">
                             </td>
                             <td>
-                                <input type="checkbox" name="allow_overflow[<?php echo htmlspecialchars($product['product_code']); ?>]" value="1"> 注文可能
-                                <input type="checkbox" name="disallow_overflow[<?php echo htmlspecialchars($product['product_code']); ?>]" value="0"> 注文不可
+                                <input type="radio" name="allowOverflow[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="1"> 注文可能
+                                <input type="radio" name="disallowOverflow[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="0"> 注文不可
                             </td>
                         </tr>
                         <?php endforeach; ?>

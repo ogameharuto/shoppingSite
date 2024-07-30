@@ -78,5 +78,16 @@ class StoreSQL{
     
         return $recCount;
     }
+    public function aa($pdo, $selectedProductNumbers){
+        // 選択された商品データを取得するクエリ
+        $sql = "SELECT productNumber AS productNumber, productName AS productName, stockQuantity AS stock 
+        FROM product 
+        WHERE productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
+        $statement = $pdo->prepare($sql);
+        $statement->execute($selectedProductNumbers);
+        $products = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $products;
+    }
 }
 ?>
