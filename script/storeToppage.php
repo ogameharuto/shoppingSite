@@ -62,7 +62,7 @@ $storeNumber = $_SESSION['store'];
                             <p><a href="">商品管理</a></p>
                             <p><a href="">カテゴリ管理</a></p>
                             <p><a href="">画像管理</a></p>
-                            <p><a href="productStructure.php">在庫管理</a></p>
+                            <p><a href="stockEdit/productStructure.php">在庫管理</a></p>
                         </div>
                     </li>
                     <li class="collapsible">

@@ -2,9 +2,9 @@
 session_start();
 header('Content-Type:text/plain; charset=utf-8');
 
-require_once('utilConnDB.php');
-require_once('storeSQL.php');
-require_once('companyBeans.php');
+require_once('../utilConnDB.php');
+require_once('../storeSQL.php');
+require_once('../companyBeans.php');
 
 $storeSQL = new StoreSQL();
 $utilConnDB = new UtilConnDB();
@@ -21,9 +21,11 @@ $store = $storeSQL->select($pdo, $storeBeans);
 /* パスワード確認 */
 if ($store) {
     $_SESSION['store'] = $store;
+    print($store['storeNumber']);
+    print($store['storeName']);
     /* DB切断 */
     $utilConnDB->disconnect($pdo);
-    header('Location: storeToppage.php');
+    //header('Location: storeToppage.php');
     exit;
 } else {
     $_SESSION['error'] = "メールアドレスまたはパスワードが正しくありません。";

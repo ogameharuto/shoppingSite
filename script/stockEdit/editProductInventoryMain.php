@@ -1,8 +1,8 @@
 <?php
 session_start();
 // データベース接続設定
-require_once('utilConnDB.php');
-require_once('storeSql.php');
+require_once('../utilConnDB.php');
+require_once('../storeSQL.php');
 
 $storeSQL = new StoreSQL();
 $utilConnDB = new UtilConnDB();
@@ -18,7 +18,7 @@ if (isset($_POST['product'])) {
 $selectedProductNumbers = isset($_SESSION['selectProduct']) ? $_SESSION['selectProduct'] : [];
 
 
-$products = $storeSQL->aa($pdo, $selectedProductNumbers);
+$products = $storeSQL->productEditSelect($pdo, $selectedProductNumbers);
 
 $_SESSION['product'] = $products;
 

@@ -68,7 +68,6 @@ function handleEditButtonClick() {
         alert("編集する商品を選んでください.");
         return;
     }
-
     const selectedItems = [];
     checkboxes.forEach((checkbox) => {
         selectedItems.push(checkbox.value);
@@ -86,10 +85,10 @@ function handleEditButtonClick() {
         input.value = item;
         form.appendChild(input);
     });
-
     document.body.appendChild(form);
     form.submit();
 }
+
     </script>
 </body>
 </html>
