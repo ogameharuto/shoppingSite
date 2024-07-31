@@ -3,7 +3,7 @@ session_start();
 $storeNumber = $_SESSION['store'];
 
 // データベース接続設定
-require_once('utilConnDB.php');
+require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
@@ -11,18 +11,18 @@ $pdo = $utilConnDB->connect();
 $sql = "SELECT productNumber, productName, categoryNumber, stockQuantity, pageDisplayStatus 
         FROM product 
         WHERE storeNumber = :storeNumber";
-$statement = $pdo->prepare($sql);
-$statement->bindParam(':storeNumber', $storeNumber['storeNumber'], PDO::PARAM_INT);
-$statement->execute();
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':storeNumber', $storeNumber['storeNumber'], PDO::PARAM_INT);
+$stmt->execute();
 
 // 結果を取得
-$products = $statement->fetchAll(PDO::FETCH_ASSOC);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // カテゴリ情報を取得
 $sql = "SELECT categoryNumber, categoryName FROM category";
-$categoryStatement = $pdo->prepare($sql);
-$categoryStatement->execute();
-$categories = $categoryStatement->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // カテゴリ情報を連想配列に変換
 $categoryMap = [];

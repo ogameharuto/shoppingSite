@@ -62,20 +62,33 @@
         </div>
     </div>
     <script>
-        function handleEditButtonClick() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            if (checkboxes.length === 0) {
-                alert("編集する商品を選んでください.");
-                return;
-            }
+function handleEditButtonClick() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    if (checkboxes.length === 0) {
+        alert("編集する商品を選んでください.");
+        return;
+    }
+    const selectedItems = [];
+    checkboxes.forEach((checkbox) => {
+        selectedItems.push(checkbox.value);
+    });
 
-            const selectedItems = [];
-            checkboxes.forEach((checkbox) => {
-                selectedItems.push(checkbox.value);
-            });
-            const url = 'editProductInventory.php';
-            window.location.href = url;
-        }
+    // POST リクエストを送信
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'editProductInventoryMain.php';
+
+    selectedItems.forEach((item) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'product[]';
+        input.value = item;
+        form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    form.submit();
+}
+
     </script>
 </body>
 </html>

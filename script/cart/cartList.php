@@ -117,7 +117,7 @@ $hasItems = count($cartList) > 0;
                                 合計金額 <?php echo htmlspecialchars($price); ?>円
                             </div>
                         </div>
-                        <form class="order" action="ご注文手続きの画面" method="post">
+                        <form class="order" action="../order1.php" method="post">
                             <input type="submit" class="orderBtn" value="ご注文手続きへ">
                         </form>
                     </div>

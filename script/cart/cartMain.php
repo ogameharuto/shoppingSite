@@ -1,20 +1,12 @@
 <?php
-/*
- cartListMain.php (カート一覧　メイン)
- 
- @author  [Your Name]
- @version 2.0
- @date    [Current Date]
-*/
-
 header('Content-Type:text/plain; charset=utf-8');
 
 /* インポート */
-require_once('cart.Sql.php'); // CartDAOのファイルをインポート
-require_once('../login/utilConnDB.php');
+require_once('../storeSQL.php'); 
+require_once('../utilConnDB.php');
 
 /* インスタンス生成 */
-$cartDAO = new CartDAO();
+$cartDAO = new StoreSQL();
 $utilConnDB = new UtilConnDB();
 
 /* main */
