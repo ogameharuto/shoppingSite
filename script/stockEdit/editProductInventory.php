@@ -3,7 +3,7 @@ session_start();
 
 // 商品一覧ページから送信された選択された商品のIDを取得
 if (isset($_SESSION['product'])) {
-    $products = $_SESSION['product'];
+   $products = $_SESSION['product'];
 }
 ?>
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ if (isset($_SESSION['product'])) {
             <button type="button" onclick="window.history.back();">キャンセル</button>
         </div>
         <div class="content">
-        <form action="updateInventory.php" method="POST">
+        <form action="editConfirmation.php" method="POST">
             <table class="edit-table">
                 <thead>
                     <tr>

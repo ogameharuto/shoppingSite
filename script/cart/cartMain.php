@@ -1,8 +1,8 @@
 <?php
-header('Content-Type:text/plain; charset=utf-8');
+header('Content-Type: text/plain; charset=utf-8');
 
 /* インポート */
-require_once('../storeSQL.php'); 
+require_once('../storeSQL.php');
 require_once('../utilConnDB.php');
 
 /* インスタンス生成 */
@@ -15,7 +15,7 @@ $pdo = $utilConnDB->connect();
 
 /* 顧客番号の取得 */
 session_start();
-$customerNumber = 1;
+$customerNumber = $_SESSION['customer']['customerNumber'] ?? null;
 
 /* SQL文実行
    カートテーブルを読み込み、ArrayListに登録して戻す 

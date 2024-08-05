@@ -1,41 +1,8 @@
 <?php
 session_start();
 
-// フォームデータを取得
-$formData = $_POST;
-
-// データベース接続設定
-require_once('../utilConnDB.php');
-require_once('../storeSQL.php');
-
-$storeSQL = new StoreSQL();
-$utilConnDB = new UtilConnDB();
-$pdo = $utilConnDB->connect();
-
-// 商品コードのリストを取得
-$productNumbers = array_keys($formData['stock'] ?? []);
-
-// 商品情報を取得
-$products = $storeSQL->productEditSelect($pdo, $productNumbers);
-$productsMap = [];
-
-// 商品情報を商品コードをキーにしてマップする
-foreach ($products as $product) {
-    $productsMap[$product['productNumber']] = $product;
-}
-
-// フォームデータに基づいて商品情報を更新
-foreach ($formData['stock'] as $productNumber => $stock) {
-    if (isset($productsMap[$productNumber])) {
-        $productsMap[$productNumber]['stock'] = htmlspecialchars($stock);
-        $productsMap[$productNumber]['method'] = htmlspecialchars($formData['method'][$productNumber] ?? '');
-        $productsMap[$productNumber]['value'] = htmlspecialchars($formData['value'][$productNumber] ?? '');
-        $productsMap[$productNumber]['allow_overflow'] = htmlspecialchars($formData['allow_overflow'][$productNumber] ?? '');
-        $productsMap[$productNumber]['disallow_overflow'] = htmlspecialchars($formData['disallow_overflow'][$productNumber] ?? '');
-    }
-}
-
-$_SESSION['confirm_data'] = $productsMap;
+// セッションからデータを取得
+$products = $_SESSION['product'] ?? [];
 ?>
 <!DOCTYPE html>
 <html>
@@ -65,21 +32,25 @@ $_SESSION['confirm_data'] = $productsMap;
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($productsMap as $product): ?>
+                        <?php foreach ($products as $product): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($product['productNumber']); ?></td>
                             <td><?php echo htmlspecialchars($product['productName']); ?></td>
-                            <td><?php echo htmlspecialchars($product['stock']); ?></td>
-                            <td><?php echo htmlspecialchars($product['method']); ?></td>
-                            <td><?php echo htmlspecialchars($product['value']); ?></td>
-                            <td><?php echo htmlspecialchars($product['allow_overflow'] ? '注文可能' : '注文不可'); ?></td>
+                            <td><?php echo htmlspecialchars($_POST['stock'][$product['productNumber']] ?? $product['stock']); ?></td>
+                            <td><?php echo htmlspecialchars($_POST['method'][$product['productNumber']] ?? ''); ?></td>
+                            <td><?php echo htmlspecialchars($_POST['value'][$product['productNumber']] ?? ''); ?></td>
+                            <td><?php echo isset($_POST['allow_overflow'][$product['productNumber']]) ? '注文可能' : '注文不可'; ?></td>
                         </tr>
+                        <input type="hidden" name="stock[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($_POST['stock'][$product['productNumber']] ?? $product['stock']); ?>">
+                        <input type="hidden" name="method[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($_POST['method'][$product['productNumber']] ?? ''); ?>">
+                        <input type="hidden" name="value[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($_POST['value'][$product['productNumber']] ?? ''); ?>">
+                        <input type="hidden" name="allow_overflow[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo isset($_POST['allow_overflow'][$product['productNumber']]) ? '1' : '0'; ?>">
                         <?php endforeach; ?>
                     </tbody>
                 </table>
                 <input type="hidden" name="confirm" value="yes">
-                <button type="submit">更新</button>
-                <button type="button" onclick="window.history.back();">戻る</button>
+                <button type="submit">保存</button>
+                <button type="button" onclick="window.history.back();">修正</button>
             </form>
         </div>
     </div>

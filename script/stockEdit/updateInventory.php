@@ -7,6 +7,12 @@ $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // デバッグ出力
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+
+    // データの取得
     $stocks = $_POST['stock'] ?? [];
     $methods = $_POST['method'] ?? [];
     $values = $_POST['value'] ?? [];
@@ -21,13 +27,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $method = $methods[$productId] ?? 'add';
             $value = $values[$productId] ?? 0;
 
+            // デバッグ出力
+            echo "<pre>";
+            echo "Product ID: $productId\n";
+            echo "Current Stock: $currentStock\n";
+            echo "Method: $method\n";
+            echo "Value: $value\n";
+            echo "</pre>";
+
             // 現在の在庫数を取得
             $sql = "SELECT stockQuantity FROM product WHERE productNumber = :productNumber";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':productNumber', $productId, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+
+            // 現在の在庫数が取得できない場合は0に設定
             $currentStockDb = $result ? $result['stockQuantity'] : 0;
 
             // 新しい在庫数を計算
@@ -52,6 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindParam(':newStock', $newStock, PDO::PARAM_INT);
             $stmt->bindParam(':productNumber', $productId, PDO::PARAM_INT);
             $stmt->execute();
+
+            // SQLエラーの確認
+            $errorInfo = $stmt->errorInfo();
+            if ($errorInfo[0] != PDO::ERR_NONE) {
+                throw new PDOException($errorInfo[2]);
+            }
         }
 
         // トランザクションのコミット
@@ -59,12 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $pdo->commit();
         }
         header('Location: productStructure.php');
+        exit;
 
     } catch (PDOException $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
+        // エラー処理 (デバッグ用)
+        echo "Error: " . $e->getMessage();
     }
-    exit;
 }
 ?>

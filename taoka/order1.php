@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="order.css">
 </head>
 <body>
-<?php include "header.php" ?>
+<?php include "../script/header.php" ?>
 <div class="orderbody">
     <form id="orderForm" method="post" action="order2.php">
         <h1>ご注文手続き</h1>
