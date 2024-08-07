@@ -8,7 +8,7 @@ $pdo = $utilConnDB->connect();
 
 // 商品番号の取得
 $productNumber = isset($_GET['productNumber']) ? intval($_GET['productNumber']) : 0;
-
+print($productNumber);
 // StoreSQL クラスのインスタンス化
 $storeSQL = new StoreSQL();
 

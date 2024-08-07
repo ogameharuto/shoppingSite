@@ -24,6 +24,9 @@ if (!$product || !$stores) {
         <div class="header">
             <?php include "../header.php"; ?>
         </div>
+        <div class="storeInfmation">
+            <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($stores["storeName"], ENT_QUOTES, 'UTF-8'); ?></a>
+        </div>
         <div class="productList">
             <div class="product">
                 <div class="image">

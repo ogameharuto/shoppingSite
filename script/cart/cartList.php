@@ -6,7 +6,6 @@ session_start();
 $cartList = $_SESSION['cartList'] ?? [];
 $couponNumber = $_SESSION['couponNumber'] ?? 0;
 $price = 0;
-
 // 商品がカートにあるか確認
 $hasItems = count($cartList) > 0;
 ?>
@@ -55,7 +54,7 @@ $hasItems = count($cartList) > 0;
                                             </a>
                                         </div>
                                         <div class="productDetail">
-                                            <a href="<?php echo htmlspecialchars($item['url']); ?>" class="proDetail">
+                                            <a href="http://localhost/shopp/script/productDetails/productDetails.php?=<?php echo htmlspecialchars($item['productNumber']); ?>" class="proDetail">
                                                 <span class="productaa"><?php echo htmlspecialchars($item['productName']); ?></span>
                                             </a>
                                         </div>
@@ -72,7 +71,9 @@ $hasItems = count($cartList) > 0;
                                     </div>
                                 </td>
                             </tr>
-                            <?php $price += $item['price'] * $item['quantity']; ?>
+                            <?php $price += $item['price'] * $item['quantity']; 
+                            $_SESSION['totalPrice'] = $price;
+                            ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -117,7 +118,7 @@ $hasItems = count($cartList) > 0;
                                 合計金額 <?php echo htmlspecialchars($price); ?>円
                             </div>
                         </div>
-                        <form class="order" action="../order1.php" method="post">
+                        <form class="order" action="../../taoka/order1.php" method="post">
                             <input type="submit" class="orderBtn" value="ご注文手続きへ">
                         </form>
                     </div>

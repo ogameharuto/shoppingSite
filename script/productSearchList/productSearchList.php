@@ -2,7 +2,6 @@
 session_start();
 
 $products = $_SESSION['products'] ?? [];
-$similarProducts = $_SESSION['similarProducts'] ?? [];
 $query = $_SESSION['query'] ?? '';
 ?>
 <!DOCTYPE html>
@@ -67,7 +66,7 @@ $query = $_SESSION['query'] ?? '';
                         <div class="product">
                             <div class="width">
                                 <img src="<?php echo htmlspecialchars($product['productImageURL'], ENT_QUOTES, 'UTF-8'); ?>" class="productImage" alt="<?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?>">
-                                <p><a href="<?php echo htmlspecialchars($product['productDescription'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
+                                <p><a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
                                 <p>
                                     <span class="price"><?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>円</span>
                                     <span class="postage">＋送料</span>
@@ -114,7 +113,7 @@ $query = $_SESSION['query'] ?? '';
 
         function renderProducts(products) {
             const productList = document.getElementById('productList');
-            productList.innerHTML = ''; // Clear current products
+            productList.innerHTML = '';
 
             products.forEach(product => {
                 const productDiv = document.createElement('div');

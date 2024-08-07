@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    $_SESSION['message'] = "ログインが必要です。";
+    header("Location: http://localhost/shopp/script/login/loginMenu.php");
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>

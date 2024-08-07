@@ -1,5 +1,4 @@
 <?php
-session_start();
 $storeNumber = $_SESSION['store'];
 
 // データベース接続設定

@@ -9,7 +9,6 @@ class StoreSQL{
         // SQL文生成
         $sql = 'SELECT 
                     p.productName,
-                    p.productImageURL,
                     p.price,
                     c.quantity,
                     p.productDescription
@@ -160,20 +159,6 @@ class StoreSQL{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    // 類似商品検索
-    public function findSimilarProducts($pdo, $categoryNumber, $searchTerm) {
-        $sql = "SELECT p.*, c.categoryName FROM product p 
-                JOIN category c ON p.storeNumber = c.categoryNumber 
-                WHERE p.categoryNumber = :categoryNumber 
-                AND p.productName LIKE :searchTerm";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':categoryNumber', $categoryNumber, PDO::PARAM_INT);
-        $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
-
     // 商品番号からストア情報を取得
     public function getStoreByProductNumber($pdo, $productNumber) {
         $sql = "

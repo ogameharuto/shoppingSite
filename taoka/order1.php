@@ -1,3 +1,5 @@
+<?php 
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -227,7 +229,6 @@
                 <!-- ゆっくりお支払い用のフィールド -->
             </div>
         </label>
-
         <button type="submit">確認画面へ進む</button>
     </form>
 </div>

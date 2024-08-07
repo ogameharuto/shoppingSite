@@ -1,6 +1,7 @@
 <?php
+session_start();
 /* インポート */
-require_once('utilConnDB.php');
+require_once('../script/utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 
 /*
@@ -26,6 +27,8 @@ $phone = htmlspecialchars($_POST['phone'],ENT_QUOTES, 'utf-8');
 $billingAddress = htmlspecialchars($_POST['billingAddress'],ENT_QUOTES, 'utf-8');
 $payment = htmlspecialchars($_POST['payment'],ENT_QUOTES, 'utf-8');
 $email = htmlspecialchars($_POST['email'],ENT_QUOTES, 'utf-8');
+
+$totalPrice = $_SESSION['totalPrice'];
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -35,7 +38,7 @@ $email = htmlspecialchars($_POST['email'],ENT_QUOTES, 'utf-8');
     <link rel="stylesheet" href="order.css">
 </head>
 <body>
-<?php include "header.html" ?>
+<?php include "../script/header.php" ?>
 <form action="completion.php" method="post" class="orderbody">
     <h1>ご注文内容の確認</h1>
     <hr color="#d3d3d3">
@@ -117,18 +120,7 @@ $email = htmlspecialchars($_POST['email'],ENT_QUOTES, 'utf-8');
             <label>
                 <h4>ご請求明細</h4>
                 <p>合計金額:</p>
-                <?php
-                $sql = "SELECT itemprice * 2 AS itemprice FROM item WHERE itemNumber=0001";
-                $stmt = $pdo->prepare($sql);
-
-                $stmt->execute();
-                
-                /* SQL文実行 */
-                $ret = $stmt->fetch(PDO::FETCH_ASSOC);
-                if(!empty($ret['itemprice'])){
-                    echo $ret['itemprice'];
-                }
-                ?>
+                <?php echo $totalPrice ?>
             </label>
             <div class="btn">
                 <input type="submit" value="ご注文を確定する">

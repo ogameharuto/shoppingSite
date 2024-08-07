@@ -42,6 +42,7 @@ function dropTableIfExists($pdo, $tableName) {
  */
 $tables = [
     'review',
+    'images',
     'cart',
     'orderDetail',
     'orderTable',
@@ -67,8 +68,8 @@ $pdo->exec('SET FOREIGN_KEY_CHECKS = 1;');
 
 // カテゴリテーブル作成
 $sql = 'CREATE TABLE category (
-  categoryNumber INT AUTO_INCREMENT PRIMARY KEY,
-  categoryName VARCHAR(50),
+  categoryNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  categoryName VARCHAR(50) NOT NULL,
   parentCategoryNumber INT,
   FOREIGN KEY (parentCategoryNumber) REFERENCES category(categoryNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
@@ -84,15 +85,15 @@ $pdo->exec($sql);
 
 // 顧客テーブル作成
 $sql = 'CREATE TABLE customer (
-  customerNumber INT AUTO_INCREMENT PRIMARY KEY,
-  customerName VARCHAR(50),
-  furigana VARCHAR(50),
-  address VARCHAR(100),
-  postCode VARCHAR(10),
-  dateOfBirth DATE,
-  mailAddress VARCHAR(50) UNIQUE,
-  telephoneNumber VARCHAR(20),
-  password VARCHAR(50)
+  customerNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  customerName VARCHAR(50) NOT NULL,
+  furigana VARCHAR(50) NOT NULL,
+  address VARCHAR(100) NOT NULL,
+  postCode VARCHAR(10) NOT NULL,
+  dateOfBirth DATE NOT NULL,
+  mailAddress VARCHAR(50) UNIQUE NOT NULL,
+  telephoneNumber VARCHAR(20) NOT NULL,
+  password VARCHAR(50) NOT NULL
 );';
 $pdo->exec($sql);
 
@@ -104,24 +105,24 @@ $pdo->exec($sql);
 
 // 店舗テーブル作成
 $sql = 'CREATE TABLE store (
-  storeNumber INT AUTO_INCREMENT PRIMARY KEY,
-  companyName VARCHAR(50),
-  companyPostalCode VARCHAR(10),
-  companyAddress VARCHAR(100),
-  companyRepresentative VARCHAR(50),
-  storeName VARCHAR(50),
-  furigana VARCHAR(50),
-  telephoneNumber VARCHAR(20),
-  mailAddress VARCHAR(50),
-  storeDescription VARCHAR(2000),
-  storeImageURL VARCHAR(255),
-  storeAdditionalInfo VARCHAR(2000),
-  operationsManager VARCHAR(50),
-  contactAddress VARCHAR(100),
-  contactPostalCode VARCHAR(10),
-  contactPhoneNumber VARCHAR(20),
-  contactEmailAddress VARCHAR(50),
-  password VARCHAR(50)
+  storeNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  companyName VARCHAR(50) NOT NULL,
+  companyPostalCode VARCHAR(10) NOT NULL,
+  companyAddress VARCHAR(100) NOT NULL,
+  companyRepresentative VARCHAR(50) NOT NULL,
+  storeName VARCHAR(50) NOT NULL,
+  furigana VARCHAR(50) NOT NULL,
+  telephoneNumber VARCHAR(20) NOT NULL,
+  mailAddress VARCHAR(50) NOT NULL,
+  storeDescription VARCHAR(2000) NOT NULL,
+  storeImageURL VARCHAR(255) NOT NULL,
+  storeAdditionalInfo VARCHAR(2000) NOT NULL,
+  operationsManager VARCHAR(50) NOT NULL,
+  contactAddress VARCHAR(100) NOT NULL,
+  contactPostalCode VARCHAR(10) NOT NULL,
+  contactPhoneNumber VARCHAR(20) NOT NULL,
+  contactEmailAddress VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL
 );';
 $pdo->exec($sql);
 
@@ -133,39 +134,51 @@ $pdo->exec($sql);
 
 // 商品テーブル作成
 $sql = 'CREATE TABLE product (
-  productNumber INT AUTO_INCREMENT PRIMARY KEY,
-  productName VARCHAR(50),
-  productImageURL VARCHAR(255),
-  price DECIMAL(10, 2),
-  categoryNumber INT,
-  stockQuantity INT,
-  productDescription VARCHAR(500),
-  dateAdded DATE,
-  releaseDate DATE,
-  storeNumber INT,
-  pageDisplayStatus BOOLEAN,
+  productNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  productName VARCHAR(50) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  categoryNumber INT NOT NULL,
+  stockQuantity INT NOT NULL,
+  productDescription VARCHAR(500) NOT NULL,
+  dateAdded DATE NOT NULL,
+  releaseDate DATE NOT NULL,
+  storeNumber INT NOT NULL,
+  pageDisplayStatus BOOLEAN NOT NULL,
   FOREIGN KEY (categoryNumber) REFERENCES category(categoryNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
 $pdo->exec($sql);
 
 // 商品データ挿入
-$sql = "INSERT INTO product (productName, productImageURL, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus) VALUES
-  ('iPhone 13', 'https://example.com/iphone13.jpg', 799.99, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1),
-  ('MacBook Air', 'https://example.com/macbookair.jpg', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0),
-  ('Harry Potterqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqaaaaaaaqqqqqqq', 'https://example.com/harrypotter.jpg', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0);";
+$sql = "INSERT INTO product (productName, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus) VALUES
+  ('iPhone 13', 799.99, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1),
+  ('MacBook Air', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0),
+  ('Harry Potterqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqaaaaaaaqqqqqqq', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0);";
+$pdo->exec($sql);
+
+// 画像テーブル作成
+$sql = 'CREATE TABLE images (
+  imageNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  imageHash VARCHAR(256) NOT NULL,
+  imageName VARCHAR(255) NOT NULL,
+  addedDate date NOT NULL,
+  storeNumber INT NOT NULL,
+  productNumber INT NOT NULL,
+  FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
+);';
 $pdo->exec($sql);
 
 // 注文テーブル作成
 $sql = 'CREATE TABLE orderTable (
-  orderNumber INT AUTO_INCREMENT PRIMARY KEY,
-  customerNumber INT,
-  orderDateTime DATETIME,
-  orderStatus VARCHAR(50),
-  deliveryAddress VARCHAR(100),
-  paymentMethodStatus VARCHAR(50),
-  billingName VARCHAR(50),
-  billingAddress VARCHAR(100),
+  orderNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  customerNumber INT NOT NULL,
+  orderDateTime DATETIME NOT NULL,
+  orderStatus VARCHAR(50) NOT NULL,
+  deliveryAddress VARCHAR(100) NOT NULL,
+  paymentMethodStatus VARCHAR(50) NOT NULL,
+  billingName VARCHAR(50) NOT NULL,
+  billingAddress VARCHAR(100) NOT NULL,
   FOREIGN KEY (customerNumber) REFERENCES customer(customerNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
 $pdo->exec($sql);
@@ -178,11 +191,11 @@ $pdo->exec($sql);
 
 // 注文詳細テーブル作成
 $sql = 'CREATE TABLE orderDetail (
-  orderDetailNumber INT AUTO_INCREMENT PRIMARY KEY,
-  orderNumber INT,
-  productNumber INT,
-  quantity INT,
-  price DECIMAL(10, 2),
+  orderDetailNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  orderNumber INT NOT NULL,
+  productNumber INT NOT NULL,
+  quantity INT NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
   FOREIGN KEY (orderNumber) REFERENCES orderTable(orderNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
@@ -197,10 +210,10 @@ $pdo->exec($sql);
 
 // カートテーブル作成
 $sql = 'CREATE TABLE cart (
-  customerNumber INT,
-  productNumber INT,
-  quantity INT,
-  dateAdded DATETIME,
+  customerNumber INT NOT NULL,
+  productNumber INT NOT NULL,
+  quantity INT NOT NULL,
+  dateAdded DATETIME NOT NULL,
   PRIMARY KEY (customerNumber, productNumber),
   FOREIGN KEY (customerNumber) REFERENCES customer(customerNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
@@ -216,12 +229,12 @@ $pdo->exec($sql);
 
 // お問い合わせ対応日時設定番号テーブル作成
 $sql = 'CREATE TABLE dateAndTimeSettings (
-  dateAndTimeSettingsNumber INT AUTO_INCREMENT PRIMARY KEY,
-  storeNumber INT,
-  businessStartDate DATE,
-  businessEndDate DATE,
-  supportStartTime TIME,
-  supportEndTime TIME,
+  dateAndTimeSettingsNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  storeNumber INT NOT NULL,
+  businessStartDate DATE NOT NULL,
+  businessEndDate DATE NOT NULL,
+  supportStartTime TIME NOT NULL,
+  supportEndTime TIME NOT NULL,
   FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
 $pdo->exec($sql);
@@ -234,11 +247,11 @@ $pdo->exec($sql);
 
 // レビューテーブル作成
 $sql = 'CREATE TABLE review (
-  reviewNumber INT AUTO_INCREMENT PRIMARY KEY,
-  customerNumber INT,
-  productNumber INT,
+  reviewNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  customerNumber INT NOT NULL,
+  productNumber INT NOT NULL,
   reviewText VARCHAR(300),
-  purchaseFlag BOOLEAN,
+  purchaseFlag BOOLEAN NOT NULL,
   evaluation VARCHAR(10),
   FOREIGN KEY (customerNumber) REFERENCES customer(customerNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
