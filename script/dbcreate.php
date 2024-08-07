@@ -260,7 +260,7 @@ $pdo->exec($sql);
 
 // レビューデータ挿入
 $sql = "INSERT INTO review (customerNumber, productNumber, reviewText, purchaseFlag, evaluation) VALUES
-  (1, 1, '素晴らしい製品です！', 1, '5'),
+  (1, 1, '素晴らしい製品です！', 1, '4.5'),
   (2, 2, 'とても満足しています。', 1, '4'),
   (1, 3, '少し期待外れでした。', 1, '3');";
 $pdo->exec($sql);

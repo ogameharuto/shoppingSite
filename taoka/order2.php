@@ -29,6 +29,8 @@ $payment = htmlspecialchars($_POST['payment'],ENT_QUOTES, 'utf-8');
 $email = htmlspecialchars($_POST['email'],ENT_QUOTES, 'utf-8');
 
 $totalPrice = $_SESSION['totalPrice'];
+
+unset($_SESSION['totalPrice']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -39,7 +41,7 @@ $totalPrice = $_SESSION['totalPrice'];
 </head>
 <body>
 <?php include "../script/header.php" ?>
-<form action="completion.php" method="post" class="orderbody">
+<form action="cartDel.php" method="post" class="orderbody">
     <h1>ご注文内容の確認</h1>
     <hr color="#d3d3d3">
     <p class="center">注意：ご注文は確定していません</p>

@@ -148,17 +148,37 @@ class StoreSQL{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 商品検索
-    public function searchProducts($pdo, $searchTerm) {
-        $sql = "SELECT p.*, s.storeName FROM product p 
-                JOIN store s ON p.storeNumber = s.storeNumber 
-                WHERE p.productName LIKE :searchTerm";
+    //商品検索
+    public function searchProducts($pdo, $query) {
+        // SQLクエリの構築
+        $sql = "SELECT p.productNumber, p.productName, p.price, p.productDescription, c.categoryName, s.storeName
+                FROM product p
+                JOIN category c ON p.categoryNumber = c.categoryNumber
+                JOIN store s ON p.storeNumber = s.storeNumber
+                WHERE p.productName LIKE :query 
+                OR c.categoryName LIKE :query 
+                OR s.storeName LIKE :query 
+                OR p.productDescription LIKE :query";
+    
+        // 子カテゴリも含める
+        $sql .= " OR c.categoryNumber IN (SELECT categoryNumber FROM category WHERE parentCategoryNumber IN (SELECT categoryNumber FROM category WHERE categoryName LIKE :query))";
+        
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
+    
+        // パラメータのバインド
+        $stmt->bindValue(':query', '%' . $query . '%');
+        
+        // クエリの実行
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $products; // 結果を返す
     }
     
+    
+    
+
+
     // 商品番号からストア情報を取得
     public function getStoreByProductNumber($pdo, $productNumber) {
         $sql = "

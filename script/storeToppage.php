@@ -30,7 +30,7 @@ $storeNumber = $_SESSION['store'];
         <span>お客様番号:<?php echo $storeNumber['storeNumber'] ?></span>
         <span class="name">お名前：<?php echo $storeNumber['companyRepresentative'] ?>さん</span>
         （<a href="" class="">登録情報</a>-
-        <a href="loginMenu.php" class="logOut">ログアウト</a>）
+        <a href="login/logOut.php" class="logOut">ログアウト</a>）
     </div>
     <div class="container">
         <aside class="sidebar">

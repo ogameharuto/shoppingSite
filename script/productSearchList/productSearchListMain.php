@@ -4,17 +4,18 @@ require_once('../utilConnDB.php');
 require_once('../storeSQL.php');
 
 $utilConnDB = new UtilConnDB();
+$storeSQL = new StoreSQL();
 $pdo = $utilConnDB->connect();
-$storeSQL = new StoreSQL(); 
 
-$searchTerm = $_GET['query'] ?? '';
+// 検索クエリの取得
+$query = isset($_GET['query']) ? $_GET['query'] : '';
 
-$_SESSION['query'] = $searchTerm;
-$searchTerm = '%' . trim($searchTerm) . '%';
 
-// 商品検索
-$products = $storeSQL->searchProducts($pdo, $searchTerm);
+$products = $storeSQL->searchProducts($pdo, $query);
+
+$_SESSION['searchTerm'] = $query;
 $_SESSION['products'] = $products;
 
 header('Location: productSearchList.php');
+exit;
 ?>

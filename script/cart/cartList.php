@@ -5,6 +5,9 @@ session_start();
 // セッションからカート情報を取得
 $cartList = $_SESSION['cartList'] ?? [];
 $couponNumber = $_SESSION['couponNumber'] ?? 0;
+
+unset($_SESSION['cartList']);
+unset($_SESSION['couponNumber']);
 $price = 0;
 // 商品がカートにあるか確認
 $hasItems = count($cartList) > 0;
@@ -29,7 +32,6 @@ $hasItems = count($cartList) > 0;
         <div class="Delivery"></div>
         
         <?php if ($hasItems): ?>
-            <a href="店に飛ぶリンク">店の名前</a>
             <div class="shipping">
                 3日以内に発送（メーカー在庫）
             </div>
@@ -149,7 +151,7 @@ $hasItems = count($cartList) > 0;
             <div class="cartNone">
                 カートに商品が入っていません
                 <p class="syopping">
-                <a href="トップページのURL" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
+                <a href="http://localhost/shopp/script/clientToppage.php" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
                 </p>
             </div>
             <div class="topick">

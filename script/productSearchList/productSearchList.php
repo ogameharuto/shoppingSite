@@ -1,8 +1,13 @@
 <?php
-session_start();
+session_start(); // セッション開始
 
+// セッションから検索結果を取得
 $products = $_SESSION['products'] ?? [];
-$query = $_SESSION['query'] ?? '';
+$query = $_SESSION['searchTerm'] ?? '';
+
+// セッションデータの削除
+unset($_SESSION['products']);
+unset($_SESSION['searchTerm']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -16,7 +21,8 @@ $query = $_SESSION['query'] ?? '';
     <div class="header">
         <div class="CenteredContainer">
             <div class="whole">
-                <?php require_once("../header.php"); ?></div>
+                <?php require_once("../header.php"); ?>
+            </div>
             <div class="searchResults">
                 <h1 class="searchText"><?php echo htmlspecialchars($query, ENT_QUOTES, 'UTF-8'); ?></h1>
                 <span class="results">の検索結果</span>
@@ -78,7 +84,7 @@ $query = $_SESSION['query'] ?? '';
                                 </p>
                                 <button class="favoriteBtn">
                                     <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true" class="Symbol">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M39.4 11.57a8.94 8.94 0 0 0-12.55 0L24 14.4l-2.85-2.82a8.94 8.94 0 0 0-12.55 0 8.7 8.7 0 0 0 0 12.4l2.85 2.83 12.2 12.05c.2.2.51.2.7 0l1.05-1.02L36.55 26.8l2.85-2.82a8.7 8.7 0 0 0 0-12.4Z"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M39.4 11.57a8.94 8.94 0 0 0-12.55 0L24 14.4l-2.85-2.82a8.94 8.94,0 0 0-12.55 0 8.7 8.7 0 0 0 0 12.4l2.85 2.83 12.2 12.05c.2.2.51.2.7 0l1.05-1.02L36.55 26.8l2.85-2.82a8.7 8.7 0 0 0 0-12.4Z"></path>
                                     </svg>
                                 </button>
                             </div>

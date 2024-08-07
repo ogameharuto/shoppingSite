@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+.section {
+    margin-bottom: 20px;
+}
+.section h2 {
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
+}
+.section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.section table, .section th, .section td {
+    border: 1px solid #ddd;
+}
+.section th, .section td {
+    padding: 8px;
+    text-align: left;
+}
+.section th {
+    background-color: #f2f2f2;
+}

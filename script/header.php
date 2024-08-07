@@ -39,11 +39,11 @@ $userId = $userName['customerNumber'] ?? null;
         </div>
         <div class="bottom-bar">
             <div class="search-container">
-                <input type="text" id="search-input" placeholder="何をお探しですか？">
+                <input type="text" name="searchTerm" id="search-input" placeholder="何をお探しですか？">
                 <button onclick="performSearch()">検索</button>
             </div>
             <div class="nav-icons">
-                <a href="http://localhost/shopp/script/cart/cartList.php?userId=<?php echo urlencode($userId); ?>" class="icon cart">カート</a>
+                <a href="http://localhost/shopp/script/cart/cartMain.php?userId=<?php echo urlencode($userId); ?>" class="icon cart">カート</a>
                 <a href="UFav01.php?userId=<?php echo urlencode($userId); ?>" class="icon favorites">お気に入り</a>
                 <a href="UOdr01.php?userId=<?php echo urlencode($userId); ?>" class="icon orders">注文履歴</a>
                 <a href="UHis03.php?userId=<?php echo urlencode($userId); ?>" class="icon notifications">新着情報</a>

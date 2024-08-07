@@ -10,6 +10,25 @@ if (!$product || !$stores) {
     echo "表示するデータがありません。";
     exit;
 }
+
+function renderStars($rating) {
+    $fullStar = '★';
+    $halfStar = '☆';
+    $emptyStar = '☆';
+    $totalStars = 5;
+
+    $fullStars = floor($rating);
+    $hasHalfStar = ($rating - $fullStars) >= 0.5;
+    $emptyStars = $totalStars - $fullStars - ($hasHalfStar ? 1 : 0);
+
+    $stars = str_repeat($fullStar, $fullStars);
+    if ($hasHalfStar) {
+        $stars .= '☆';
+    }
+    $stars .= str_repeat($emptyStar, $emptyStars);
+
+    return $stars;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +44,16 @@ if (!$product || !$stores) {
             <?php include "../header.php"; ?>
         </div>
         <div class="storeInfmation">
-            <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($stores["storeName"], ENT_QUOTES, 'UTF-8'); ?></a>
+            <span><?= htmlspecialchars($stores["storeName"], ENT_QUOTES, 'UTF-8'); ?></span>
+            <div class="storeMenu">
+                <div class="top-section">
+                <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">会社概要</a>
+                </div>
+                <div class="bottom-section">
+                    <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">カテゴリ</a>
+                    <a href="#">お問い合わせ</a>
+                </div>
+            </div>
         </div>
         <div class="productList">
             <div class="product">
@@ -87,9 +115,12 @@ if (!$product || !$stores) {
                     <?php if (count($reviews) > 0): ?>
                         <?php foreach ($reviews as $review): ?>
                             <div class="review">
+                                <p class="evaluation">
+                                    <?= renderStars((float) htmlspecialchars($review['evaluation'], ENT_QUOTES, 'UTF-8')) ?>
+                                    <span class="rating-number"><?= htmlspecialchars($review['evaluation'], ENT_QUOTES, 'UTF-8') ?></span>
+                                </p>
                                 <p class="reviewUser"><?= htmlspecialchars($review['customerName'], ENT_QUOTES, 'UTF-8') ?></p>
                                 <p class="reviewText"><?= htmlspecialchars($review['reviewText'], ENT_QUOTES, 'UTF-8') ?></p>
-                                <p class="evaluation"><?= htmlspecialchars($review['evaluation'], ENT_QUOTES, 'UTF-8') ?></p>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
