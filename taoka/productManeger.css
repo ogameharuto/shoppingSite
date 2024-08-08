@@ -1,74 +1,93 @@
-.flex{
-display: flex;
-margin-bottom: 1%;
-}
-label{
-margin-right: 5%;
+/* すべてのマージンとパディングをリセット */
+* {
+    margin: 0;
+    padding: 0;
 }
 
-.sitemap ul li ul {
-margin-top: .5em;
-margin-bottom: .75em;
-margin-left: 48px;
+/* フレックスコンテナの設定 */
+.flex {
+    display: flex;
 }
 
-.sitemap ul li ul li {
-margin-bottom: .25em;
-position: relative;
+/* ラベルの右マージンを設定 */
+label {
+    margin-right: 5%;
 }
 
-.sitemap ul li ul li::before {
-content: "";
-position: absolute;
-top: -0.5em;
-left: -16px;
-width: 10px;
-height: calc(100% + .75em);
-border-left: 1px solid #3972b2;
+/* 左カラムのスタイル設定 */
+.leftWidht {
+    display: block;
+    width: 30%;
+    margin-right: 5%;
 }
 
-.sitemap ul li ul li:last-child::before {
-height: calc(1em + .25em);
+/* サイトマップの子リストのスタイル設定 */
+.sitemap ul li {
+    margin-top: .5em;
+    margin-bottom: .75em;
+    margin-left: 48px;
 }
 
-.sitemap ul li ul li::after {
-content: "";
-position: absolute;
-top: .75em;
-left: -16px;
-width: 10px;
-border-bottom: 1px solid #3972b2;
+/* サイトマップのリストアイテムのスタイル設定 */
+.sitemap ul li{
+    margin-bottom: .25em;
+    position: relative;
 }
 
-.sitemap{
+/* 子リストの親項目以外のリストアイテムに対する縦線 */
+.sitemap ul li:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    top: -0.5em;
+    left: -16px;
+    width: 10px;
+    height: calc(100% + .75em);
+    border-left: 1px solid #3972b2;
+}
+
+/* 最後のリストアイテムの縦線の調整 */
+.sitemap ul li:last-child::before {
+    height: calc(1em + .25em);
+}
+
+/* 子リストのリストアイテムに対する水平線 */
+.sitemap ul li::after {
+    content: "";
+    position: absolute;
+    top: .75em;
+    left: -16px;
+    width: 10px;
+    border-bottom: 1px solid #3972b2;
+}
+
+/* サイトマップコンテナのスタイル設定 */
+.sitemap {
     height: 250px;
     background-color: #dcdcdc;
     overflow-y: scroll;
     overflow-x: scroll;
 }
 
-.leftWidht{
-    display: block;
-    width: 25%;
-    margin-right: 1%;
-}
-
-.productList{
+/* 商品リストのスタイル設定 */
+.productList {
     display: block;
     width: 70%;
 }
 
+/* カテゴリのリストスタイル設定 */
 #categories ul {
     list-style-type: none;
     padding-left: 20px;
     border-left: 1px solid #ccc;
     margin-left: 10px;
 }
+
 #categories li {
     cursor: pointer;
     margin: 5px 0;
     position: relative;
 }
+
 #categories li::before {
     content: '';
     position: absolute;
@@ -78,6 +97,7 @@ border-bottom: 1px solid #3972b2;
     height: 1px;
     background: #ccc;
 }
+
 #categories li::after {
     content: '';
     position: absolute;
@@ -87,9 +107,13 @@ border-bottom: 1px solid #3972b2;
     height: 20px;
     background: #ccc;
 }
-#categories > ul > li::before, #categories > ul > li::after {
+
+#categories > ul > li::before,
+#categories > ul > li::after {
     display: none;
 }
+
+/* パンくずリストのスタイル設定 */
 #breadcrumb {
     margin-top: 20px;
 }

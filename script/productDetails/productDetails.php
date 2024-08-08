@@ -12,20 +12,21 @@ if (!$product || !$stores) {
 }
 
 function renderStars($rating) {
-    $fullStar = '★';
-    $halfStar = '☆';
-    $emptyStar = '☆';
     $totalStars = 5;
-
     $fullStars = floor($rating);
-    $hasHalfStar = ($rating - $fullStars) >= 0.5;
-    $emptyStars = $totalStars - $fullStars - ($hasHalfStar ? 1 : 0);
+    $halfStar = ($rating - $fullStars) >= 0.5;
+    $emptyStars = $totalStars - $fullStars - ($halfStar ? 1 : 0);
 
-    $stars = str_repeat($fullStar, $fullStars);
-    if ($hasHalfStar) {
-        $stars .= '☆';
+    $stars = '';
+    for ($i = 1; $i <= $fullStars; $i++) {
+        $stars .= '<span class="star full">&#9733;</span>'; // ★
     }
-    $stars .= str_repeat($emptyStar, $emptyStars);
+    if ($halfStar) {
+        $stars .= '<span class="star half">&#9733;</span>'; // ★
+    }
+    for ($i = 1; $i <= $emptyStars; $i++) {
+        $stars .= '<span class="star empty">&#9733;</span>'; // ★
+    }
 
     return $stars;
 }
@@ -114,11 +115,11 @@ function renderStars($rating) {
                     </div>
                     <?php if (count($reviews) > 0): ?>
                         <?php foreach ($reviews as $review): ?>
-                            <div class="review">
-                                <p class="evaluation">
+                            <div class="review-item">
+                                <div class="stars">
                                     <?= renderStars((float) htmlspecialchars($review['evaluation'], ENT_QUOTES, 'UTF-8')) ?>
-                                    <span class="rating-number"><?= htmlspecialchars($review['evaluation'], ENT_QUOTES, 'UTF-8') ?></span>
-                                </p>
+                                    <span class="evaluationCount"><?= htmlspecialchars($review['evaluation'], ENT_QUOTES, 'UTF-8') ?></span>
+                                </div>
                                 <p class="reviewUser"><?= htmlspecialchars($review['customerName'], ENT_QUOTES, 'UTF-8') ?></p>
                                 <p class="reviewText"><?= htmlspecialchars($review['reviewText'], ENT_QUOTES, 'UTF-8') ?></p>
                             </div>

@@ -41,13 +41,12 @@ if (isset($_GET['productNumber'])) {
         <h2>カテゴリから探す</h2>
         <ul class="parent-categories">
             <?php foreach ($categories as $category): ?>
-                <?php if ($category['parentCategoryNumber'] == 0): // 親カテゴリのみ表示 ?>
+                <?php if ($category['parentCategoryNumber'] == 0): ?>
                     <li class="parent-category">
                         <a href="category.php?categoryNumber=<?= htmlspecialchars($category['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
                             <?= htmlspecialchars($category['categoryName'], ENT_QUOTES, 'UTF-8') ?>
                         </a>
                         <?php
-                        // 子カテゴリを取得
                         $childCategories = array_filter($categories, function($cat) use ($category) {
                             return $cat['parentCategoryNumber'] == $category['categoryNumber'];
                         });
@@ -124,7 +123,7 @@ if (isset($_GET['productNumber'])) {
             button.addEventListener('click', function() {
                 const isLeftButton = this.classList.contains('left');
                 const productListWrapper = this.nextElementSibling || this.previousElementSibling;
-                const scrollAmount = 500; // スクロールする量
+                const scrollAmount = 500;
 
                 if (isLeftButton) {
                     productListWrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -139,7 +138,7 @@ if (isset($_GET['productNumber'])) {
             button.addEventListener('click', function() {
                 const isLeftButton = this.classList.contains('left');
                 const productListWrapper = this.nextElementSibling || this.previousElementSibling;
-                const scrollAmount = 500; // スクロールする量
+                const scrollAmount = 500;
 
                 if (isLeftButton) {
                     productListWrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });

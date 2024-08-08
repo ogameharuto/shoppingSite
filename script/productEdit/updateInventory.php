@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
 
         // 成功後のリダイレクト
-        header('Location: productUpd.php');
+        header('Location: ../../taoka/productManagerMenu.php');
         exit;
 
     } catch (PDOException $e) {

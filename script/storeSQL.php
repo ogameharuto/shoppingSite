@@ -115,7 +115,7 @@ class StoreSQL{
 
     //商品の情報更新
     public function productUpdSelect($pdo, $selectedProductNumbers){
-        $sql = "SELECT productNumber AS productNumber, productImageURL AS productImageURL, productName AS productName, price AS price, dateAdded AS dateAdded, releaseDate AS releaseDate
+        $sql = "SELECT productNumber AS productNumber, productName AS productName, price AS price, dateAdded AS dateAdded, releaseDate AS releaseDate
         FROM product 
         WHERE productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
         $statement = $pdo->prepare($sql);

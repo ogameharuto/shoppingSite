@@ -1,3 +1,90 @@
+<?php
+// セッション開始
+session_start();
+
+// データベース接続
+require_once ('../script/utilConnDB.php');
+$utilConnDB = new UtilConnDB();
+$pdo = $utilConnDB->connect();
+
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: http://localhost/shopp/script/login/loginMenu.php");
+    exit();
+}
+
+// フィルタリングと検索のための注文データを取得
+$searchTarget = $_GET['searchTarget'] ?? '';
+$searchText = $_GET['searchText'] ?? '';
+$publicationStatus = $_GET['publicationStatus'] ?? '';
+$storeNumber = $_SESSION['store'];
+
+
+$sql = "SELECT productNumber, productName, pageDisplayStatus FROM product WHERE storeNumber = :storeNumber";
+$params = [];
+if ($searchTarget && $searchText) {
+    switch ($searchTarget) {
+        case "商品コード":
+            $sql .= " AND productNumber = :searchText";
+            break;
+        case "商品名":
+            $sql .= " AND productName LIKE :searchText";
+            $searchText = "%" . $searchText . "%";
+            break;
+    }
+    $params[':searchText'] = $searchText;
+}
+
+if ($publicationStatus) {
+    switch ($publicationStatus) {
+        case "公開中":
+            $sql .= " AND pageDisplayStatus = 1";
+            break;
+        case "非公開":
+            $sql .= " AND pageDisplayStatus = 0";
+            break;
+    }
+}
+
+$stmt = $pdo->prepare($sql);
+$stmt = bindParam('storeNumber', $storeNumber, PDO::PARAM_INT);
+$stmt->execute($params);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// カテゴリーデータを取得
+$sql = "SELECT categoryNumber, categoryName, parentCategoryNumber FROM category";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// カテゴリツリーを構築する関数
+function buildTree(array $elements, $parentId = 0)
+{
+    $branch = array();
+    foreach ($elements as $element) {
+        if ($element['parentCategoryNumber'] == $parentId) {
+            $children = buildTree($elements, $element['categoryNumber']);
+            if ($children) {
+                $element['children'] = $children;
+            }
+            $branch[] = $element;
+        }
+    }
+    return $branch;
+}
+
+// カテゴリツリーを生成
+$categoryTree = buildTree($categories);
+
+$message = '';
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']);
+}
+
+// ページ初期ロード時にカテゴリーデータをJSONとして出力
+$categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -5,17 +92,22 @@
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
     <link rel="stylesheet" href="productManeger.css">
+    <script src="product.js" defer></script>
 </head>
 
 <body>
-    <?php include "header.php" ?>
-    <main>
-        <!-- コンテンツ -->
-    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const message = <?php echo json_encode($message); ?>;
+            if (message) {
+                alert(message);
+            }
+        });
+    </script>
     <div class="flex">
         <div class="leftWidht">
             <div class="productSearch">
-                <form id="searchForm" name="商品管理" method="post">
+                <form id="searchForm" name="商品管理" method="GET">
                     <h3>商品検索</h3>
                     <div class="flex">
                         <label>
@@ -36,42 +128,107 @@
                         <label>
                             <p>公開状態</p>
                         </label>
-                        <select name="公開状態">
+                        <select name="publicationStatus">
                             <option value="公開中">公開中</option>
                             <option value="非公開">非公開</option>
                         </select>
                     </div>
-                    <input type="button" id="searchButton" value="検索">
+                    <button type="submit" id="searchButton">検索</button>
                 </form>
             </div>
             <div id="categories" class="sitemap">
-                <ul>
-                    <li data-path="Home">Home
-                        <ul>
-                            <li data-path="Home/Electronics">Electronics
-                                <ul>
-                                    <li data-path="Home/Electronics/Phones">Phones</li>
-                                    <li data-path="Home/Electronics/Computers">Computers</li>
-                                </ul>
-                            </li>
-                            <li data-path="Home/Fashion">Fashion
-                                <ul>
-                                    <li data-path="Home/Fashion/Men">Men</li>
-                                    <li data-path="Home/Fashion/Women">Women</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                <li data-path="ストアトップ/">
+                    <a href="#" onclick="showBreadcrumb('ストアトップ')">ストアトップ</a>
+                    <ul>
+                        <?php
+                        // カテゴリツリーをHTMLで表示する関数
+                        function renderTree($tree, $parentPath = 'ストアトップ')
+                        {
+                            foreach ($tree as $node) {
+                                $currentPath = $parentPath . '/' . $node['categoryName'];
+                                echo '<ul>';
+                                echo '<li data-path="' . $currentPath . '">';
+                                echo '<a href="#" onclick="showBreadcrumb(\'' . $currentPath . '\')">' . $node['categoryName'] . '</a>';
+                                if (!empty($node['children'])) {
+                                    renderTree($node['children'], $currentPath);
+                                }
+                                echo '</li>';
+                                echo '</ul>';
+                            }
+                        }
+
+                        // ツリーの表示
+                        renderTree($categoryTree);
+                        ?>
+                    </ul>
             </div>
         </div>
         <div class="productList">
-            <h3>商品一覧</h3>
-            <div id="products"></div>
             <div id="breadcrumb"></div>
+            <h3>商品一覧</h3>
+            <p>選択した商品の編集・削除が行えます</p>
+            <p>新規追加は選択したカテゴリに新しく商品を追加することができます</p>
+            <div class="flex">
+            <button type="submit" onclick="location.href='../index.php'">新規追加</button>
+            <button form="productForm" type="submit" onclick="{return checkDel()}">削除</button>
+            <button class="edit-button" onclick="handleEditButtonClick()">編集</button>
+            </div>
+            <div id="products">
+                <form id="productForm" method="POST" action="delete_products.php">
+                    <?php
+                    foreach ($products as $row) {
+                        echo '<input type="checkbox" name="products[]" value="' . $row['productNumber'] . '">';
+                        echo "商品コード: " . $row["productNumber"] . "<br>";
+                        echo "商品画像: <img src=\"" . "\" alt=\"Product Image\"><br>";
+                        echo "商品名: " . $row["productName"] . "<br>";
+                        echo "ステータス: " . ($row["pageDisplayStatus"] == 1 ? '公開中' : '非公開') . "<br><br>";
+                    }
+                    ?>
+                </form>
+            </div>
         </div>
     </div>
-    <script src="product.js"></script>
+    <script>
+        const categories = <?php echo $categoriesJson; ?>;
+        function checkDel() {
+        if(confirm('削除しますか？')){ 
+            return true; 
+        }else{
+            alert('キャンセルされました'); 
+            return false; 
+        }
+    }
+    </script>
+    <script>
+        function handleEditButtonClick() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        if (checkboxes.length === 0) {
+            alert("編集する商品を選んでください.");
+            return;
+        }
+
+        const selectedItems = [];
+        checkboxes.forEach((checkbox) => {
+            selectedItems.push(checkbox.value);
+        });
+
+        // POST リクエストを送信
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '../script/productEdit/editProductInventoryMain.php';
+
+        selectedItems.forEach((item) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'product[]';
+            input.value = item;
+            form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+    </script>
 </body>
 
 </html>

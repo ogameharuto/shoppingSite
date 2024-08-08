@@ -1,65 +1,37 @@
 <?php
-// データベース接続情報を設定
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "database_name";
+// セッション開始
+session_start();
 
-// データベース接続を確立
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("接続に失敗しました: " . $conn->connect_error);
+// データベース接続
+require_once ('../script/utilConnDB.php');
+$utilConnDB = new UtilConnDB();
+$pdo = $utilConnDB->connect();
+
+// カテゴリパスを取得
+$categoryPath = $_GET['category'] ?? '';
+
+// カテゴリ名からカテゴリ番号を取得する関数
+function getCategoryNumber($categoryPath, $pdo) {
+    $categoryNames = explode('/', $categoryPath);
+    $categoryName = end($categoryNames);
+    $stmt = $pdo->prepare("SELECT categoryNumber FROM category WHERE categoryName = :categoryName");
+    $stmt->execute([':categoryName' => $categoryName]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? $result['categoryNumber'] : null;
 }
 
-// クエリの構築
-$conditions = [];
-$params = [];
+$categoryNumber = getCategoryNumber($categoryPath, $pdo);
 
-if (isset($_GET['category'])) {
-    $conditions[] = "category = ?";
-    $params[] = $_GET['category'];
+if ($categoryNumber !== null) {
+    // 商品データを取得
+    $stmt = $pdo->prepare("SELECT productNumber, productName, pageDisplayStatus FROM product WHERE categoryNumber = :categoryNumber");
+    $stmt->execute([':categoryNumber' => $categoryNumber]);
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    $products = [];
 }
 
-if (isset($_GET['searchTarget']) && isset($_GET['searchText'])) {
-    if ($_GET['searchTarget'] == '商品コード') {
-        $conditions[] = "code LIKE ?";
-    } else if ($_GET['searchTarget'] == '商品名') {
-        $conditions[] = "name LIKE ?";
-    }
-    $params[] = '%' . $_GET['searchText'] . '%';
-}
-
-if (isset($_GET['公開状態'])) {
-    $conditions[] = "status = ?";
-    $params[] = $_GET['公開状態'];
-}
-
-$sql = "SELECT * FROM products";
-if (count($conditions) > 0) {
-    $sql .= " WHERE " . implode(" AND ", $conditions);
-}
-
-$stmt = $conn->prepare($sql);
-if ($stmt === false) {
-    die("クエリの準備に失敗しました: " . $conn->error);
-}
-
-// パラメータをバインド
-if (count($params) > 0) {
-    $types = str_repeat('s', count($params));
-    $stmt->bind_param($types, ...$params);
-}
-
-$stmt->execute();
-$result = $stmt->get_result();
-
-$products = [];
-while ($row = $result->fetch_assoc()) {
-    $products[] = $row;
-}
-
+// JSONとして商品データを返す
+header('Content-Type: application/json');
 echo json_encode($products);
-
-$stmt->close();
-$conn->close();
 ?>

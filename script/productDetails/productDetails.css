@@ -114,14 +114,32 @@ dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, p, div, iframe, caption, hr, fie
     margin-top: 20px;
     padding: 40px;
 }
+.stars {
+    gap: 4px;
+}
+
+.star {
+    font-size: 24px;
+}
+
+.star.full {
+    color: gold;
+}
+
+.star.half {
+    background: linear-gradient(to right, gold 50%, lightgray 50%);
+    background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.star.empty {
+    color: lightgray;
+    top: 20px;
+}
+
 .reviewCount{
     display: flex;
-}
-.evaluation {
-    font-size: 1.5em;
-    color: #FFD700;
-    display: flex;
-    align-items: center;
 }
 
 .rating-number {
@@ -162,7 +180,7 @@ dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, p, div, iframe, caption, hr, fie
     box-sizing: content-box;
     background-color: white;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 50px;
     min-width: 1700px;
     max-width: 1480px;
 }

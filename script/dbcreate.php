@@ -66,6 +66,12 @@ $pdo->exec('SET FOREIGN_KEY_CHECKS = 1;');
  * テーブル作成およびデータ挿入
  */
 
+//ストア側のカテゴリテーブル作成
+
+
+// ストア側のカテゴリデータ挿入
+
+
 // カテゴリテーブル作成
 $sql = 'CREATE TABLE category (
   categoryNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -77,10 +83,10 @@ $pdo->exec($sql);
 
 // カテゴリデータ挿入
 $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES
-  ('Electronics', NULL),
-  ('Books', NULL),
-  ('Smartphones', 1),
-  ('Laptops', 1);";
+  ('家電', NULL),
+  ('本', NULL),
+  ('スマホ', 1),
+  ('ノートパソコン', 1);";
 $pdo->exec($sql);
 
 // 顧客テーブル作成
@@ -153,7 +159,7 @@ $pdo->exec($sql);
 $sql = "INSERT INTO product (productName, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus) VALUES
   ('iPhone 13', 799.99, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1),
   ('MacBook Air', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0),
-  ('Harry Potterqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqaaaaaaaqqqqqqq', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0);";
+  ('Harry Potterq', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0);";
 $pdo->exec($sql);
 
 // 画像テーブル作成
@@ -185,8 +191,8 @@ $pdo->exec($sql);
 
 // 注文データ挿入
 $sql = "INSERT INTO orderTable (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
-  (1, '2024-07-28 10:00:00', 'Processing', '東京都千代田区', 'Paid', '山田 太郎', '東京都千代田区'),
-  (2, '2024-07-29 15:30:00', 'Shipped', '大阪府大阪市', 'Pending', '佐藤 花子', '大阪府大阪市');";
+  (1, '2024-07-28 10:00:00', '入金処理', '東京都千代田区', 'Paid', '山田 太郎', '東京都千代田区'),
+  (2, '2024-07-29 15:30:00', '出荷済み', '大阪府大阪市', 'Pending', '佐藤 花子', '大阪府大阪市');";
 $pdo->exec($sql);
 
 // 注文詳細テーブル作成

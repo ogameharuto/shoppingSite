@@ -1,12 +1,38 @@
 <?php
 session_start();
-
+// データベース接続設定
+require_once('../utilConnDB.php');
+$utilConnDB = new UtilConnDB();
+$pdo = $utilConnDB->connect();
 // ログイン確認
 if (!isset($_SESSION['store'])) {
-    $_SESSION['message'] = "ログインが必要です。";
     header("Location: http://localhost/shopp/script/login/loginMenu.php");
     exit();
 }
+// カテゴリーデータを取得
+$sql = "SELECT categoryNumber, categoryName, parentCategoryNumber FROM category";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// カテゴリツリーを構築する関数
+function buildTree(array $elements, $parentId = 0)
+{
+    $branch = array();
+    foreach ($elements as $element) {
+        if ($element['parentCategoryNumber'] == $parentId) {
+            $children = buildTree($elements, $element['categoryNumber']);
+            if ($children) {
+                $element['children'] = $children;
+            }
+            $branch[] = $element;
+        }
+    }
+    return $branch;
+}
+
+// カテゴリツリーを生成
+$categoryTree = buildTree($categories);
 
 ?>
 <!DOCTYPE html>
@@ -37,17 +63,32 @@ if (!isset($_SESSION['store'])) {
                         <button type="submit">検索</button>
                     </form>
                 </div>
-                <div class="search-section">
-                    <h3>在庫クローズ商品検索</h3>
-                    <form>
-                        <input type="text" placeholder="商品コード">
-                        <button type="submit">検索</button>
-                    </form>
-                </div>
-                <div class="category-list">
-                    <h3>カテゴリリスト</h3>
-                    <!-- カテゴリリストの表示 -->
-                </div>
+                <div id="categories" class="sitemap">
+                <li data-path="ストアトップ/">
+                    <a href="#" onclick="showBreadcrumb('ストアトップ')">ストアトップ</a>
+                    <ul>
+                        <?php
+                        // カテゴリツリーをHTMLで表示する関数
+                        function renderTree($tree, $parentPath = 'ストアトップ')
+                        {
+                            foreach ($tree as $node) {
+                                $currentPath = $parentPath . '/' . $node['categoryName'];
+                                echo '<ul>';
+                                echo '<li data-path="' . $currentPath . '">';
+                                echo '<a href="#" onclick="showBreadcrumb(\'' . $currentPath . '\')">' . $node['categoryName'] . '</a>';
+                                if (!empty($node['children'])) {
+                                    renderTree($node['children'], $currentPath);
+                                }
+                                echo '</li>';
+                                echo '</ul>';
+                            }
+                        }
+
+                        // ツリーの表示
+                        renderTree($categoryTree);
+                        ?>
+                    </ul>
+            </div>
             </div>
             <div class="main-content">
                 <div class="product-list-header">
