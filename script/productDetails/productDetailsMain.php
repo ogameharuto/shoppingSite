@@ -38,11 +38,13 @@ if (!$stores) {
     echo "ストア情報が見つかりません。";
     exit;
 }
+$productImages = $storeSQL->fetchProductDataAndImages($pdo, $productNumber);
 
 $_SESSION['product'] = $product;
 $_SESSION['categoryTreeHTML'] = $categoryTreeHTML;
 $_SESSION['reviews'] = $reviews;
 $_SESSION['stores'] = $stores;
+$_SESSION['images'] = $productImages;
 
 header('Location: productDetails.php');
 exit;

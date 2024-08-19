@@ -52,17 +52,16 @@ $storeNumber = $_SESSION['store'];
                     <li class="collapsible">
                         <div class="collapsible-header">注文管理</div>
                         <div class="collapsible-content">
-                        <p><a href="">注文検索</a></p>
                         <p><a href="orderList.php">注文管理設定</a></p>
                         </div>
                     </li>
                     <li class="collapsible">
                         <div class="collapsible-header">商品・画像・在庫</div>
                         <div class="collapsible-content">
-                            <p><a href="">商品データ登録</a></p>
+                            <p><a href="http://localhost/shopp/taoka/productInsMenu.php">商品データ登録</a></p>
                             <p><a href="../taoka/productManagerMenu.php">商品管理</a></p>
                             <p><a href="">カテゴリ管理</a></p>
-                            <p><a href="imageInsMenu.php">画像管理</a></p>
+                            <p><a href="http://localhost/shopp/script/imageIns/uploadForm.php">画像管理</a></p>
                             <p><a href="stockEdit/productStructure.php">在庫管理</a></p>
                         </div>
                     </li>

@@ -4,10 +4,13 @@ session_start(); // セッション開始
 // セッションから検索結果を取得
 $products = $_SESSION['products'] ?? [];
 $query = $_SESSION['searchTerm'] ?? '';
+$images = $_SESSION['images'] ?? [];
 
 // セッションデータの削除
 unset($_SESSION['products']);
 unset($_SESSION['searchTerm']);
+unset($_SESSION['images']);
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -71,7 +74,16 @@ unset($_SESSION['searchTerm']);
                         <?php foreach ($products as $product): ?>
                         <div class="product">
                             <div class="width">
-                                <img src="<?php echo htmlspecialchars($product['productImageURL'], ENT_QUOTES, 'UTF-8'); ?>" class="productImage" alt="<?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php
+                                // 商品ごとの画像を表示する
+                                if (isset($images[$product['productNumber']])) {
+                                    foreach ($images[$product['productNumber']] as $image) {
+                                        echo '<img src="../imageIns/uploads/' . htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') . '" width="120" height="120">';
+                                    }
+                                } else {
+                                    echo '<p>画像がありません。</p>';
+                                }
+                                ?>
                                 <p><a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
                                 <p>
                                     <span class="price"><?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>円</span>
@@ -114,7 +126,7 @@ unset($_SESSION['searchTerm']);
             .then(data => {
                 renderProducts(data);
             })
-            .catch(error => console.error('商品を取得中にエラーが発生しました:', error));
+            .catch(error => console.error('Error:', error));
         }
 
         function renderProducts(products) {
@@ -123,12 +135,11 @@ unset($_SESSION['searchTerm']);
 
             products.forEach(product => {
                 const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-
+                productDiv.classList.add('product');
                 productDiv.innerHTML = `
                     <div class="width">
-                        <img src="${product.productImageURL}" class="productImage" alt="${product.productName}">
-                        <p><a href="${product.productDescription}" class="text">${product.productName}</a></p>
+                        ${product.images.map(image => `<img src="../imageIns/uploads/${image.imageName}" alt="${image.imageName}" width="120" height="120">`).join('') || '<p>画像がありません。</p>'}
+                        <p><a href="productDetailsMain.php?productNumber=${product.productNumber}" class="text">${product.productName}</a></p>
                         <p>
                             <span class="price">${product.price}円</span>
                             <span class="postage">＋送料</span>
@@ -140,7 +151,7 @@ unset($_SESSION['searchTerm']);
                         </p>
                         <button class="favoriteBtn">
                             <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true" class="Symbol">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M39.4 11.57a8.94 8.94 0 0 0-12.55 0L24 14.4l-2.85-2.82a8.94 8.94 0 0 0-12.55 0 8.7 8.7 0 0 0 0 12.4l2.85 2.83 12.2 12.05c.2.2.51.2.7 0l1.05-1.02L36.55 26.8l2.85-2.82a8.7 8.7 0 0 0 0-12.4Z"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M39.4 11.57a8.94 8.94 0 0 0-12.55 0L24 14.4l-2.85-2.82a8.94 8.94,0 0 0-12.55 0 8.7 8.7 0 0 0 0 12.4l2.85 2.83 12.2 12.05c.2.2.51.2.7 0l1.05-1.02L36.55 26.8l2.85-2.82a8.7 8.7 0 0 0 0-12.4Z"></path>
                             </svg>
                         </button>
                     </div>

@@ -5,6 +5,7 @@ $product = isset($_SESSION['product']) ? $_SESSION['product'] : null;
 $categoryTreeHTML = isset($_SESSION['categoryTreeHTML']) ? $_SESSION['categoryTreeHTML'] : '';
 $reviews = isset($_SESSION['reviews']) ? $_SESSION['reviews'] : [];
 $stores = isset($_SESSION['stores']) ? $_SESSION['stores'] : null;
+$images = isset($_SESSION['images']) ? $_SESSION['images'] : [];
 
 if (!$product || !$stores) {
     echo "表示するデータがありません。";
@@ -59,11 +60,15 @@ function renderStars($rating) {
         <div class="productList">
             <div class="product">
                 <div class="image">
-                    <a href="<?= htmlspecialchars($product['productImageURL'], ENT_QUOTES, 'UTF-8') ?>" class="proImage">
-                        <img src="<?= htmlspecialchars($product['productImageURL'], ENT_QUOTES, 'UTF-8') ?>" 
-                             alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>" 
-                             width="120" height="120" class="style_BasketItems__itemImage__N7etN">
-                    </a>
+                    <?php if (!empty($images)): ?>
+                        <?php foreach ($images as $image): ?>
+                            <a href="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>" class="proImage">
+                                <img src="../imageIns/uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
+                            </a>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>画像がありません。</p>
+                    <?php endif; ?>
                 </div>
                 <div class="detail">
                     <div class="mdItemName">

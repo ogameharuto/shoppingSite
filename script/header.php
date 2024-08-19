@@ -23,7 +23,7 @@ $userId = $userName['customerNumber'] ?? null;
     <header class="header">
         <div class="top-bar topheader">
             <div class="logo">
-                <img src="Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
+                <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
             </div>
             <div class="user-info">
                 <p>ようこそ、<?php echo htmlspecialchars($userName['customerName'] ?? 'ゲスト', ENT_QUOTES, 'UTF-8'); ?> さん <a href="https://www.google.com/">LYPプレミアム会員登録</a> (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
@@ -47,7 +47,7 @@ $userId = $userName['customerNumber'] ?? null;
                 <a href="UFav01.php?userId=<?php echo urlencode($userId); ?>" class="icon favorites">お気に入り</a>
                 <a href="UOdr01.php?userId=<?php echo urlencode($userId); ?>" class="icon orders">注文履歴</a>
                 <a href="UHis03.php?userId=<?php echo urlencode($userId); ?>" class="icon notifications">新着情報</a>
-                <a href="UMyp01.php?userId=<?php echo urlencode($userId); ?>" class="icon profile">マイページ</a>
+                <a href="http://localhost/shopp/script/UMyp01.php?userId=<?php echo urlencode($userId); ?>" class="icon profile">マイページ</a>
             </div>
         </div>
     </header>

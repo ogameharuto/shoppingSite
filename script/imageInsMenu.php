@@ -17,9 +17,26 @@ $pdo = $utilConnDB->connect();
 $store = $_SESSION['store'];
 $storeNumber = $store['storeNumber'];
 
+// ルートディレクトリを設定
+$rootDir = $_SERVER['DOCUMENT_ROOT'] . '/shopp/';
+
+// アップロードディレクトリを設定
+$uploadDir = $rootDir . 'uploads/';
+
+// ファイル名のユニーク化
+function makeUniqueFileName($uploadDir, $fileName) {
+    $filePath = $uploadDir . $fileName;
+    if (file_exists($filePath)) {
+        $fileInfo = pathinfo($fileName);
+        $uniqueName = $fileInfo['filename'] . '_' . uniqid() . '.' . $fileInfo['extension'];
+        return $uniqueName;
+    }
+    return $fileName;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $image = $_FILES['image'];
-    $imageName = $image['name'];
+    $imageName = makeUniqueFileName($uploadDir, $image['name']);
     $imageTmpName = $image['tmp_name'];
     $imageSize = $image['size'];
     $imageError = $image['error'];
@@ -45,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
             if ($imageExists) {
                 echo "この店舗で同じ画像がすでに登録されています。";
             } else {
-                $uploadDir = 'uploads/';
                 $uploadFile = $uploadDir . basename($imageName);
 
                 if (move_uploaded_file($imageTmpName, $uploadFile)) {
@@ -56,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
                         ':imageName' => $imageName,
                         ':imageHash' => $imageHash
                     ]);
+                    
                     $pdo->commit();
                     echo "画像が正常にアップロードされました。";
                 } else {
@@ -91,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_image_number']
             $deleteStmt = $pdo->prepare($deleteSql);
             $deleteStmt->execute([':imageNumber' => $imageNumber, ':storeNumber' => $storeNumber]);
 
-            $filePath = 'uploads/' . $imageName;
+            $filePath = $uploadDir . $imageName;
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
@@ -127,7 +144,7 @@ $images = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <h1>画像をアップロードし、一覧表示する</h1>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
         <label for="image">画像ファイル:</label>
         <input type="file" name="image" id="image" required>
         <input type="submit" name="submit" value="アップロード">
@@ -152,7 +169,7 @@ $images = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
                 <td><img src="uploads/<?php echo htmlspecialchars($image['imageName']); ?>" alt="<?php echo htmlspecialchars($image['imageName']); ?>"></td>
                 <td><?php echo htmlspecialchars($image['addedDate']); ?></td>
                 <td>
-                    <form action="" method="post">
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                         <input type="hidden" name="delete_image_number" value="<?php echo $image['imageNumber']; ?>">
                         <input type="submit" value="削除">
                     </form>

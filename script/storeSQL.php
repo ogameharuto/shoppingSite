@@ -4,10 +4,11 @@ header('Content-Type:text/plain; charset=utf-8');
 
 class StoreSQL{
 
-    //顧客ごとにカートテーブル参照
+    // 顧客ごとにカートテーブル参照
     public function selectCartItems($pdo, $customerNumber) {
         // SQL文生成
         $sql = 'SELECT 
+                    p.productNumber,
                     p.productName,
                     p.price,
                     c.quantity,
@@ -276,5 +277,64 @@ class StoreSQL{
             $insertStmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             return $insertStmt->execute();
     }
+
+    public function deleteCartItem($pdo, $customerNumber, $productNumber) {
+        $sql = 'DELETE FROM cart WHERE customerNumber = :customerNumber AND productNumber = :productNumber';
+        $stmt = $pdo->prepare($sql);
+        
+        try {
+            $stmt->bindValue(':customerNumber', $customerNumber, PDO::PARAM_INT);
+            $stmt->bindValue(':productNumber', $productNumber, PDO::PARAM_INT);
+            $result = $stmt->execute();
+            
+            if ($stmt->rowCount() === 0) {
+                throw new Exception("削除するデータが見つかりませんでした。");
+            }
+            
+            return $result;
+        } catch (Exception $e) {
+            echo "エラー: " . $e->getMessage();
+            return false;
+        }
+    }
+    public function updateCartItem($pdo, $customerNumber, $productNumber, $quantity) {
+        $sql = 'UPDATE cart 
+                SET quantity = :quantity 
+                WHERE customerNumber = :customerNumber 
+                  AND productNumber = :productNumber';
+        
+        $stmt = $pdo->prepare($sql);
+    
+        try {
+            $stmt->bindValue(':customerNumber', $customerNumber, PDO::PARAM_INT);
+            $stmt->bindValue(':productNumber', $productNumber, PDO::PARAM_INT);
+            $stmt->bindValue(':quantity', $quantity, PDO::PARAM_INT);
+    
+            $stmt->execute();
+    
+            // 更新が成功したかどうかを確認
+            if ($stmt->rowCount() === 0) {
+                throw new Exception("更新するデータが見つかりませんでした。");
+            }
+        } catch (Exception $e) {
+            echo "エラー: " . $e->getMessage();
+        }
+    }
+    function fetchProductDataAndImages($pdo, $productNumber) {
+        $sql = "
+            SELECT p.productNumber, p.productName, p.price, p.categoryNumber, p.stockQuantity, p.productDescription, p.dateAdded, p.releaseDate, p.storeNumber, p.pageDisplayStatus, 
+                   i.imageHash, i.imageName
+            FROM product p
+            LEFT JOIN images i ON p.productNumber = i.productNumber
+            WHERE p.productNumber = :productNumber
+        ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':productNumber', $productNumber, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+
 }
 ?>

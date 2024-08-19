@@ -3,24 +3,16 @@
 session_start();
 
 // データベース接続
-require_once ('../script/utilConnDB.php');
+require_once('../script/utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
-
-// ログイン確認
-if (!isset($_SESSION['store'])) {
-    header("Location: http://localhost/shopp/script/login/loginMenu.php");
-    exit();
-}
 
 // フィルタリングと検索のための注文データを取得
 $searchTarget = $_GET['searchTarget'] ?? '';
 $searchText = $_GET['searchText'] ?? '';
 $publicationStatus = $_GET['publicationStatus'] ?? '';
-$storeNumber = $_SESSION['store'];
 
-
-$sql = "SELECT productNumber, productName, pageDisplayStatus FROM product WHERE storeNumber = :storeNumber";
+$sql = "SELECT productNumber, productName, pageDisplayStatus FROM product WHERE 1=1";
 $params = [];
 if ($searchTarget && $searchText) {
     switch ($searchTarget) {
@@ -47,7 +39,6 @@ if ($publicationStatus) {
 }
 
 $stmt = $pdo->prepare($sql);
-$stmt = bindParam('storeNumber', $storeNumber, PDO::PARAM_INT);
 $stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -72,7 +63,6 @@ function buildTree(array $elements, $parentId = 0)
     }
     return $branch;
 }
-
 // カテゴリツリーを生成
 $categoryTree = buildTree($categories);
 
@@ -138,7 +128,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
             </div>
             <div id="categories" class="sitemap">
                 <li data-path="ストアトップ/">
-                    <a href="#" onclick="showBreadcrumb('ストアトップ')">ストアトップ</a>
+                    <a href="#" data-path="ストアトップ">ストアトップ</a>
                     <ul>
                         <?php
                         // カテゴリツリーをHTMLで表示する関数
@@ -161,6 +151,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                         renderTree($categoryTree);
                         ?>
                     </ul>
+                </li>
             </div>
         </div>
         <div class="productList">
@@ -169,7 +160,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
             <p>選択した商品の編集・削除が行えます</p>
             <p>新規追加は選択したカテゴリに新しく商品を追加することができます</p>
             <div class="flex">
-            <button type="submit" onclick="location.href='../index.php'">新規追加</button>
+            <button type="submit" id="newProductButton" onclick="location.href='productInsMenu.php'">新規追加</button>
             <button form="productForm" type="submit" onclick="{return checkDel()}">削除</button>
             <button class="edit-button" onclick="handleEditButtonClick()">編集</button>
             </div>
@@ -179,7 +170,6 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                     foreach ($products as $row) {
                         echo '<input type="checkbox" name="products[]" value="' . $row['productNumber'] . '">';
                         echo "商品コード: " . $row["productNumber"] . "<br>";
-                        echo "商品画像: <img src=\"" . "\" alt=\"Product Image\"><br>";
                         echo "商品名: " . $row["productName"] . "<br>";
                         echo "ステータス: " . ($row["pageDisplayStatus"] == 1 ? '公開中' : '非公開') . "<br><br>";
                     }
@@ -198,36 +188,34 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
             return false; 
         }
     }
-    </script>
-    <script>
-        function handleEditButtonClick() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-        if (checkboxes.length === 0) {
-            alert("編集する商品を選んでください.");
-            return;
-        }
-
-        const selectedItems = [];
-        checkboxes.forEach((checkbox) => {
-            selectedItems.push(checkbox.value);
-        });
-
-        // POST リクエストを送信
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '../script/productEdit/editProductInventoryMain.php';
-
-        selectedItems.forEach((item) => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'product[]';
-            input.value = item;
-            form.appendChild(input);
-        });
-
-        document.body.appendChild(form);
-        form.submit();
+    function handleEditButtonClick() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    if (checkboxes.length === 0) {
+        alert("編集する商品を選んでください.");
+        return;
     }
+
+    const selectedItems = [];
+    checkboxes.forEach((checkbox) => {
+        selectedItems.push(checkbox.value);
+    });
+
+    // POST リクエストを送信
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '../script/productEdit/editProductInventoryMain.php';
+
+    selectedItems.forEach((item) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'product[]';
+        input.value = item;
+        form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+}
     </script>
 </body>
 

@@ -4,8 +4,13 @@ require_once('utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-// 商品データの取得
-$stmt = $pdo->prepare("SELECT * FROM product");
+// 商品データと画像データの取得
+$sql = "
+    SELECT p.productNumber, p.productName, p.price, p.categoryNumber, p.stockQuantity, p.productDescription, p.dateAdded, p.releaseDate, p.storeNumber, p.pageDisplayStatus, i.imageHash, i.imageName
+    FROM product p
+    LEFT JOIN images i ON p.productNumber = i.productNumber
+";
+$stmt = $pdo->prepare($sql);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -76,7 +81,11 @@ if (isset($_GET['productNumber'])) {
                     <?php foreach ($products as $product): ?>
                         <div class="product">
                             <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
-                                <img src="<?= htmlspecialchars($product['productImageURL'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                            <?php if (!empty($product['imageHash'])): ?>
+                                <img src="imageIns/uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                            <?php else: ?>
+                                <img src="default-image.png" alt="商品画像がありません">
+                            <?php endif; ?>
                                 <p>価格: <?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8') ?>円</p>
                             </a>
                         </div>
@@ -102,7 +111,11 @@ if (isset($_GET['productNumber'])) {
                                 <?php foreach ($categoryProducts as $product): ?>
                                     <div class="product">
                                         <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
-                                            <img src="<?= htmlspecialchars($product['productImageURL'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <?php if (!empty($product['imageHash'])): ?>
+                                                <img src="imageIns/uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <?php else: ?>
+                                                <img src="default-image.png" alt="商品画像がありません">
+                                            <?php endif; ?>
                                             <p>価格: <?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8') ?>円</p>
                                         </a>
                                     </div>

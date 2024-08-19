@@ -43,7 +43,7 @@ if (isset($_SESSION['product'])) {
                         <td><?php echo htmlspecialchars($product['productNumber']); ?></td>
                         <td><?php echo htmlspecialchars($product['productName']); ?></td>
                         <td>
-                            <input type="text" name="stock[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($product['stock']); ?>">
+                            <?php echo htmlspecialchars($product['stock']); ?>
                         </td>
                         <td>
                             <select name="method[<?php echo htmlspecialchars($product['productNumber']); ?>]">

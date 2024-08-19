@@ -5,6 +5,7 @@ session_start();
 // セッションからカート情報を取得
 $cartList = $_SESSION['cartList'] ?? [];
 $couponNumber = $_SESSION['couponNumber'] ?? 0;
+$images = isset($_SESSION['images']) ? $_SESSION['images'] : [];
 
 unset($_SESSION['cartList']);
 unset($_SESSION['couponNumber']);
@@ -49,31 +50,45 @@ $hasItems = count($cartList) > 0;
                             <tr class="productList">
                                 <td class="productName">
                                     <div class="productImage">
-                                        <div class="image">
-                                            <a href="<?php echo htmlspecialchars($item['url']); ?>" class="proImage">
-                                                <img src="<?php echo htmlspecialchars($item['image']); ?>" 
-                                                alt="画像の説明" width="120" height="120" class="style_BasketItems__itemImage__N7etN">
-                                            </a>
+                                    <div class="image">
+                                            <?php
+                                            // Debugging: Print the $images array
+                                            if (isset($images[$item['productNumber']])) {
+                                                foreach ($images[$item['productNumber']] as $image): ?>
+                                                    <a href="<?= htmlspecialchars($item['productName'], ENT_QUOTES, 'UTF-8') ?>" class="proImage">
+                                                        <img src="../imageIns/uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
+                                                    </a>
+                                                <?php endforeach;
+                                            } else { ?>
+                                                <p>画像がありません。</p>
+                                            <?php }
+                                            ?>
                                         </div>
                                         <div class="productDetail">
-                                            <a href="http://localhost/shopp/script/productDetails/productDetails.php?=<?php echo htmlspecialchars($item['productNumber']); ?>" class="proDetail">
-                                                <span class="productaa"><?php echo htmlspecialchars($item['productName']); ?></span>
+                                            <a href="http://localhost/shopp/script/productDetails/productDetails.php?productNumber=<?= urlencode($item['productNumber']) ?>" class="proDetail">
+                                                <span class="productaa"><?= htmlspecialchars($item['productDescription'], ENT_QUOTES, 'UTF-8') ?></span>
                                             </a>
                                         </div>
-                                    </div>
                                 </td>
                                 <td class="price">
                                     <p class="priceNumber"><?php echo htmlspecialchars($item['price']); ?>円</p>
                                 </td>
                                 <td class="amount">
-                                    <div class="priceDelete">
-                                        <input type="text" name="quantity" class="textFild"
-                                        autocapitalize="off" autocorrect="off" autocomplete="off" maxlength="3" value="<?php echo htmlspecialchars($item['quantity']); ?>">
-                                        <button type="button" class="deleteBtn">削除</button>
-                                    </div>
+                                    <!-- 数量を入力できるフォーム -->
+                                    <form id="updateForm-<?php echo htmlspecialchars($item['productNumber']); ?>" method="POST" action="updateCart.php" style="display:inline;">
+                                        <input type="hidden" name="productNumber" value="<?php echo htmlspecialchars($item['productNumber']); ?>">
+                                        <input type="number" name="quantity" value="<?php echo htmlspecialchars($item['quantity']); ?>" class="quantityInput" min="1" oninput="toggleUpdateButton('<?php echo htmlspecialchars($item['productNumber']); ?>')">
+                                        <button type="submit" name="action" value="update" class="updateBtn" style="display:none;">再計算</button>
+                                    </form>
+                                    <!-- 削除フォーム -->
+                                    <form method="GET" action="deleteFromCart.php" style="display:inline;" onclick="confirmDeletion(event)">
+                                        <input type="hidden" name="productNumber" value="<?php echo urlencode($item['productNumber']); ?>">
+                                        <button type="submit" name="action" value="delete" class="deleteBtn">削除</button>
+                                    </form>
                                 </td>
                             </tr>
-                            <?php $price += $item['price'] * $item['quantity']; 
+                            <?php 
+                            $price += $item['price'] * $item['quantity']; 
                             $_SESSION['totalPrice'] = $price;
                             ?>
                         <?php endforeach; ?>
@@ -167,5 +182,22 @@ $hasItems = count($cartList) > 0;
             </div>
         <?php endif; ?>
     </div>
+    <script>
+function toggleUpdateButton(productNumber) {
+    var input = document.querySelector(`#updateForm-${productNumber} .quantityInput`);
+    var button = document.querySelector(`#updateForm-${productNumber} .updateBtn`);
+    if (input.value > 0) {
+        button.style.display = 'inline-block';
+    } else {
+        button.style.display = 'none'; 
+    }
+}
+function confirmDeletion(event) {
+    if (!confirm('このアイテムを削除してもよろしいですか？')) {
+        event.preventDefault(); // 削除をキャンセル
+    }
+}
+</script>
+
 </body>
 </html>
