@@ -176,10 +176,6 @@ class StoreSQL{
         return $products; // 結果を返す
     }
     
-    
-    
-
-
     // 商品番号からストア情報を取得
     public function getStoreByProductNumber($pdo, $productNumber) {
         $sql = "
@@ -250,6 +246,53 @@ class StoreSQL{
         }
         return $html;
     }
+    // 親カテゴリリストの取得
+    public function categorySelectParent($pdo) {
+        $sql = "SELECT categoryNumber, categoryName
+                FROM category
+                WHERE parentCategoryNumber IS NULL";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // 商品の取得
+    public function productSelectByCategory($pdo, $categoryNumbers) {
+        $placeholders = rtrim(str_repeat('?,', count($categoryNumbers)), ',');
+        $sql = "SELECT * FROM product WHERE categoryNumber IN ($placeholders)";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($categoryNumbers);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // 子カテゴリの取得
+    public function selectChildCategories($pdo, $parentCategoryNumber) {
+        $sql = "SELECT categoryNumber, categoryName 
+                FROM category 
+                WHERE parentCategoryNumber = :parentCategoryNumber";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':parentCategoryNumber', $parentCategoryNumber, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    // 親カテゴリの取得
+    public function categorySelectById($pdo, $categoryNumber) {
+        $sql = "SELECT categoryNumber, categoryName, parentCategoryNumber 
+                FROM category 
+                WHERE categoryNumber = :categoryNumber";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':categoryNumber', $categoryNumber, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        // 結果を取得
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }    
 
     // カートテーブルに同じのがあるかチェック
     public function getCartItem($pdo, $customerNumber, $productNumber){
@@ -278,6 +321,7 @@ class StoreSQL{
             return $insertStmt->execute();
     }
 
+    //カートの商品削除
     public function deleteCartItem($pdo, $customerNumber, $productNumber) {
         $sql = 'DELETE FROM cart WHERE customerNumber = :customerNumber AND productNumber = :productNumber';
         $stmt = $pdo->prepare($sql);
@@ -297,6 +341,8 @@ class StoreSQL{
             return false;
         }
     }
+
+    //カートの合計金額更新
     public function updateCartItem($pdo, $customerNumber, $productNumber, $quantity) {
         $sql = 'UPDATE cart 
                 SET quantity = :quantity 
@@ -320,6 +366,8 @@ class StoreSQL{
             echo "エラー: " . $e->getMessage();
         }
     }
+
+    //商品ごとの画像
     function fetchProductDataAndImages($pdo, $productNumber) {
         $sql = "
             SELECT p.productNumber, p.productName, p.price, p.categoryNumber, p.stockQuantity, p.productDescription, p.dateAdded, p.releaseDate, p.storeNumber, p.pageDisplayStatus, 
@@ -333,8 +381,15 @@ class StoreSQL{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    
-
+    // 商品の画像データ取得
+    public function getProductImages($pdo) {
+        $imageStmt = $pdo->prepare("
+            SELECT p.productNumber, i.imageName
+            FROM product p
+            LEFT JOIN images i ON p.productNumber = i.productNumber
+        ");
+        $imageStmt->execute();
+        return $imageStmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

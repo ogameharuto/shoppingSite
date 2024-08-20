@@ -52,7 +52,7 @@ function renderStars($rating) {
                 <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">会社概要</a>
                 </div>
                 <div class="bottom-section">
-                    <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">カテゴリ</a>
+                    <a href="#?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">カテゴリ</a>
                     <a href="#">お問い合わせ</a>
                 </div>
             </div>
@@ -62,9 +62,7 @@ function renderStars($rating) {
                 <div class="image">
                     <?php if (!empty($images)): ?>
                         <?php foreach ($images as $image): ?>
-                            <a href="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>" class="proImage">
-                                <img src="../imageIns/uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
-                            </a>
+                            <img src="../imageIns/uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>画像がありません。</p>

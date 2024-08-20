@@ -48,7 +48,7 @@ if (isset($_GET['productNumber'])) {
             <?php foreach ($categories as $category): ?>
                 <?php if ($category['parentCategoryNumber'] == 0): ?>
                     <li class="parent-category">
-                        <a href="category.php?categoryNumber=<?= htmlspecialchars($category['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="categoryMain.php?categoryNumber=<?= htmlspecialchars($category['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
                             <?= htmlspecialchars($category['categoryName'], ENT_QUOTES, 'UTF-8') ?>
                         </a>
                         <?php
@@ -60,7 +60,7 @@ if (isset($_GET['productNumber'])) {
                             <ul class="child-categories">
                                 <?php foreach ($childCategories as $childCategory): ?>
                                     <li>
-                                        <a href="category.php?categoryNumber=<?= htmlspecialchars($childCategory['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <a href="categoryMain.php?categoryNumber=<?= htmlspecialchars($childCategory['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
                                             <?= htmlspecialchars($childCategory['categoryName'], ENT_QUOTES, 'UTF-8') ?>
                                         </a>
                                     </li>
