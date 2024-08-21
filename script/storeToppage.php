@@ -1,6 +1,7 @@
 <?php
 session_start();
 $storeNumber = $_SESSION['store'];
+
 ?>
 <!DOCTYPE html>
 <html>

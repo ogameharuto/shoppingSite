@@ -30,19 +30,7 @@ $email = htmlspecialchars($_POST['email'],ENT_QUOTES, 'utf-8');
 
 $totalPrice = $_SESSION['totalPrice'];
 
-$_SESSION['firstname'] = $firstname;
-$_SESSION['lastname'] = $lastname;
-$_SESSION['firstname_kana'] = $firstname_kana;
-$_SESSION['lastname_kana'] = $lastname_kana;
-$_SESSION['postal_code'] = $postal_code;
-$_SESSION['prefecture'] = $prefecture;
-$_SESSION['city'] = $city;
-$_SESSION['address'] = $address;
-$_SESSION['building'] = $building;
-$_SESSION['phone'] = $phone;
-$_SESSION['billingAddress'] = $billingAddress;
-$_SESSION['payment'] = $payment;
-$_SESSION['email'] = $email;
+unset($_SESSION['totalPrice']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -53,7 +41,7 @@ $_SESSION['email'] = $email;
 </head>
 <body>
 <?php include "../script/header.php" ?>
-<form action="order3.php" method="post" class="orderbody">
+<form action="cartDel.php" method="post" class="orderbody">
     <h1>ご注文内容の確認</h1>
     <hr color="#d3d3d3">
     <p class="center">注意：ご注文は確定していません</p>

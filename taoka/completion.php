@@ -1,18 +1,3 @@
-<?php
-session_start();
-/* インポート */
-require_once('../script/utilConnDB.php');
-$utilConnDB = new UtilConnDB();
-
-/*
- * 社員（syain）データベース作成
- */
-$dbSW  = $utilConnDB->createDB();  // false:not create
-/*
- * 社員（syain）データベースに接続
- */
-$pdo   = $utilConnDB->connect();   // null:not found
-?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>

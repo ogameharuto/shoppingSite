@@ -1,7 +1,6 @@
 <?php
 // セッション開始
 session_start();
-$storeNumber = $_SESSION['store']['storeNumber'];
 
 // データベース接続
 require_once('../script/utilConnDB.php');
@@ -13,7 +12,7 @@ $searchTarget = $_GET['searchTarget'] ?? '';
 $searchText = $_GET['searchText'] ?? '';
 $publicationStatus = $_GET['publicationStatus'] ?? '';
 
-$sql = "SELECT productNumber, productName, pageDisplayStatus FROM product WHERE storeNumber = $storeNumber";
+$sql = "SELECT productNumber, productName, pageDisplayStatus FROM product WHERE 1=1";
 $params = [];
 if ($searchTarget && $searchText) {
     switch ($searchTarget) {
