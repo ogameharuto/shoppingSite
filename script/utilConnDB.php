@@ -10,8 +10,8 @@
 class UtilConnDB {
     /* データベース設定 */
     private $dbHostMei  = 'localhost';
-    private $dbUserMei  = 's20225002'; // ユーザ名(各自の学籍番号)
-    private $dbPassword = '20040106';  // パスワード(各自の生年月日)
+    private $dbUserMei  = 's20227046'; // ユーザ名(各自の学籍番号)
+    private $dbPassword = '20040129';  // パスワード(各自の生年月日)
     private $dbDBMei    = 'syain_db';  // データベース名
     
     /*
