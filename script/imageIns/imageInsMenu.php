@@ -9,7 +9,7 @@ if (!isset($_SESSION['store'])) {
 }
 
 // データベース接続
-require_once('utilConnDB.php');
+require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
             if ($imageExists) {
                 $message = "この店舗で同じ画像がすでに登録されています。";
             } else {
-                $uploadDir = 'uploads/';
+                $uploadDir = '../uploads/';
                 $uploadFile = $uploadDir . basename($imageName);
 
                 if (move_uploaded_file($imageTmpName, $uploadFile)) {
@@ -113,6 +113,8 @@ $selectSql = "SELECT * FROM images WHERE storeNumber = :storeNumber ORDER BY add
 $selectStmt = $pdo->prepare($selectSql);
 $selectStmt->execute([':storeNumber' => $storeNumber]);
 $images = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
+
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -127,6 +129,13 @@ $images = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
     </script>
 </head>
 <body>
+    <div class="navbar">
+        <a href="" class="nav-item <?php echo ($current_page == '') ? 'active' : ''; ?>">ページ編集</a>
+        <a href="http://localhost/shopp/taoka/A.php" class="nav-item <?php echo ($current_page == 'A.php') ? 'active' : ''; ?>">商品管理</a>
+        <a href="http://localhost/shopp/script/stockEdit/productStructure.php" class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
+        <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php" class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
+        <a href="" class="nav-item <?php echo ($current_page == '') ? 'active' : ''; ?>">カテゴリ管理</a>
+    </div>
     <h1>画像をアップロードし、一覧表示する</h1>
     <form action="" method="post" enctype="multipart/form-data">
         <label for="image">画像ファイル:</label>
@@ -151,7 +160,7 @@ $images = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
                     <td><?php echo $index + 1; ?></td>
                     <td><?php echo htmlspecialchars($image['imageName']); ?></td>
-                    <td><img src="uploads/<?php echo htmlspecialchars($image['imageName']); ?>" alt="<?php echo htmlspecialchars($image['imageName']); ?>"></td>
+                    <td><img src="../uploads/<?php echo htmlspecialchars($image['imageName']); ?>" alt="<?php echo htmlspecialchars($image['imageName']); ?>"></td>
                     <td><?php echo htmlspecialchars($image['addedDate']); ?></td>
                     <td>
                         <form action="" method="post">

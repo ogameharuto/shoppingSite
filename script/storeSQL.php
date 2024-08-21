@@ -103,26 +103,47 @@ class StoreSQL{
     }
 
     // 選択された商品データを取得する
-    public function productEditSelect($pdo, $selectedProductNumbers){
-        $sql = "SELECT productNumber AS productNumber, productName AS productName, stockQuantity AS stock 
-        FROM product 
-        WHERE productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
+    public function productEditSelect($pdo, $selectedProductNumbers) {
+        // SQLクエリの作成
+        $sql = "SELECT 
+                    p.productNumber AS productNumber, 
+                    p.productName AS productName, 
+                    p.stockQuantity AS stock, 
+                    i.imageHash AS imageHash, 
+                    i.imageName AS imageName
+                FROM product p
+                LEFT JOIN images i ON p.imageNumber = i.imageNumber
+                WHERE p.productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
+    
+        // クエリの準備と実行
         $stmt = $pdo->prepare($sql);
         $stmt->execute($selectedProductNumbers);
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
         return $products;
     }
+    
 
     //商品の情報更新
     public function productUpdSelect($pdo, $selectedProductNumbers){
-        $sql = "SELECT productNumber AS productNumber, productName AS productName, price AS price, dateAdded AS dateAdded, releaseDate AS releaseDate
-        FROM product 
-        WHERE productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
-        $statement = $pdo->prepare($sql);
-        $statement->execute($selectedProductNumbers);
-        $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-
+        // SQLクエリの作成
+        $sql = "SELECT 
+                    p.productNumber AS productNumber, 
+                    p.productName AS productName, 
+                    p.price AS price, 
+                    p.dateAdded AS dateAdded,
+                    p.releaseDate AS releaseDate,
+                    i.imageHash AS imageHash, 
+                    i.imageName AS imageName
+                FROM product p
+                LEFT JOIN images i ON p.imageNumber = i.imageNumber
+                WHERE p.productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
+    
+        // クエリの準備と実行
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($selectedProductNumbers);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
         return $products;
     }
 
@@ -246,40 +267,6 @@ class StoreSQL{
         }
         return $html;
     }
-    // 親カテゴリリストの取得
-    public function categorySelectParent($pdo) {
-        $sql = "SELECT categoryNumber, categoryName
-                FROM category
-                WHERE parentCategoryNumber IS NULL";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    // 商品の取得
-    public function productSelectByCategory($pdo, $categoryNumbers) {
-        $placeholders = rtrim(str_repeat('?,', count($categoryNumbers)), ',');
-        $sql = "SELECT * FROM product WHERE categoryNumber IN ($placeholders)";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($categoryNumbers);
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    // 子カテゴリの取得
-    public function selectChildCategories($pdo, $parentCategoryNumber) {
-        $sql = "SELECT categoryNumber, categoryName 
-                FROM category 
-                WHERE parentCategoryNumber = :parentCategoryNumber";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':parentCategoryNumber', $parentCategoryNumber, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
     // 親カテゴリの取得
     public function categorySelectById($pdo, $categoryNumber) {
         $sql = "SELECT categoryNumber, categoryName, parentCategoryNumber 
@@ -293,7 +280,6 @@ class StoreSQL{
         // 結果を取得
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }    
-
     // カートテーブルに同じのがあるかチェック
     public function getCartItem($pdo, $customerNumber, $productNumber){
             $stmt = $pdo->prepare("SELECT * FROM cart WHERE customerNumber = :customerNumber AND productNumber = :productNumber");
@@ -367,29 +353,106 @@ class StoreSQL{
         }
     }
 
-    //商品ごとの画像
-    function fetchProductDataAndImages($pdo, $productNumber) {
-        $sql = "
-            SELECT p.productNumber, p.productName, p.price, p.categoryNumber, p.stockQuantity, p.productDescription, p.dateAdded, p.releaseDate, p.storeNumber, p.pageDisplayStatus, 
-                   i.imageHash, i.imageName
-            FROM product p
-            LEFT JOIN images i ON p.productNumber = i.productNumber
-            WHERE p.productNumber = :productNumber
-        ";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':productNumber', $productNumber, PDO::PARAM_INT);
-        $stmt->execute();
+// 商品ごとの詳細データと画像を取得
+public function fetchProductDataAndImages($pdo, $productNumber) {
+    // プレースホルダーを作成
+    $placeholders = implode(',', array_fill(0, count($productNumber), '?'));
+
+    $sql = "
+        SELECT 
+            p.productNumber, 
+            p.productName, 
+            p.price, 
+            p.categoryNumber, 
+            p.stockQuantity, 
+            p.productDescription, 
+            p.dateAdded, 
+            p.releaseDate, 
+            p.storeNumber, 
+            p.pageDisplayStatus, 
+            i.imageNumber,
+            i.imageHash, 
+            i.imageName
+        FROM product p
+        LEFT JOIN images i ON p.imageNumber = i.imageNumber
+        WHERE p.productNumber IN ($placeholders)
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($productNumber);
+    
+    try {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "商品データと画像の取得エラー: " . $e->getMessage();
+        return [];
     }
-    // 商品の画像データ取得
-    public function getProductImages($pdo) {
-        $imageStmt = $pdo->prepare("
-            SELECT p.productNumber, i.imageName
+}
+
+
+// 商品の画像情報を取得する
+public function getProductImages($pdo, $productNumber) {
+    $sql = 'SELECT i.imageName
+            FROM images i
+            JOIN product p ON i.storeNumber = p.storeNumber
+            WHERE p.productNumber = :productNumber';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':productNumber', $productNumber, PDO::PARAM_INT);
+    
+    try {
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Fetch only the imageName column
+    } catch (PDOException $e) {
+        // Handle error
+        echo "Error fetching product images: " . $e->getMessage();
+        return [];
+    }
+}
+
+// 商品の取得（画像情報を含む）
+public function productSelectByCategory($pdo, $categoryIds) {
+    $placeholders = implode(',', array_fill(0, count($categoryIds), '?'));
+    $sql = "SELECT p.productNumber, p.productName, p.price, p.productDescription, c.categoryName, s.storeName
             FROM product p
-            LEFT JOIN images i ON p.productNumber = i.productNumber
-        ");
-        $imageStmt->execute();
-        return $imageStmt->fetchAll(PDO::FETCH_ASSOC);
+            JOIN category c ON p.categoryNumber = c.categoryNumber
+            JOIN store s ON p.storeNumber = s.storeNumber
+            WHERE p.categoryNumber IN ($placeholders)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($categoryIds);
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch images for each product
+    foreach ($products as &$product) {
+        $product['images'] = $this->getProductImages($pdo, $product['productNumber']);
     }
+    
+    return $products;
+}
+
+// カテゴリの取得（IDで）
+public function H($pdo, $categoryNumber) {
+    $sql = "SELECT * FROM category WHERE categoryNumber = :categoryNumber";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':categoryNumber', $categoryNumber, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// 子カテゴリの取得
+public function selectChildCategories($pdo, $parentCategoryNumber) {
+    $sql = "SELECT * FROM category WHERE parentCategoryNumber = :parentCategoryNumber";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':parentCategoryNumber', $parentCategoryNumber, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// 親カテゴリリストの取得
+public function categorySelectParent($pdo) {
+    $sql = "SELECT * FROM category WHERE parentCategoryNumber IS NULL";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 ?>

@@ -61,7 +61,7 @@ $storeNumber = $_SESSION['store'];
                             <p><a href="http://localhost/shopp/taoka/productInsMenu.php">商品データ登録</a></p>
                             <p><a href="../taoka/productManagerMenu.php">商品管理</a></p>
                             <p><a href="">カテゴリ管理</a></p>
-                            <p><a href="http://localhost/shopp/script/imageInsMenu.php">画像管理</a></p>
+                            <p><a href="http://localhost/shopp/script/imageIns/imageInsMenu.php">画像管理</a></p>
                             <p><a href="stockEdit/productStructure.php">在庫管理</a></p>
                         </div>
                     </li>

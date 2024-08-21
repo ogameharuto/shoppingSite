@@ -7,15 +7,16 @@ $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // デバッグ出力
+    // デバッグ出力 (実際の運用ではコメントアウトまたは削除することを推奨)
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
 
     // データの取得
-    $stocks = $_POST['stock'] ?? [];
     $methods = $_POST['method'] ?? [];
     $values = $_POST['value'] ?? [];
+    $allowOverflow = $_POST['allow_overflow'] ?? [];
+    $disallowOverflow = $_POST['disallow_overflow'] ?? [];
 
     try {
         // トランザクションが既に開始されている場合はスキップ
@@ -23,17 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $pdo->beginTransaction();
         }
 
-        foreach ($stocks as $productId => $currentStock) {
-            $method = $methods[$productId] ?? 'add';
+        foreach ($methods as $productId => $method) {
             $value = $values[$productId] ?? 0;
-
-            // デバッグ出力
-            echo "<pre>";
-            echo "Product ID: $productId\n";
-            echo "Current Stock: $currentStock\n";
-            echo "Method: $method\n";
-            echo "Value: $value\n";
-            echo "</pre>";
 
             // 現在の在庫数を取得
             $sql = "SELECT stockQuantity FROM product WHERE productNumber = :productNumber";

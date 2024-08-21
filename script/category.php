@@ -56,11 +56,13 @@ $categories = isset($_SESSION['category']) ? $_SESSION['category'] : [];
                 <?php foreach ($products as $product): ?>
                     <div class="product">
                         <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
-                            <?php
-                            $imageName = isset($product['imageName']) ? htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') : 'default.jpg';
-                            $imagePath = "imageIns/uploads/" . $imageName;
-                            ?>
-                            <img src="<?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
+                            <?php if (!empty($product['images'])): ?>
+                                <?php foreach ($product['images'] as $imageName): ?>
+                                    <img src="uploads/<?= htmlspecialchars($imageName, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <img src="default-image.png" alt="商品画像がありません" width="120" height="120">
+                            <?php endif; ?>
                             <p>価格: <?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8') ?>円</p>
                         </a>
                     </div>

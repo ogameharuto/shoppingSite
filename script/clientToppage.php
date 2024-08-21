@@ -8,7 +8,7 @@ $pdo = $utilConnDB->connect();
 $sql = "
     SELECT p.productNumber, p.productName, p.price, p.categoryNumber, p.stockQuantity, p.productDescription, p.dateAdded, p.releaseDate, p.storeNumber, p.pageDisplayStatus, i.imageHash, i.imageName
     FROM product p
-    LEFT JOIN images i ON p.productNumber = i.productNumber
+    LEFT JOIN images i ON p.imageNumber = i.imageNumber
 ";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -82,7 +82,7 @@ if (isset($_GET['productNumber'])) {
                         <div class="product">
                             <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
                             <?php if (!empty($product['imageHash'])): ?>
-                                <img src="imageIns/uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                                <img src="uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
                             <?php else: ?>
                                 <img src="default-image.png" alt="商品画像がありません">
                             <?php endif; ?>
@@ -112,7 +112,7 @@ if (isset($_GET['productNumber'])) {
                                     <div class="product">
                                         <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
                                             <?php if (!empty($product['imageHash'])): ?>
-                                                <img src="imageIns/uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                                                <img src="uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
                                             <?php else: ?>
                                                 <img src="default-image.png" alt="商品画像がありません">
                                             <?php endif; ?>

@@ -8,7 +8,7 @@ $pdo = $utilConnDB->connect();
 
 // 商品番号の取得
 $productNumber = isset($_GET['productNumber']) ? intval($_GET['productNumber']) : 0;
-print($productNumber);
+
 // StoreSQL クラスのインスタンス化
 $storeSQL = new StoreSQL();
 
@@ -38,14 +38,24 @@ if (!$stores) {
     echo "ストア情報が見つかりません。";
     exit;
 }
-$productImages = $storeSQL->fetchProductDataAndImages($pdo, $productNumber);
 
+// 商品データと画像を取得
+$productData = $storeSQL->fetchProductDataAndImages($pdo, [$productNumber]); // 修正: 配列として渡す
+
+
+// 画像データをデバッグ
+echo "<pre>";
+print_r($productData);
+echo "</pre>";
+
+// セッションにデータを保存
 $_SESSION['product'] = $product;
 $_SESSION['categoryTreeHTML'] = $categoryTreeHTML;
 $_SESSION['reviews'] = $reviews;
 $_SESSION['stores'] = $stores;
-$_SESSION['images'] = $productImages;
+$_SESSION['images'] = $productData;
 
+// 次に実行するモジュール
 header('Location: productDetails.php');
 exit;
 ?>
