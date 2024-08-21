@@ -4,7 +4,6 @@ session_start();
 
 // ログイン確認
 if (!isset($_SESSION['store'])) {
-    $_SESSION['message'] = "ログインが必要です。";
     header("Location: http://localhost/shopp/script/login/loginMenu.php");
     exit();
 }
@@ -17,26 +16,11 @@ $pdo = $utilConnDB->connect();
 $store = $_SESSION['store'];
 $storeNumber = $store['storeNumber'];
 
-// ルートディレクトリを設定
-$rootDir = $_SERVER['DOCUMENT_ROOT'] . '/shopp/';
-
-// アップロードディレクトリを設定
-$uploadDir = $rootDir . 'uploads/';
-
-// ファイル名のユニーク化
-function makeUniqueFileName($uploadDir, $fileName) {
-    $filePath = $uploadDir . $fileName;
-    if (file_exists($filePath)) {
-        $fileInfo = pathinfo($fileName);
-        $uniqueName = $fileInfo['filename'] . '_' . uniqid() . '.' . $fileInfo['extension'];
-        return $uniqueName;
-    }
-    return $fileName;
-}
+$message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $image = $_FILES['image'];
-    $imageName = makeUniqueFileName($uploadDir, $image['name']);
+    $imageName = $image['name'];
     $imageTmpName = $image['tmp_name'];
     $imageSize = $image['size'];
     $imageError = $image['error'];
@@ -60,8 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
             $imageExists = $checkStmt->fetchColumn();
 
             if ($imageExists) {
-                echo "この店舗で同じ画像がすでに登録されています。";
+                $message = "この店舗で同じ画像がすでに登録されています。";
             } else {
+                $uploadDir = 'uploads/';
                 $uploadFile = $uploadDir . basename($imageName);
 
                 if (move_uploaded_file($imageTmpName, $uploadFile)) {
@@ -72,19 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
                         ':imageName' => $imageName,
                         ':imageHash' => $imageHash
                     ]);
-                    
                     $pdo->commit();
-                    echo "画像が正常にアップロードされました。";
+                    $message = "画像が正常にアップロードされました。";
                 } else {
-                    echo "画像のアップロードに失敗しました。";
+                    $message = "画像のアップロードに失敗しました。";
                 }
             }
         } catch (Exception $e) {
             $pdo->rollBack();
-            echo "エラーが発生しました: " . $e->getMessage();
+            $message = "エラーが発生しました: " . $e->getMessage();
         }
     } else {
-        echo "画像のアップロード中にエラーが発生しました。";
+        $message = "画像のアップロード中にエラーが発生しました。";
     }
 }
 
@@ -108,19 +92,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_image_number']
             $deleteStmt = $pdo->prepare($deleteSql);
             $deleteStmt->execute([':imageNumber' => $imageNumber, ':storeNumber' => $storeNumber]);
 
-            $filePath = $uploadDir . $imageName;
+            $filePath = 'uploads/' . $imageName;
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
 
             $pdo->commit();
-            echo "画像が正常に削除されました。";
+            $message = "画像が正常に削除されました。";
         } else {
-            echo "指定された画像が見つかりません。";
+            $message = "指定された画像が見つかりません。";
         }
     } catch (Exception $e) {
         $pdo->rollBack();
-        echo "エラーが発生しました: " . $e->getMessage();
+        $message = "エラーが発生しました: " . $e->getMessage();
     }
 }
 
@@ -135,16 +119,16 @@ $images = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>画像アップロードと一覧表示</title>
-    <style>
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-        th { background-color: #f4f4f4; }
-        img { max-width: 200px; height: auto; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="imageIns.css">
+    <script type="text/javascript">
+        <?php if ($message): ?>
+        alert('<?php echo $message; ?>');
+        <?php endif; ?>
+    </script>
 </head>
 <body>
     <h1>画像をアップロードし、一覧表示する</h1>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
         <label for="image">画像ファイル:</label>
         <input type="file" name="image" id="image" required>
         <input type="submit" name="submit" value="アップロード">
@@ -162,20 +146,26 @@ $images = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($images as $index => $image): ?>
-            <tr>
-                <td><?php echo $index + 1; ?></td>
-                <td><?php echo htmlspecialchars($image['imageName']); ?></td>
-                <td><img src="uploads/<?php echo htmlspecialchars($image['imageName']); ?>" alt="<?php echo htmlspecialchars($image['imageName']); ?>"></td>
-                <td><?php echo htmlspecialchars($image['addedDate']); ?></td>
-                <td>
-                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                        <input type="hidden" name="delete_image_number" value="<?php echo $image['imageNumber']; ?>">
-                        <input type="submit" value="削除">
-                    </form>
-                </td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if (count($images) > 0): ?>
+                <?php foreach ($images as $index => $image): ?>
+                <tr>
+                    <td><?php echo $index + 1; ?></td>
+                    <td><?php echo htmlspecialchars($image['imageName']); ?></td>
+                    <td><img src="uploads/<?php echo htmlspecialchars($image['imageName']); ?>" alt="<?php echo htmlspecialchars($image['imageName']); ?>"></td>
+                    <td><?php echo htmlspecialchars($image['addedDate']); ?></td>
+                    <td>
+                        <form action="" method="post">
+                            <input type="hidden" name="delete_image_number" value="<?php echo $image['imageNumber']; ?>">
+                            <input type="submit" value="削除">
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5">登録されている画像はありません。</td>
+                </tr>
+            <?php endif; ?>
         </tbody>
     </table>
 </body>
