@@ -288,7 +288,7 @@ function sql_exec($pdo, $sql) {
 </head>
 <body>
 
-<form name="myForm1" action="index.php" method="post">
+<form name="myForm1" action="../taoka/index.php" method="post">
   <h2>実習No.3 データベース初期化（デバッグ用）</h2>
   データベースを初期化しました。<p />
   <input type="submit" value="戻る" />
