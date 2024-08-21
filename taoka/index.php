@@ -11,7 +11,7 @@
         <!-- コンテンツ -->
     </main>
     <a href="order1.php">order1.phpに飛ぶ</a>
-    <a href="dbCreate.php">dbCreate.phpに飛ぶ</a>
+    <a href="../script/dbCreate.php">dbCreate.phpに飛ぶ</a>
     <footer>
         <p>&copy; 2024 ショッピングサイト</p>
     </footer>
