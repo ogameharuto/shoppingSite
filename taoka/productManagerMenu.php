@@ -75,6 +75,8 @@ if (isset($_SESSION['message'])) {
 
 // ページ初期ロード時にカテゴリーデータをJSONとして出力
 $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+
+echo $storeNumber;
 ?>
 <!DOCTYPE html>
 <html lang="ja">

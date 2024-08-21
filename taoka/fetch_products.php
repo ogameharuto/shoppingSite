@@ -1,6 +1,7 @@
 <?php
 // セッション開始
 session_start();
+$storeNumber = $_SESSION['store']['storeNumber'];
 
 // データベース接続
 require_once ('../script/utilConnDB.php');
@@ -24,7 +25,7 @@ $categoryNumber = getCategoryNumber($categoryPath, $pdo);
 
 if ($categoryNumber !== null) {
     // 商品データを取得
-    $stmt = $pdo->prepare("SELECT productNumber, productName, pageDisplayStatus FROM product WHERE categoryNumber = :categoryNumber");
+    $stmt = $pdo->prepare("SELECT productNumber, productName, pageDisplayStatus FROM product WHERE categoryNumber = :categoryNumber AND storeNumber = $storeNumber");
     $stmt->execute([':categoryNumber' => $categoryNumber]);
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {

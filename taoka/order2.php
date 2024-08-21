@@ -98,6 +98,18 @@ $_SESSION['email'] = $email;
                     $hidden_address = htmlspecialchars($_POST['hidden_address'],ENT_QUOTES, 'utf-8');
                     $hidden_building = htmlspecialchars($_POST['hidden_building'],ENT_QUOTES, 'utf-8');
                     $hidden_phone = htmlspecialchars($_POST['hidden_phone'],ENT_QUOTES, 'utf-8');
+
+                    $_SESSION['hidden_firstname'] = $hidden_firstname;
+                    $_SESSION['hidden_lastname'] = $hidden_lastname;
+                    $_SESSION['hidden_firstname_kana'] = $hidden_firstname_kana;
+                    $_SESSION['hidden_lastname_kana'] = $hidden_lastname_kana;
+                    $_SESSION['hidden_postal_code'] = $hidden_postal_code;
+                    $_SESSION['hidden_prefecture'] = $hidden_prefecture;
+                    $_SESSION['hidden_city'] = $hidden_city;
+                    $_SESSION['hidden_address'] = $hidden_address;
+                    $_SESSION['hidden_building'] = $hidden_building;
+                    $_SESSION['hidden_phone'] = $hidden_phone;
+
                     echo $hidden_firstname," ",$hidden_lastname;
                     echo "<br>";
                     echo $hidden_firstname_kana," ",$hidden_lastname_kana;
