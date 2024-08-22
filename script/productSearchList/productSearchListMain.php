@@ -16,25 +16,28 @@ $products = $storeSQL->searchProducts($pdo, $query);
 // 商品番号のリストを取得
 $productNumbers = array_column($products, 'productNumber');
 
-if (!empty($products)) {
-    foreach ($products as $cartItem) {
-        $productNumber = $cartItem['productNumber'] ?? null;
-        if ($productNumber) {
-            $images = $storeSQL->fetchProductDataAndImages($pdo, $productNumber);
-            if (!empty($images)) {
-                $productImages[$productNumber] = $images;
-            }
-        }
+// 商品データと画像を取得
+$productData = $storeSQL->fetchProductDataAndImages($pdo, $productNumbers);
+
+// 商品ごとの画像データを整理
+$imagesByProduct = [];
+foreach ($productData as $data) {
+    $productNumber = $data['productNumber'];
+    if (!isset($imagesByProduct[$productNumber])) {
+        $imagesByProduct[$productNumber] = [];
+    }
+    if ($data['imageName']) {
+        $imagesByProduct[$productNumber][] = [
+            'imageNumber' => $data['imageNumber'],
+            'imageHash'   => $data['imageHash'],
+            'imageName'   => $data['imageName']
+        ];
     }
 }
-
-echo '<pre>';
-print_r($productImages);
-echo '</pre>';
 // セッションにデータを保存
 $_SESSION['searchTerm'] = $query;
 $_SESSION['products'] = $products;
-$_SESSION['images'] = $productImages;
+$_SESSION['images'] = $imagesByProduct;
 
 // 検索結果ページにリダイレクト
 header('Location: productSearchList.php');

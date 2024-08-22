@@ -66,12 +66,6 @@ $pdo->exec('SET FOREIGN_KEY_CHECKS = 1;');
  * テーブル作成およびデータ挿入
  */
 
-//ストア側のカテゴリテーブル作成
-
-
-// ストア側のカテゴリデータ挿入
-
-
 // カテゴリテーブル作成
 $sql = 'CREATE TABLE category (
   categoryNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -85,8 +79,8 @@ $pdo->exec($sql);
 $sql = "INSERT INTO category (categoryName, parentCategoryNumber) VALUES
   ('家電', NULL),
   ('本', NULL),
-  ('スマホ', 1),
-  ('ノートパソコン', 1);";
+  ('スマートフォン', 1),
+  ('パソコン', 1);";
 $pdo->exec($sql);
 
 // 顧客テーブル作成
@@ -138,6 +132,24 @@ $sql = "INSERT INTO store (companyName, companyPostalCode, companyAddress, compa
   ('株式会社ストアB', '5400001', '大阪府大阪市', '鈴木 二郎', 'ストアB', 'ストア ビー', '0677778888', 'storeb@example.com', '書籍と文房具', 'https://example.com/storeb.jpg', '営業時間: 10:00 - 19:00', '鈴木 二郎', '大阪府大阪市', '5400001', '0677778888', 'contactb@example.com', 'password101');";
 $pdo->exec($sql);
 
+// 画像テーブル作成
+$sql = 'CREATE TABLE images (
+  imageNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  imageHash VARCHAR(256) NOT NULL,
+  imageName VARCHAR(255) NOT NULL,
+  addedDate date NOT NULL,
+  storeNumber INT NOT NULL,
+  FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
+);';
+$pdo->exec($sql);
+
+// 画像データを挿入
+$sql = "INSERT INTO images (imageHash, imageName, addedDate, storeNumber) VALUES
+  ('abc123hash', 'スマホ.png', '2024-01-09', 1),
+  ('def456hash', 'ノートパソコン.jpg', '2024-02-14', 1),
+  ('ghi789hash', '本.jpg', '2024-02-28', 2);";
+$pdo->exec($sql);
+
 // 商品テーブル作成
 $sql = 'CREATE TABLE product (
   productNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -150,30 +162,21 @@ $sql = 'CREATE TABLE product (
   releaseDate DATE NOT NULL,
   storeNumber INT NOT NULL,
   pageDisplayStatus BOOLEAN NOT NULL,
+  imageNumber INT,
   FOREIGN KEY (categoryNumber) REFERENCES category(categoryNumber) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (imageNumber) REFERENCES images(imageNumber) ON DELETE CASCADE ON UPDATE CASCADE
+
 );';
 $pdo->exec($sql);
 
 // 商品データ挿入
-$sql = "INSERT INTO product (productName, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus) VALUES
-  ('iPhone 13', 799.99, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1),
-  ('MacBook Air', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0),
-  ('Harry Potterq', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0);";
+$sql = "INSERT INTO product (productName, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus, imageNumber) VALUES
+  ('iPhone 13', 799.99, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1,1),
+  ('MacBook Air', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0,2),
+  ('Harry Potterq', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0,3);";
 $pdo->exec($sql);
 
-// 画像テーブル作成
-$sql = 'CREATE TABLE images (
-  imageNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  imageHash VARCHAR(256) NOT NULL,
-  imageName VARCHAR(255) NOT NULL,
-  addedDate date NOT NULL,
-  storeNumber INT NOT NULL,
-  productNumber INT NOT NULL,
-  FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
-);';
-$pdo->exec($sql);
 
 // 注文テーブル作成
 $sql = 'CREATE TABLE orderTable (
@@ -191,8 +194,8 @@ $pdo->exec($sql);
 
 // 注文データ挿入
 $sql = "INSERT INTO orderTable (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
-  (1, '2024-07-28 10:00:00', '入金処理', '東京都千代田区', 'Paid', '山田 太郎', '東京都千代田区'),
-  (2, '2024-07-29 15:30:00', '出荷済み', '大阪府大阪市', 'Pending', '佐藤 花子', '大阪府大阪市');";
+  (1, '2024-07-28 10:00:00', 'Processing', '東京都千代田区', 'Paid', '山田 太郎', '東京都千代田区'),
+  (2, '2024-07-29 15:30:00', 'Shipped', '大阪府大阪市', 'Pending', '佐藤 花子', '大阪府大阪市');";
 $pdo->exec($sql);
 
 // 注文詳細テーブル作成
@@ -266,7 +269,7 @@ $pdo->exec($sql);
 
 // レビューデータ挿入
 $sql = "INSERT INTO review (customerNumber, productNumber, reviewText, purchaseFlag, evaluation) VALUES
-  (1, 1, '素晴らしい製品です！', 1, '4.5'),
+  (1, 1, '素晴らしい製品です！', 1, '5'),
   (2, 2, 'とても満足しています。', 1, '4'),
   (1, 3, '少し期待外れでした。', 1, '3');";
 $pdo->exec($sql);

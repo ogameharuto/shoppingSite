@@ -50,13 +50,13 @@ $hasItems = count($cartList) > 0;
                             <tr class="productList">
                                 <td class="productName">
                                     <div class="productImage">
-                                    <div class="image">
+                                        <div class="image">
                                             <?php
                                             // Debugging: Print the $images array
                                             if (isset($images[$item['productNumber']])) {
                                                 foreach ($images[$item['productNumber']] as $image): ?>
                                                     <a href="<?= htmlspecialchars($item['productName'], ENT_QUOTES, 'UTF-8') ?>" class="proImage">
-                                                        <img src="../imageIns/uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
+                                                        <img src="../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
                                                     </a>
                                                 <?php endforeach;
                                             } else { ?>

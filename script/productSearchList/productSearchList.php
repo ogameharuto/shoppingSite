@@ -78,7 +78,7 @@ unset($_SESSION['images']);
                                 // 商品ごとの画像を表示する
                                 if (isset($images[$product['productNumber']])) {
                                     foreach ($images[$product['productNumber']] as $image) {
-                                        echo '<img src="../imageIns/uploads/' . htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') . '" width="150" height="150">';
+                                        echo '<img src="../uploads/' . htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') . '" width="150" height="150">';
                                     }
                                 } else {
                                     echo '<p>画像がありません。</p>';

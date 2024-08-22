@@ -62,7 +62,7 @@ function renderStars($rating) {
                 <div class="image">
                     <?php if (!empty($images)): ?>
                         <?php foreach ($images as $image): ?>
-                            <img src="../imageIns/uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
+                            <img src="../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>画像がありません。</p>
