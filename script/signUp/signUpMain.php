@@ -4,7 +4,7 @@ header('Content-Type:text/plain; charset=utf-8');
 /* インポート */
 require_once('../storeSQL.php');
 require_once('../companyBeans.php');
-require_once('../utilConnDB.php');
+require_once('../../../utilConnDB.php');
 
 /* セッションの開始 */
 session_start();

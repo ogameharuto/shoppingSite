@@ -1,7 +1,7 @@
 <?php
 session_start();
 // データベース接続設定
-require_once('../utilConnDB.php');
+require_once('../../../utilConnDB.php');
 require_once('../storeSQL.php');
 
 $storeSQL = new StoreSQL();

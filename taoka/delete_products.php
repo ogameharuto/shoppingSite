@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once ('../script/utilConnDB.php');
+require_once ('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
@@ -23,6 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['products'])) {
     }
 }
 
-header('Location: productManagerMenu.php');
+header('Location: A.php');
 exit;
 ?>
