@@ -1,5 +1,5 @@
 <?php
-require_once('../utilConnDB.php');
+require_once('../../utilConnDB.php');
 $utilConnDB=New UtilConnDB();
 $pdo=$utilConnDB->connect();
 // カテゴリデータの取得
