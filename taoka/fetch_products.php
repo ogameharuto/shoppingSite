@@ -25,7 +25,11 @@ $categoryNumber = getCategoryNumber($categoryPath, $pdo);
 
 if ($categoryNumber !== null) {
     // 商品データを取得
-    $stmt = $pdo->prepare("SELECT productNumber, productName, pageDisplayStatus FROM product WHERE categoryNumber = :categoryNumber AND storeNumber = $storeNumber");
+    $stmt = $pdo->prepare(
+    "SELECT p.productNumber, p.productName, p.pageDisplayStatus, i.imageName
+    FROM product p
+    LEFT JOIN images i ON p.imageNumber = i.imageNumber
+    WHERE p.categoryNumber = :categoryNumber AND p.storeNumber = $storeNumber");
     $stmt->execute([':categoryNumber' => $categoryNumber]);
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {

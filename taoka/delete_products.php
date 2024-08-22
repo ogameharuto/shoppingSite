@@ -23,6 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['products'])) {
     }
 }
 
-header('Location: productManagerMenu.php');
+header('Location: A.php');
 exit;
 ?>
