@@ -593,6 +593,7 @@ $sql = 'CREATE TABLE product (
   productName VARCHAR(50) NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
   categoryNumber INT NOT NULL,
+  storeCategoryNumber INT,
   stockQuantity INT NOT NULL,
   productDescription VARCHAR(500) NOT NULL,
   dateAdded DATE NOT NULL,
@@ -601,6 +602,7 @@ $sql = 'CREATE TABLE product (
   pageDisplayStatus BOOLEAN NOT NULL,
   imageNumber INT,
   FOREIGN KEY (categoryNumber) REFERENCES category(categoryNumber) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (storeCategoryNumber) REFERENCES storeCategory(storeCategoryNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (imageNumber) REFERENCES images(imageNumber) ON DELETE CASCADE ON UPDATE CASCADE
 
