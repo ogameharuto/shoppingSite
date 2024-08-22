@@ -25,7 +25,6 @@ $sql = "
         p.productNumber, 
         p.productName, 
         p.price, 
-        p.categoryNumber, 
         p.stockQuantity, 
         p.productDescription, 
         p.dateAdded, 
@@ -34,9 +33,12 @@ $sql = "
         p.pageDisplayStatus, 
         i.imageNumber,
         i.imageHash, 
-        i.imageName
+        i.imageName,
+        c.categoryNumber, 
+        c.categoryName
     FROM product p
     LEFT JOIN images i ON p.imageNumber = i.imageNumber
+    LEFT JOIN category c ON p.categoryNumber = c.categoryNumber
     WHERE p.storeNumber = :storeNumber
 ";
 
@@ -71,11 +73,13 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
 // カテゴリーデータを取得
-$sql = "SELECT categoryNumber, categoryName, parentCategoryNumber FROM category";
+$sql = "SELECT * FROM category";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 // カテゴリツリーを構築する関数
 function buildTree(array $elements, $parentId = 0)
@@ -183,10 +187,10 @@ $categoryTree = buildTree($categories);
                         <tr>
                             <th>選択</th>
                             <th>商品コード</th>
+                            <th>画像</th>
                             <th>商品名</th>
                             <th>カテゴリ</th>
                             <th>在庫数</th>
-                            <th>画像</th>
                             <th>ステータス</th>
                         </tr>
                     </thead>
@@ -203,7 +207,7 @@ $categoryTree = buildTree($categories);
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo htmlspecialchars($row['productName'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($categoryMap[$row['categoryNumber']] ?? '不明', ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?php echo htmlspecialchars($row['categoryName'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?php echo htmlspecialchars($row['stockQuantity'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php if ($row['pageDisplayStatus'] == 1): ?>
