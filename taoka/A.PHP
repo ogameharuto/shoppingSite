@@ -59,7 +59,7 @@ $stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // カテゴリーデータを取得
-$sql = "SELECT categoryNumber, categoryName, parentCategoryNumber FROM category";
+$sql = "SELECT storeCategoryNumber, storeCategoryName, parentStoreCategoryNumber FROM storecategory";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -69,8 +69,8 @@ function buildTree(array $elements, $parentId = 0)
 {
     $branch = array();
     foreach ($elements as $element) {
-        if ($element['parentCategoryNumber'] == $parentId) {
-            $children = buildTree($elements, $element['categoryNumber']);
+        if ($element['parentStoreCategoryNumber'] == $parentId) {
+            $children = buildTree($elements, $element['storeCategoryNumber']);
             if ($children) {
                 $element['children'] = $children;
             }
@@ -169,9 +169,9 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                                     function renderTree($tree, $parentPath = 'ストアトップ')
                                     {
                                         foreach ($tree as $node) {
-                                            $currentPath = $parentPath . '/' . $node['categoryName'];
+                                            $currentPath = $parentPath . '/' . $node['storeCategoryName'];
                                             echo '<li data-path="' . $currentPath . '">';
-                                            echo '<a href="#" onclick="updateBreadcrumb(\'' . $currentPath . '\')">' . $node['categoryName'] . '</a>';
+                                            echo '<a href="#" onclick="updateBreadcrumb(\'' . $currentPath . '\')">' . $node['storeCategoryName'] . '</a>';
                                             if (!empty($node['children'])) {
                                                 echo '<ul>';
                                                 renderTree($node['children'], $currentPath);
