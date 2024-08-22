@@ -8,7 +8,7 @@
 */
 
 /* インポート */
-require_once ('../script/utilConnDB.php');
+require_once ('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 

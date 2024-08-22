@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('utilConnDB.php');
+require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
