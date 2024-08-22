@@ -34,11 +34,11 @@ $sql = "
         i.imageNumber,
         i.imageHash, 
         i.imageName,
-        c.categoryNumber, 
-        c.categoryName
+        sc.storeCategoryNumber, 
+        sc.storeCategoryName
     FROM product p
     LEFT JOIN images i ON p.imageNumber = i.imageNumber
-    LEFT JOIN category c ON p.categoryNumber = c.categoryNumber
+    LEFT JOIN storecategory sc ON p.categoryNumber = sc.storeCategoryNumber
     WHERE p.storeNumber = :storeNumber
 ";
 
@@ -75,7 +75,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 // カテゴリーデータを取得
-$sql = "SELECT * FROM category";
+$sql = "SELECT * FROM storecategory";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -86,8 +86,8 @@ function buildTree(array $elements, $parentId = 0)
 {
     $branch = array();
     foreach ($elements as $element) {
-        if ($element['parentCategoryNumber'] == $parentId) {
-            $children = buildTree($elements, $element['categoryNumber']);
+        if ($element['parentStoreCategoryNumber'] == $parentId) {
+            $children = buildTree($elements, $element['storeCategoryNumber']);
             if ($children) {
                 $element['children'] = $children;
             }
@@ -156,9 +156,9 @@ $categoryTree = buildTree($categories);
                                 function renderTree($tree, $parentPath = 'ストアトップ')
                                 {
                                     foreach ($tree as $node) {
-                                        $currentPath = $parentPath . '/' . $node['categoryName'];
+                                        $currentPath = $parentPath . '/' . $node['storeCategoryName'];
                                         echo '<li data-path="' . $currentPath . '">';
-                                        echo '<a href="#" onclick="showBreadcrumb(\'' . $currentPath . '\')">' . $node['categoryName'] . '</a>';
+                                        echo '<a href="#" onclick="showBreadcrumb(\'' . $currentPath . '\')">' . $node['storeCategoryName'] . '</a>';
                                         if (!empty($node['children'])) {
                                             echo '<ul>';
                                             renderTree($node['children'], $currentPath);
@@ -207,7 +207,7 @@ $categoryTree = buildTree($categories);
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo htmlspecialchars($row['productName'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($row['categoryName'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?php echo htmlspecialchars($row['storeCategoryName'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?php echo htmlspecialchars($row['stockQuantity'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php if ($row['pageDisplayStatus'] == 1): ?>

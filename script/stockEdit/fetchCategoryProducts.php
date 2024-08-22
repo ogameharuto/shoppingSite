@@ -9,16 +9,16 @@ if (isset($_POST['categoryName'])) {
     $storeNumber = $_SESSION['store']['storeNumber'];
 
     // カテゴリ名に基づいてcategoryNumberを取得
-    $sql = "SELECT categoryNumber FROM category WHERE categoryName = :categoryName";
+    $sql = "SELECT storeCategoryNumber FROM storecategory WHERE storeCategoryName = :storeCategoryName";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':categoryName', $categoryName, PDO::PARAM_STR);
+    $stmt->bindParam(':storeCategoryName', $categoryName, PDO::PARAM_STR);
     $stmt->execute();
     $category = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $products = []; // 商品リストの初期化
 
     if ($category) {
-        $categoryNumber = $category['categoryNumber'];
+        $categoryNumber = $category['storeCategoryNumber'];
 
         // 指定されたカテゴリに基づいて商品を取得
         $sql = "
@@ -35,12 +35,12 @@ if (isset($_POST['categoryName'])) {
             i.imageNumber,
             i.imageHash, 
             i.imageName,
-            c.categoryNumber, 
-            c.categoryName
+            sc.storeCategoryNumber, 
+            sc.storeCategoryName
         FROM product p
         LEFT JOIN images i ON p.imageNumber = i.imageNumber
-        LEFT JOIN category c ON p.categoryNumber = c.categoryNumber
-        WHERE p.storeNumber = :storeNumber AND c.categoryNumber = :categoryNumber";
+        LEFT JOIN storecategory sc ON p.categoryNumber = sc.storeCategoryNumber
+        WHERE p.storeNumber = :storeNumber AND sc.storeCategoryNumber = :categoryNumber";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':storeNumber', $storeNumber, PDO::PARAM_INT); 
         $stmt->bindParam(':categoryNumber', $categoryNumber, PDO::PARAM_INT);
@@ -63,11 +63,11 @@ if (isset($_POST['categoryName'])) {
             i.imageNumber,
             i.imageHash, 
             i.imageName,
-            c.categoryNumber, 
-            c.categoryName
+            sc.storeCategoryNumber, 
+            sc.storeCategoryName
         FROM product p
         LEFT JOIN images i ON p.imageNumber = i.imageNumber
-        LEFT JOIN category c ON p.categoryNumber = c.categoryNumber
+        LEFT JOIN storecategory sc ON p.categoryNumber = sc.storeCategoryNumber
         WHERE p.storeNumber = :storeNumber
     ";
         $stmt = $pdo->prepare($sql);
@@ -78,7 +78,7 @@ if (isset($_POST['categoryName'])) {
     }
 
     // カテゴリ情報を取得
-    $sql = "SELECT categoryNumber, categoryName FROM category";
+    $sql = "SELECT storeCategoryNumber, storeCategoryName FROM storecategory";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -86,25 +86,15 @@ if (isset($_POST['categoryName'])) {
     // カテゴリ情報を連想配列に変換
     $categoryMap = [];
     foreach ($categories as $cat) {
-        $categoryMap[$cat['categoryNumber']] = $cat['categoryName'];
+        $categoryMap[$cat['storeCategoryNumber']] = $cat['storeCategoryName'];
     }
 
     // 商品一覧のHTMLを生成
     $productListHTML = '';
     foreach ($products as $product) {
-        $categoryName = $categoryMap[$product['categoryNumber']] ?? '不明';
+        $categoryName = $categoryMap[$product['storeCategoryNumber']] ?? '不明';
 
         $status = $product['pageDisplayStatus'] ? '公開中' : '非公開';
-
-        $statusToggle = $product['pageDisplayStatus'] ? 
-            "<form method='POST' action='toggleStatus.php' style='display:inline;'>
-                <input type='hidden' name='productNumber' value='{$product['productNumber']}'>
-                <button type='submit' name='action' value='hide'>非公開</button>
-            </form>" :
-            "<form method='POST' action='toggleStatus.php' style='display:inline;'>
-                <input type='hidden' name='productNumber' value='{$product['productNumber']}'>
-                <button type='submit' name='action' value='show'>公開</button>
-            </form>";
 
         // 商品画像を追加
         $productImage = !empty($product['imageName']) ? "<img src='../uploads/{$product['imageName']}' alt='{$product['imageName']}' width='100'>" : '画像なし';
@@ -116,7 +106,7 @@ if (isset($_POST['categoryName'])) {
             <td>{$product['productName']}</td>
             <td>{$categoryName}</td>
             <td>{$product['stockQuantity']}</td>
-            <td>{$status} $statusToggle</td>
+            <td>{$status}</td>
         </tr>";
     }
 

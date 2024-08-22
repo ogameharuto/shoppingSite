@@ -564,12 +564,12 @@ $sql = 'CREATE TABLE storeCategory (
 $pdo->exec($sql);
 
 // 店舗カテゴリデータ挿入
-//$sql = "INSERT INTO storeCategory (categoryName, parentCategoryNumber) VALUES
-// ('家電', NULL),
-//  ('本', NULL),
-//  ('スマホ', 1),
-//  ('ノートパソコン', 1);";
-//$pdo->exec($sql);
+$sql = "INSERT INTO storeCategory (storeCategoryName, parentStoreCategoryNumber) VALUES
+ ('家電', NULL),
+  ('本', NULL),
+  ('スマホ', 1),
+  ('ノートパソコン', 1);";
+$pdo->exec($sql);
 
 // 画像テーブル作成
 $sql = 'CREATE TABLE images (
