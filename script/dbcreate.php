@@ -14,11 +14,11 @@ $utilConnDB = new UtilConnDB();
 /*
  * データベース作成
  */
-$dbSW  = $utilConnDB->createDB();  // false:not create
+$dbSW = $utilConnDB->createDB();  // false:not create
 /*
  * データベースに接続
  */
-$pdo   = $utilConnDB->connect();   // null:not found
+$pdo = $utilConnDB->connect();   // null:not found
 
 /*
  * 外部キー制約を一時的に無効にする
@@ -28,34 +28,36 @@ $pdo->exec('SET FOREIGN_KEY_CHECKS = 0;');
 /*
  * テーブルを削除する関数
  */
-function dropTableIfExists($pdo, $tableName) {
-    $sql = "SHOW TABLES LIKE '$tableName';";
-    $ret = $pdo->query($sql);
-    if ($ret->fetch(PDO::FETCH_NUM)) {
-        $sql = "DROP TABLE $tableName;";
-        $pdo->exec($sql);
-    }
+function dropTableIfExists($pdo, $tableName)
+{
+  $sql = "SHOW TABLES LIKE '$tableName';";
+  $ret = $pdo->query($sql);
+  if ($ret->fetch(PDO::FETCH_NUM)) {
+    $sql = "DROP TABLE $tableName;";
+    $pdo->exec($sql);
+  }
 }
 
 /*
  * テーブルを削除
  */
 $tables = [
-    'review',
-    'images',
-    'cart',
-    'orderDetail',
-    'orderTable',
-    'product',
-    'dateAndTimeSettings',
-    'storeCategory',
-    'store',
-    'customer',
-    'category'
+  'review',
+  'images',
+  'cart',
+  'orderDetail',
+  'orderTable',
+  'product',
+  'dateAndTimeSettings',
+  'storeCategory',
+  'store',
+  'customer',
+  'category',
+  'deliveryOptions'
 ];
 
 foreach ($tables as $table) {
-    dropTableIfExists($pdo, $table);
+  dropTableIfExists($pdo, $table);
 }
 
 /*
@@ -69,7 +71,7 @@ $pdo->exec('SET FOREIGN_KEY_CHECKS = 1;');
 
 // カテゴリテーブル作成
 $sql = 'CREATE TABLE category (
-  categoryNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  categoryNumber INT AUTO_INCREMENT PRIMARY KEY,
   categoryName VARCHAR(50) NOT NULL,
   parentCategoryNumber INT,
   FOREIGN KEY (parentCategoryNumber) REFERENCES category(categoryNumber) ON DELETE CASCADE ON UPDATE CASCADE
@@ -503,7 +505,7 @@ $pdo->exec($sql);
 
 // 顧客テーブル作成
 $sql = 'CREATE TABLE customer (
-  customerNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  customerNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerName VARCHAR(50) NOT NULL,
   furigana VARCHAR(50) NOT NULL,
   address VARCHAR(100) NOT NULL,
@@ -523,7 +525,7 @@ $pdo->exec($sql);
 
 // 店舗テーブル作成
 $sql = 'CREATE TABLE store (
-  storeNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  storeNumber INT AUTO_INCREMENT PRIMARY KEY,
   companyName VARCHAR(50) NOT NULL,
   companyPostalCode VARCHAR(10) NOT NULL,
   companyAddress VARCHAR(100) NOT NULL,
@@ -552,7 +554,7 @@ $pdo->exec($sql);
 
 // 店舗カテゴリテーブル作成
 $sql = 'CREATE TABLE storeCategory (
-  storeCategoryNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  storeCategoryNumber INT AUTO_INCREMENT PRIMARY KEY,
   storeCategoryName VARCHAR(50) NOT NULL,
   parentStoreCategoryNumber INT,
   storeNumber INT,
@@ -563,7 +565,7 @@ $pdo->exec($sql);
 
 // 店舗カテゴリデータ挿入
 //$sql = "INSERT INTO storeCategory (categoryName, parentCategoryNumber) VALUES
- // ('家電', NULL),
+// ('家電', NULL),
 //  ('本', NULL),
 //  ('スマホ', 1),
 //  ('ノートパソコン', 1);";
@@ -571,7 +573,7 @@ $pdo->exec($sql);
 
 // 画像テーブル作成
 $sql = 'CREATE TABLE images (
-  imageNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  imageNumber INT AUTO_INCREMENT PRIMARY KEY,
   imageHash VARCHAR(256) NOT NULL,
   imageName VARCHAR(255) NOT NULL,
   addedDate date NOT NULL,
@@ -589,7 +591,7 @@ $pdo->exec($sql);
 
 // 商品テーブル作成
 $sql = 'CREATE TABLE product (
-  productNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  productNumber INT AUTO_INCREMENT PRIMARY KEY,
   productName VARCHAR(50) NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
   categoryNumber INT NOT NULL,
@@ -619,7 +621,7 @@ $pdo->exec($sql);
 
 // 注文テーブル作成
 $sql = 'CREATE TABLE orderTable (
-  orderNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  orderNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerNumber INT NOT NULL,
   orderDateTime DATETIME NOT NULL,
   orderStatus VARCHAR(50) NOT NULL,
@@ -641,7 +643,7 @@ $pdo->exec($sql);
 
 // 注文詳細テーブル作成
 $sql = 'CREATE TABLE orderDetail (
-  orderDetailNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  orderDetailNumber INT AUTO_INCREMENT PRIMARY KEY,
   orderNumber INT NOT NULL,
   productNumber INT NOT NULL,
   quantity INT NOT NULL,
@@ -679,7 +681,7 @@ $pdo->exec($sql);
 
 // お問い合わせ対応日時設定番号テーブル作成
 $sql = 'CREATE TABLE dateAndTimeSettings (
-  dateAndTimeSettingsNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  dateAndTimeSettingsNumber INT AUTO_INCREMENT PRIMARY KEY,
   storeNumber INT NOT NULL,
   businessStartDate DATE NOT NULL,
   businessEndDate DATE NOT NULL,
@@ -697,7 +699,7 @@ $pdo->exec($sql);
 
 // レビューテーブル作成
 $sql = 'CREATE TABLE review (
-  reviewNumber INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  reviewNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerNumber INT NOT NULL,
   productNumber INT NOT NULL,
   reviewText VARCHAR(300),
@@ -715,27 +717,43 @@ $sql = "INSERT INTO review (customerNumber, productNumber, reviewText, purchaseF
   (1, 3, '少し期待外れでした。', 1, '3');";
 $pdo->exec($sql);
 
+// お届け方法データ挿入
+$sql = 'CREATE TABLE deliveryOptions (
+  deliveryOptionSettingNumber	INT AUTO_INCREMENT PRIMARY KEY,
+  updatedOn	varchar(50),
+  storeNumber	INT NOT NULL,
+  deliveryCompany	date,
+  deliveryMethod	date,
+  FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
+  );';
+$pdo->exec($sql);
+
 /*
  * SQL文実行
  */
-function sql_exec($pdo, $sql) {
-    $count = $pdo->exec($sql);
+function sql_exec($pdo, $sql)
+{
+  $count = $pdo->exec($sql);
 
-    return $count;
+  return $count;
 }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
-    <title>ショッピングサイト</title>
+  <meta charset="UTF-8">
+  <title>ショッピングサイト</title>
 </head>
+
 <body>
 
-<form name="myForm1" action="../taoka/index.php" method="post">
-  <h2>実習No.3 データベース初期化（デバッグ用）</h2>
-  データベースを初期化しました。<p />
-  <input type="submit" value="戻る" />
-</form>
+  <form name="myForm1" action="../taoka/index.php" method="post">
+    <h2>実習No.3 データベース初期化（デバッグ用）</h2>
+    データベースを初期化しました。
+    <p />
+    <input type="submit" value="戻る" />
+  </form>
 </body>
+
 </html>
