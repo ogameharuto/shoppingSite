@@ -2,7 +2,7 @@
 session_start();
 
 // データベース接続設定
-require_once('../../../utilConnDB.php');
+require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 

@@ -2,7 +2,7 @@
 
 header('Content-Type:text/plain; charset=utf-8');
 
-require_once('../../../utilConnDB.php'); // データベース接続の設定を含むファイル
+require_once('../../utilConnDB.php'); // データベース接続の設定を含むファイル
 
 $utilConnDB = new UtilConnDB();
 

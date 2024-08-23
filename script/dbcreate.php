@@ -8,7 +8,7 @@
 */
 
 /* インポート */
-require_once('../../utilConnDB.php');
+require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 
 /*
@@ -46,7 +46,7 @@ $tables = [
   'images',
   'cart',
   'orderDetail',
-  'orderTable',
+  'customer_orders',
   'product',
   'dateAndTimeSettings',
   'storeCategory',
@@ -620,7 +620,7 @@ $pdo->exec($sql);
 
 
 // 注文テーブル作成
-$sql = 'CREATE TABLE order (
+$sql = 'CREATE TABLE customer_orders (
   orderNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerNumber INT NOT NULL,
   orderDateTime DATETIME NOT NULL,
@@ -636,7 +636,7 @@ $sql = 'CREATE TABLE order (
 $pdo->exec($sql);
 
 // 注文データ挿入
-$sql = "INSERT INTO order (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
+$sql = "INSERT INTO customer_orders (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
   (1, '2024-07-28 10:00:00', 'Processing', '東京都千代田区', 'Paid', '山田 太郎', '東京都千代田区'),
   (2, '2024-07-29 15:30:00', 'Shipped', '大阪府大阪市', 'Pending', '佐藤 花子', '大阪府大阪市');";
 $pdo->exec($sql);
@@ -648,7 +648,7 @@ $sql = 'CREATE TABLE orderDetail (
   productNumber INT NOT NULL,
   quantity INT NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
-  FOREIGN KEY (orderNumber) REFERENCES orderTable(orderNumber) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (orderNumber) REFERENCES customer_orders(orderNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
 $pdo->exec($sql);

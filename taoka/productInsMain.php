@@ -3,7 +3,7 @@ session_start();
 $storeNumber = $_SESSION['store'];
 
 /* インポート */
-require_once('../../utilConnDB.php');
+require_once('../utilConnDB.php');
 
 /* インスタンス生成 */
 $utilConnDB = new UtilConnDB();

@@ -1,5 +1,5 @@
 <?php
-require_once('../../../utilConnDB.php');
+require_once('../../utilConnDB.php');
 
 try {
     $utilConnDB = new UtilConnDB();
