@@ -1,6 +1,55 @@
 <?php
-$userName = $_SESSION['customer'] ?? null;
-$userId = $userName['customerNumber'] ?? null;
+$user = $_SESSION['customer'] ?? null;
+$userId = $user['customerNumber'] ?? null;
+$userName = $user['customerName'] ?? null;
+if(empty($userId)){
+    $mailAddress = "";
+    try {
+        // メールアドレスを生成
+        $mailAddress = "random_email_" . uniqid() . "@example.com";
+
+        // INSERTクエリの準備
+        $sql = "
+        INSERT INTO customer (customerName, furigana, address, postCode, dateOfBirth, mailAddress, telephoneNumber, password) 
+        VALUES('ゲスト', 'ゲスト', 'なし', 'なし', '1980-01-01', :mailAddress, 'なし', 'なし')";
+        
+        // パラメータをバインド
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':mailAddress' => $mailAddress]);
+
+        // コミット
+        $pdo->commit();
+
+    } catch (PDOException $e) {
+        // エラーハンドリング
+        echo "Error: " . $e->getMessage();
+        $pdo->rollBack(); // ロールバック
+        exit;
+    }
+
+    // 登録されたcustomerNumberを取得
+    try {
+        $sql = "
+        SELECT customerNumber
+        FROM customer
+        WHERE mailAddress = :mailAddress
+        ";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':mailAddress' => $mailAddress]);
+
+        // 単一の行を取得
+        $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($customer) {
+            $customerNumber = intval($customer['customerNumber']);
+            $userId = $customerNumber;
+            $userName = 'ゲスト';
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        exit;
+    };
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -26,7 +75,7 @@ $userId = $userName['customerNumber'] ?? null;
                 <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
             </div>
             <div class="user-info">
-                <p>ようこそ、<?php echo htmlspecialchars($userName['customerName'] ?? 'ゲスト', ENT_QUOTES, 'UTF-8'); ?> さん <a href="https://www.google.com/">LYPプレミアム会員登録</a> (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
+                <p>ようこそ、<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?> さん <a href="https://www.google.com/">LYPプレミアム会員登録</a> (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
             </div>
             <div class="top-links">
                 <a href="https://www.google.com/">Yahoo! JAPAN 無料でお店を開こう！</a>

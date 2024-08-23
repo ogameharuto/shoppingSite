@@ -618,7 +618,7 @@ $pdo->exec($sql);
 
 
 // 注文テーブル作成
-$sql = 'CREATE TABLE orderTable (
+$sql = 'CREATE TABLE order (
   orderNumber INT AUTO_INCREMENT PRIMARY KEY,
   customerNumber INT NOT NULL,
   orderDateTime DATETIME NOT NULL,
@@ -634,7 +634,7 @@ $sql = 'CREATE TABLE orderTable (
 $pdo->exec($sql);
 
 // 注文データ挿入
-$sql = "INSERT INTO orderTable (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
+$sql = "INSERT INTO order (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
   (1, '2024-07-28 10:00:00', 'Processing', '東京都千代田区', 'Paid', '山田 太郎', '東京都千代田区'),
   (2, '2024-07-29 15:30:00', 'Shipped', '大阪府大阪市', 'Pending', '佐藤 花子', '大阪府大阪市');";
 $pdo->exec($sql);
@@ -718,10 +718,12 @@ $pdo->exec($sql);
 // お届け方法データ挿入
 $sql = 'CREATE TABLE deliveryOptions (
   deliveryOptionSettingNumber	INT AUTO_INCREMENT PRIMARY KEY,
-  updatedOn	varchar(50),
+  updatedOn	VARCHAR(50),
   storeNumber	INT NOT NULL,
-  deliveryCompany	date,
-  deliveryMethod	date,
+  deliveryCompany	DATE,
+  deliveryMethod	DATE,
+  deliveryDate DATE NOT NULL,
+  deliveryTime VARCHAR(50) NOT NULL,
   FOREIGN KEY (storeNumber) REFERENCES store(storeNumber) ON DELETE CASCADE ON UPDATE CASCADE
   );';
 $pdo->exec($sql);
