@@ -12,7 +12,7 @@ session_start();
 </head>
 <body>
     <div class="loginContainer">
-        <h2>ログイン</h2>
+        <h2>ストアクリエイターProログイン</h2>
         <form action="loginMain.php" method="post">
             <div class="group">
                 <label for="email">メールアドレス</label>

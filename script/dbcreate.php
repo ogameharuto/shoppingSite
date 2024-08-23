@@ -565,7 +565,7 @@ $pdo->exec($sql);
 
 // 店舗カテゴリデータ挿入
 $sql = "INSERT INTO storeCategory (storeCategoryName, parentStoreCategoryNumber) VALUES
- ('家電', NULL),
+  ('家電', NULL),
   ('本', NULL),
   ('スマホ', 1),
   ('ノートパソコン', 1);";

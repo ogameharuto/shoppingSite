@@ -6,6 +6,7 @@ session_start();
 $cartList = $_SESSION['cartList'] ?? [];
 $couponNumber = $_SESSION['couponNumber'] ?? 0;
 $images = isset($_SESSION['images']) ? $_SESSION['images'] : [];
+$userName = $_SESSION['customer'] ?? null;
 
 unset($_SESSION['cartList']);
 unset($_SESSION['couponNumber']);
@@ -19,10 +20,23 @@ $hasItems = count($cartList) > 0;
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="cartList.css" />
+    <link rel="stylesheet" type="text/css" href="../header.css" />
     <title>カート一覧</title>
 </head>
 <body>
     <div class="whole">
+        <div class="top-bar topheader">
+            <div class="logo">
+                <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
+            </div>
+            <div class="user-info">
+                <p>ようこそ、<?php echo htmlspecialchars($userName['customerName'] ?? 'ゲスト', ENT_QUOTES, 'UTF-8'); ?> さん <a href="https://www.google.com/">LYPプレミアム会員登録</a> (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
+            </div>
+            <div class="top-links">
+                <a href="https://www.google.com/">Yahoo! JAPAN 無料でお店を開こう！</a>
+                <a href="USup01.php?userId=<?php echo urlencode($userId); ?>">ヘルプ</a>
+            </div>
+        </div>
         <div class="advertisement">
             お得情報表示
         </div>

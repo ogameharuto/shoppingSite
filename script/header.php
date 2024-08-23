@@ -31,6 +31,7 @@ $userId = $userName['customerNumber'] ?? null;
             <div class="top-links">
                 <a href="https://www.google.com/">Yahoo! JAPAN 無料でお店を開こう！</a>
                 <a href="USup01.php?userId=<?php echo urlencode($userId); ?>">ヘルプ</a>
+                <a href="login/logOut.php">ログアウト</a>
             </div>
         </div>
         <div class="middle-bar">
@@ -47,7 +48,7 @@ $userId = $userName['customerNumber'] ?? null;
                 <a href="UFav01.php?userId=<?php echo urlencode($userId); ?>" class="icon favorites">お気に入り</a>
                 <a href="UOdr01.php?userId=<?php echo urlencode($userId); ?>" class="icon orders">注文履歴</a>
                 <a href="UHis03.php?userId=<?php echo urlencode($userId); ?>" class="icon notifications">新着情報</a>
-                <a href="http://localhost/shopp/script/UMyp01.php?userId=<?php echo urlencode($userId); ?>" class="icon profile">マイページ</a>
+                <a href="http://localhost/shopp/script/myPage.php?userId=<?php echo urlencode($userId); ?>" class="icon profile">マイページ</a>
             </div>
         </div>
     </header>

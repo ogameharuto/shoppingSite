@@ -12,7 +12,7 @@ session_start();
 </head>
 <body>
     <div class="loginContainer">
-        <h2>ログイン</h2>
+        <h2>Yahooショッピングログイン</h2>
         <form action="clientLoginMain.php" method="post">
             <div class="group">
                 <label for="email">メールアドレス</label>

@@ -1,6 +1,13 @@
 <?php
 session_start();
 $storeNumber = $_SESSION['store'];
+
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: http://localhost/shopp/script/login/loginMenu.php");
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,10 +64,10 @@ $storeNumber = $_SESSION['store'];
                     <li class="collapsible">
                         <div class="collapsible-header">商品・画像・在庫</div>
                         <div class="collapsible-content">
-                            <p><a href="http://localhost/shopp/taoka/productInsMenu.php">商品データ登録</a></p>
-                            <p><a href="../taoka/productManagerMenu.php">商品管理</a></p>
-                            <p><a href="">カテゴリ管理</a></p>
-                            <p><a href="http://localhost/shopp/script/imageIns/imageInsMenu.php">画像管理</a></p>
+                            <p><a href="../taoka/productInsMenu.php">商品データ登録</a></p>
+                            <p><a href="../taoka/A.php">商品管理</a></p>
+                            <p><a href="productCategory/categoryManagement.php">カテゴリ管理</a></p>
+                            <p><a href="imageIns/imageInsMenu.php">画像管理</a></p>
                             <p><a href="stockEdit/productStructure.php">在庫管理</a></p>
                         </div>
                     </li>

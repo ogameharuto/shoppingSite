@@ -5,19 +5,19 @@ $pdo = $utilConnDB->connect();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // サニタイズと検証
-    $categoryNumber = isset($_POST['categoryNumber']) ? intval($_POST['categoryNumber']) : null;
-    $categoryName = isset($_POST['categoryName']) ? trim($_POST['categoryName']) : null;
-    $parentCategoryNumber = isset($_POST['parentCategoryNumber']) ? (empty($_POST['parentCategoryNumber']) ? null : intval($_POST['parentCategoryNumber'])) : null;
+    $storeCategoryNumber = isset($_POST['storeCategoryNumber']) ? intval($_POST['storeCategoryNumber']) : null;
+    $storeCategoryName = isset($_POST['storeCategoryName']) ? trim($_POST['storeCategoryName']) : null;
+    $parentStoreCategoryNumber = isset($_POST['parentStoreCategoryNumber']) ? (empty($_POST['parentStoreCategoryNumber']) ? null : intval($_POST['parentStoreCategoryNumber'])) : null;
 
-    if ($categoryNumber === null || empty($categoryName)) {
+    if ($storeCategoryNumber === null || empty($storeCategoryName)) {
         die("カテゴリ番号またはカテゴリ名が不足しています。");
     }
 
     // 親カテゴリが存在するか確認
-    if ($parentCategoryNumber !== null) {
-        $query = "SELECT COUNT(*) FROM category WHERE categoryNumber = ?";
+    if ($parentStoreCategoryNumber !== null) {
+        $query = "SELECT COUNT(*) FROM storecategory WHERE storeCategoryNumber = ?";
         $stmt = $pdo->prepare($query);
-        $stmt->execute([$parentCategoryNumber]);
+        $stmt->execute([$parentStoreCategoryNumber]);
         $exists = $stmt->fetchColumn();
         
         if (!$exists) {
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // 更新クエリの準備と実行
-    $query = "UPDATE category SET categoryName = :categoryName, parentCategoryNumber = :parentCategoryNumber WHERE categoryNumber = :categoryNumber";
+    $query = "UPDATE storecategory SET storeCategoryName = :storeCategoryName, parentStoreCategoryNumber = :parentStoreCategoryNumber WHERE storeCategoryNumber = :storeCategoryNumber";
     $stmt = $pdo->prepare($query);
     
     try {
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $stmt->execute([
-            ':categoryName' => $categoryName,
-            ':parentCategoryNumber' => $parentCategoryNumber,
-            ':categoryNumber' => $categoryNumber
+            ':storeCategoryName' => $storeCategoryName,
+            ':parentStoreCategoryNumber' => $parentStoreCategoryNumber,
+            ':storeCategoryNumber' => $storeCategoryNumber
         ]);
 
         // コミット

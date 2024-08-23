@@ -25,10 +25,6 @@ if (isset($_SESSION['product'])) {
             <h1>在庫編集</h1>
             <p>在庫設定の指定方法を選択し、在庫数を入力します。</p>
         </div>
-        <div class="buttons">
-            <button type="submit">確認</button>
-            <button type="button" onclick="window.history.back();">キャンセル</button>
-        </div>
         <div class="content">
         <form action="updateInventory.php" method="POST" onsubmit="return confirmUpdate();">
             <table class="edit-table">

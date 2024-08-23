@@ -7,6 +7,12 @@ require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: http://localhost/shopp/script/login/loginMenu.php");
+    exit();
+}
+
 $current_page = basename($_SERVER['PHP_SELF']);
 
 // ストア番号を取得
