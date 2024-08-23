@@ -5,8 +5,8 @@ $product = isset($_SESSION['product']) ? $_SESSION['product'] : null;
 $categoryTreeHTML = isset($_SESSION['categoryTreeHTML']) ? $_SESSION['categoryTreeHTML'] : '';
 $reviews = isset($_SESSION['reviews']) ? $_SESSION['reviews'] : [];
 $stores = isset($_SESSION['stores']) ? $_SESSION['stores'] : null;
-$images = isset($_SESSION['images']) ? $_SESSION['images'] : [];
-
+$images = isset($_SESSION['image']) ? $_SESSION['image'] : [];
+print_r($images);
 if (!$product || !$stores) {
     echo "表示するデータがありません。";
     exit;
