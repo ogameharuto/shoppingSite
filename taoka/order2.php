@@ -23,6 +23,8 @@ $city = htmlspecialchars($_POST['city'],ENT_QUOTES, 'utf-8');
 $address = htmlspecialchars($_POST['address'],ENT_QUOTES, 'utf-8');
 $building = htmlspecialchars($_POST['building'],ENT_QUOTES, 'utf-8');
 $phone = htmlspecialchars($_POST['phone'],ENT_QUOTES, 'utf-8');
+$deliveryMethod = htmlspecialchars($_POST['deliveryMethod'],ENT_QUOTES, 'utf-8');
+$desiredDeliveryDate = htmlspecialchars($_POST['desiredDeliveryDate'],ENT_QUOTES, 'utf-8');
 
 $billingAddress = htmlspecialchars($_POST['billingAddress'],ENT_QUOTES, 'utf-8');
 $payment = htmlspecialchars($_POST['payment'],ENT_QUOTES, 'utf-8');
@@ -40,6 +42,9 @@ $_SESSION['city'] = $city;
 $_SESSION['address'] = $address;
 $_SESSION['building'] = $building;
 $_SESSION['phone'] = $phone;
+$_SESSION['deliveryMethod'] = $deliveryMethod;
+$_SESSION['desiredDeliveryDate'] = $desiredDeliveryDate;
+
 $_SESSION['billingAddress'] = $billingAddress;
 $_SESSION['payment'] = $payment;
 $_SESSION['email'] = $email;
@@ -74,9 +79,11 @@ $_SESSION['email'] = $email;
             </label>
             <label>
                 <h4>お届け方法</h4>
+                <?php echo $deliveryMethod ?>
             </label>
             <label>
                <h4>お届け日時</h4> 
+               <?php echo $desiredDeliveryDate ?>
             </label>
         </div>
         <div class="contents2">

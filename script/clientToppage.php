@@ -31,6 +31,59 @@ if (isset($_GET['productNumber'])) {
     header("Location: index.php");
     exit;
 }
+
+
+$user = $_SESSION['customer'] ?? null;
+if(empty($user['customerNumber'])){
+    $mailAddress = "";
+    try {
+        // メールアドレスを生成
+        $mailAddress = "random_email_" . uniqid() . "@example.com";
+
+        // INSERTクエリの準備
+        $sql = "
+        INSERT INTO customer (customerName, furigana, address, postCode, dateOfBirth, mailAddress, telephoneNumber, password) 
+        VALUES('ゲスト', 'ゲスト', 'なし', 'なし', '1980-01-01', :mailAddress, 'なし', 'なし')";
+        
+        // パラメータをバインド
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':mailAddress' => $mailAddress]);
+
+        // コミット
+        $pdo->commit();
+
+    } catch (PDOException $e) {
+        // エラーハンドリング
+        echo "Error: " . $e->getMessage();
+        $pdo->rollBack(); // ロールバック
+        exit;
+    }
+
+    // 登録されたcustomerNumberを取得
+    try {
+        $sql = "
+        SELECT customerNumber
+        FROM customer
+        WHERE mailAddress = :mailAddress
+        ";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':mailAddress' => $mailAddress]);
+
+        // 単一の行を取得
+        $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($customer) {
+            $customerNumber = intval($customer['customerNumber']);
+            $array = [];
+            $array['customerNumber'] = $customerNumber;
+            $array['customerName'] = 'ゲスト';
+            $_SESSION['customer'] = $array;
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        exit;
+    };
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">

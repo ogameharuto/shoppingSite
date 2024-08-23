@@ -4,14 +4,17 @@ session_start();
 require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
+$orderStatus = '注文完了';
+$deliveryAddress = $_SESSION['address'];
+$paymentMethodStatus = $_SESSION['payment'];
 
-$sql = "INSERT INTO orderTable (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
+$sql = "INSERT INTO 'customer_orders' (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
   (:customerNumber, :orderDateTime, :orderStatus, :deliveryAddress, :paymentMethodStatus, :billingName, :billingAddress);";
-$params[':customerNumber'] = $_SESSION[];
+$params[':customerNumber'] = $_SESSION['customer']['customerNumber'];
 $params[':orderDateTime'] = date("Y-m-d");
-$params[':orderStatus'] = $category;
-$params[':deliveryAddress'] = $stock;
-$params[':paymentMethodStatus'] = $productDescription;
+$params[':orderStatus'] = $orderStatus;
+$params[':deliveryAddress'] = $deliveryAddress;
+$params[':paymentMethodStatus'] = $paymentMethodStatus;
 $params[':billingName'] = date("Y-m-d");
 $params[':billingAddress'] = $releaseDate;
 
