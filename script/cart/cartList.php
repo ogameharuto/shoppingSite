@@ -8,7 +8,6 @@ $couponNumber = $_SESSION['couponNumber'] ?? 0;
 $images = isset($_SESSION['images']) ? $_SESSION['images'] : [];
 $userName = $_SESSION['customer'] ?? null;
 
-unset($_SESSION['cartList']);
 unset($_SESSION['couponNumber']);
 $price = 0;
 // 商品がカートにあるか確認

@@ -53,7 +53,7 @@ $_SESSION['product'] = $product;
 $_SESSION['categoryTreeHTML'] = $categoryTreeHTML;
 $_SESSION['reviews'] = $reviews;
 $_SESSION['stores'] = $stores;
-$_SESSION['images'] = $productData;
+$_SESSION['image'] = $productData;
 
 // 次に実行するモジュール
 header('Location: productDetails.php');

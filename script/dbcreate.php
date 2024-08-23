@@ -46,7 +46,7 @@ $tables = [
   'images',
   'cart',
   'orderDetail',
-  'orderTable',
+  'order',
   'product',
   'dateAndTimeSettings',
   'storeCategory',
@@ -648,7 +648,7 @@ $sql = 'CREATE TABLE orderDetail (
   productNumber INT NOT NULL,
   quantity INT NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
-  FOREIGN KEY (orderNumber) REFERENCES orderTable(orderNumber) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (orderNumber) REFERENCES order(orderNumber) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
 );';
 $pdo->exec($sql);
