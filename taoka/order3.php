@@ -25,7 +25,7 @@ $stmt->execute($params);
 
 if($stmt == true){
     $utilConnDB->commit($pdo);
-    $_SESSION['message'] = '登録が完了しました。';
+    unset($_SESSION['cartList']);
 }
 else{
     $utilConnDB->rollback($pdo);
