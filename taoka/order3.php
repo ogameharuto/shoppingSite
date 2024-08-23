@@ -5,18 +5,20 @@ require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 $orderStatus = '注文完了';
-$deliveryAddress = $_SESSION['address'];
+$deliveryAddress = $_SESSION['delivery_address'];
+$billingAddress = $_SESSION['billing_address'];
+$billingName = $_SESSION['delivery_name'];
 $paymentMethodStatus = $_SESSION['payment'];
 
-$sql = "INSERT INTO 'customer_orders' (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
+$sql = "INSERT INTO customer_orders (customerNumber, orderDateTime, orderStatus, deliveryAddress, paymentMethodStatus, billingName, billingAddress) VALUES
   (:customerNumber, :orderDateTime, :orderStatus, :deliveryAddress, :paymentMethodStatus, :billingName, :billingAddress);";
 $params[':customerNumber'] = $_SESSION['customer']['customerNumber'];
 $params[':orderDateTime'] = date("Y-m-d");
 $params[':orderStatus'] = $orderStatus;
 $params[':deliveryAddress'] = $deliveryAddress;
 $params[':paymentMethodStatus'] = $paymentMethodStatus;
-$params[':billingName'] = date("Y-m-d");
-$params[':billingAddress'] = $releaseDate;
+$params[':billingName'] = $billingName;
+$params[':billingAddress'] = $billingAddress;
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
