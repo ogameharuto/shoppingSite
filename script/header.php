@@ -1,8 +1,6 @@
 <?php
 $user = $_SESSION['customer'] ?? null;
-$userId = $user['customerNumber'] ?? null;
-$userName = $user['customerName'] ?? null;
-if(empty($userId)){
+if(empty($user['customerNumber'])){
     $mailAddress = "";
     try {
         // メールアドレスを生成
@@ -42,14 +40,17 @@ if(empty($userId)){
         $customer = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($customer) {
             $customerNumber = intval($customer['customerNumber']);
-            $userId = $customerNumber;
-            $userName = 'ゲスト';
+            $user['customerNumber'] = $customerNumber;
+            $user['customerName'] = 'ゲスト';
+
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
         exit;
     };
 }
+$userId = $user['customerNumber'];
+$userName = $user['customerName'];
 ?>
 <!DOCTYPE html>
 <html lang="ja">
