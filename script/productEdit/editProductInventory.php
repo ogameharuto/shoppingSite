@@ -2,9 +2,7 @@
 session_start();
 
 // 商品一覧ページから送信された選択された商品のIDを取得
-if (isset($_SESSION['product'])) {
-    $products = $_SESSION['product'];
-}
+$products = $_SESSION['product'] ?? [];
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +25,8 @@ if (isset($_SESSION['product'])) {
             <p>商品の情報を編集します。変更内容を確認してください。</p>
         </div>
         <div class="content">
-            <form action="updateInventory.php" method="POST" onsubmit="return confirmUpdate();">
+            <!-- enctype を追加 -->
+            <form action="updateInventory.php" method="POST" enctype="multipart/form-data" onsubmit="return confirmUpdate();">
                 <table class="edit-table">
                     <thead>
                         <tr>
@@ -52,7 +51,7 @@ if (isset($_SESSION['product'])) {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <input type="file" name="productImage">
+                                <input type="file" name="productImage[<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>]">
                             </td>
                             <td>
                                 <input type="text" name="productName[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($product['productName']); ?>">

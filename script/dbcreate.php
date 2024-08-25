@@ -584,9 +584,9 @@ $pdo->exec($sql);
 
 // 画像データを挿入
 $sql = "INSERT INTO images (imageHash, imageName, addedDate, storeNumber) VALUES
-  ('abc123hash', 'スマホ.png', '2024-01-09', 1),
-  ('def456hash', 'ノートパソコン.jpg', '2024-02-14', 1),
-  ('ghi789hash', '本.jpg', '2024-02-28', 2);";
+  ('32268287870496aa2fe29023631344719eefd5b97cebb201f6e6e5cac1ec0a9e', 'スマホ.png', '2024-01-09', 1),
+  ('b8e584f69e3a3101423fcd90d23abe929ec0b284dba309c354a6badd0054f90f', 'ノートパソコン.jpg', '2024-02-14', 1),
+  ('e83440f9b48370a042d7f115f4b42fd676c64eca9cd0044367918a61e7524261', '本.jpg', '2024-02-28', 2);";
 $pdo->exec($sql);
 
 // 商品テーブル作成
