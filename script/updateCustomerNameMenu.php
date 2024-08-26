@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../../utilConnDB.php');
+require_once('../utilConnDB.php');
 
 // セッションから顧客番号を取得
 $userName = $_SESSION['customer'] ?? null;
@@ -67,6 +67,7 @@ try {
     exit();
 }
 
+$_SESSION['customer'] = $customer;
 // 接続を閉じる
 $pdo = null;
 ?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../../utilConnDB.php');
+require_once('../utilConnDB.php');
 
 // セッションから顧客番号を取得
 $userName = $_SESSION['customer'] ?? null;
