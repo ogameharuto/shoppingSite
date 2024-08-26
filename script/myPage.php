@@ -29,7 +29,7 @@ $userId = $userName['customerNumber'] ?? null;
     <nav>
         <div class="left-side">
             <h4 class="box">
-                <a href="http://localhost/shopp/script/UInfop01.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
+                <a href="http://localhost/shopp/script/customerInformation.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
             </h4>
         </div>
         <div class="right-side">

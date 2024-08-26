@@ -54,3 +54,20 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.nav-item.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold; 
+}
+.navbar{
+    width: 100%;
+}
+.nav-item {
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.nav-item:hover {
+    background-color: #e0e0e0;
+}

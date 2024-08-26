@@ -1,26 +1,20 @@
 <?php
-// エラー表示を有効にする
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require_once('../utilConnDB.php');
+$utilConnDB = new UtilConnDB;
+$pdo = $utilConnDB->connect();
 
-// データベース接続情報
-$dsn = 'mysql:host=localhost;dbname=syain_db'; // データベース名を適切に変更してください
-$username = 's20227048'; // データベースのユーザー名
-$password = '20030502'; // データベースのパスワード
+// セッションから顧客番号を取得
+$userId = intval($_GET['userId']);
+$current_page = basename($_SERVER['PHP_SELF']);
 
-try {
-    // PDOインスタンスの作成
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->exec("SET NAMES 'utf8mb4'");
-
+if ($userId !== null) {
     // 顧客情報をデータベースから取得
-    $stmt = $pdo->query('SELECT * FROM customer');
+    $sql = 'SELECT * FROM customer WHERE customerNumber = :customerNumber';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':customerNumber', $userId, PDO::PARAM_INT);
+    $stmt->execute();
     $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-} catch (PDOException $e) {
-    echo 'エラー: ' . $e->getMessage();
+} else {
     $customers = [];
 }
 ?>
@@ -31,9 +25,13 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>顧客管理</title>
-    <link rel="stylesheet" href="kokyakutouroku.css">
+    <link rel="stylesheet" href="customerInformation.css">
 </head>
 <body>
+    <div class="navbar">
+        <a href="http://localhost/shopp/script/customerInformation.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'customerInformation.php') ? 'active' : ''; ?>">顧客情報</a>
+        <a href="http://localhost/shopp/script/UInfop01.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'UInfop01.php') ? 'active' : ''; ?>">顧客情報編集</a>
+    </div>
     <h1>顧客管理</h1>
     <table>
         <thead>
