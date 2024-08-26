@@ -51,7 +51,6 @@ if(empty($user['customerNumber'])){
 
         // コミット
         $pdo->commit();
-
     } catch (PDOException $e) {
         // エラーハンドリング
         echo "Error: " . $e->getMessage();

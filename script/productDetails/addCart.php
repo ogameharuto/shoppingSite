@@ -43,7 +43,7 @@ try {
 
     // トランザクションをコミット
     $pdo->commit();
-    echo "カートに追加されました。";
+    $_SESSION['orderProductNumber'] = $productNumber;
     header('Location: ../cart/cartMain.php');
 } catch (Exception $e) {
     // トランザクションが開始されている場合はロールバック
