@@ -1,4 +1,13 @@
-
+<?php
+session_start();
+// ログイン確認
+if (!isset($_SESSION['customer'])) {
+    header("Location: http://localhost/GitHub/script/login/clientLoginMenu.php");
+    exit();
+}
+$userName = $_SESSION['customer'] ?? null;
+$userId = $userName['customerNumber'] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -20,7 +29,7 @@
     <nav>
         <div class="left-side">
             <h4 class="box">
-                <a href="https://www.google.com/">会員情報を見る</a>
+                <a href="http://localhost/shopp/script/UInfop01.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
             </h4>
         </div>
         <div class="right-side">
