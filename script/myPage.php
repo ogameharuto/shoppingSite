@@ -1,15 +1,14 @@
 <?php
 session_start();
-/*
-$userName = $_GET['userName'];
+$customer = $_SESSION['customer'] ?? null;
+$userId = $customer['customerNumber'] ?? null;
+$userName = $customer['customerName'] ?? null;
+
 // ログイン確認
 if ($userName == "ゲスト") {
     print($userName);
-    //header("Location: http://localhost/shopp/script/login/clientLoginMenu.php");
+    header("Location: http://localhost/shopp/script/login/clientLoginMenu.php");
 }
-*/
-$customer = $_SESSION['customer'] ?? null;
-$userId = $customer['customerNumber'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
