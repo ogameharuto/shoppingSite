@@ -37,7 +37,7 @@ $categoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-    <form name="myForm1" action="productInsMain.php" method="post">
+    <form name="myForm1" action="productInsMain.php" method="post" enctype="multipart/form-data">
         <h2>商品情報登録</h2>
         <div class="menu">
 
@@ -45,6 +45,10 @@ $categoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <br>
             <input type="text" name="productName" size="22" value="" required/>
             <p />
+            商品画像
+            <br>
+            <input type="file" name="image" id="image" required>
+            <br>
             <br>
             価格
             <br>
