@@ -33,6 +33,7 @@ session_start();
             unset($_SESSION['error']);
         }
         ?>
+        <a href="http://localhost/shopp/script/signUp/newRegistrationMenu.php">新規登録</a>
     </div>
     <script>
         function togglePasswordVisibility() {

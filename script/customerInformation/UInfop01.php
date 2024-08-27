@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../utilConnDB.php');
+require_once('../../utilConnDB.php');
 
 // セッションから顧客番号を取得
 $userName = $_SESSION['customer'] ?? null;
@@ -41,11 +41,11 @@ $pdo = null;
     <link rel="stylesheet" href="UInfop01.css">
 </head>
 <body>
-<div class="navbar">
-    <a href="http://localhost/shopp/script/customerInformation.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'customerInformation.php') ? 'active' : ''; ?>">顧客情報</a>
-    <a href="http://localhost/shopp/script/UInfop01.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'UInfop01.php') ? 'active' : ''; ?>">顧客情報編集</a>
-</div>
 <div class="container">
+<div class="navbar">
+    <a href="http://localhost/shopp/script/customerInformation/customerInformation.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'customerInformation.php') ? 'active' : ''; ?>">顧客情報</a>
+    <a href="http://localhost/shopp/script/customerInformation/UInfop01.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'UInfop01.php') ? 'active' : ''; ?>">顧客情報編集</a>
+</div>
     <h1>会員情報</h1>
     <?php if (isset($_POST['success']) && $_POST['success'] == '1'): ?>
         <script>
@@ -78,7 +78,7 @@ $pdo = null;
         <a href="updateCustomerContactMenu.php"><button type="button">変更</button></a>
     </div>
 
-    <form action="myPage.php" method="get">
+    <form action="../myPage.php" method="get">
         <button type="submit">マイページへ戻る</button>
     </form>
 </div>

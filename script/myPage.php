@@ -1,12 +1,15 @@
 <?php
 session_start();
+/*
+$userName = $_GET['userName'];
 // ログイン確認
-if (!isset($_SESSION['customer'])) {
-    header("Location: http://localhost/GitHub/script/login/clientLoginMenu.php");
-    exit();
+if ($userName == "ゲスト") {
+    print($userName);
+    //header("Location: http://localhost/shopp/script/login/clientLoginMenu.php");
 }
-$userName = $_SESSION['customer'] ?? null;
-$userId = $userName['customerNumber'] ?? null;
+*/
+$customer = $_SESSION['customer'] ?? null;
+$userId = $customer['customerNumber'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -29,16 +32,16 @@ $userId = $userName['customerNumber'] ?? null;
     <nav>
         <div class="left-side">
             <h4 class="box">
-                <a href="http://localhost/shopp/script/customerInformation.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
+                <a href="http://localhost/shopp/script/customerInformation/customerInformation.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
             </h4>
         </div>
         <div class="right-side">
             <ul>
-                <li><button onclick="navigateTo('orders.php')">注文履歴</button></li>
-                <li><button onclick="navigateTo('usage.php')">利用履歴</button></li>
-                <li><button onclick="navigateTo('support.php')">サポート</button></li>
-                <li><button onclick="navigateTo('coupons.php')">クーポン</button></li>
-                <li><button onclick="navigateTo('reviews.php')">マイレビュー</button></li>
+                <li><button onclick="navigateTo('')">注文履歴</button></li>
+                <li><button onclick="navigateTo('')">利用履歴</button></li>
+                <li><button onclick="navigateTo('')">サポート</button></li>
+                <li><button onclick="navigateTo('')">クーポン</button></li>
+                <li><button onclick="navigateTo('')">マイレビュー</button></li>
             </ul>
         </div>
     </nav>
