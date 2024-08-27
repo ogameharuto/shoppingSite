@@ -1,0 +1,99 @@
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #e0f7fa; /* 背景色を水色に */
+}
+
+h1 {
+    text-align: center;
+    color: #00796b; /* タイトルの色を濃い水色に */
+    margin: 20px 0;
+}
+
+/* フォームのスタイル */
+form {
+    max-width: 800px; /* フォームの幅を広げる */
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff; /* フォーム背景を白に */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* 上下の間隔を広げる */
+}
+
+label span {
+    margin-right: 10px;
+    font-weight: bold;
+    line-height: 2; /* ラベルの高さを調整 */
+}
+
+/* 必須項目を示すスタイル */
+.required {
+    background-color: #d32f2f; /* 赤色の背景 */
+    color: white; /* 白い文字 */
+    padding: 4px 8px; /* パディングを広げる */
+    border-radius: 4px; /* 四角の角を丸くする */
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* テキストボックスのスタイル */
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="tel"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px; /* 上下のパディングを広げる */
+    margin-left: 10px;
+    margin-bottom: 20px; /* 上下の間隔を広げる */
+    border: 1px solid #80deea; /* ボーダー色を薄い水色に */
+    border-radius: 4px;
+    background-color: #ffffff; /* 入力フィールドの背景色を白に */
+    box-sizing: border-box; /* パディングとボーダーを幅に含める */
+}
+
+button {
+    display: inline-block;
+    width: 100%;
+    padding: 12px; /* ボタンのパディングを広げる */
+    background-color: #4fc3f7; /* ボタンの背景色を水色に */
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #03a9f4; /* ホバー時のボタン色を濃い水色に */
+}
+
+/* エラーメッセージのスタイル */
+.error {
+    color: #d32f2f; /* エラーメッセージの色を赤に */
+    font-size: 14px;
+}
+
+/* テキストボックスのスタイル */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="tel"],
+input[type="password"]::placeholder {
+    color: #b0bec5; /* 薄い文字色 */
+    font-size: 14px; /* フォントサイズを調整 */
+}

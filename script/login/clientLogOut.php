@@ -2,5 +2,5 @@
 session_start();
 unset($_SESSION['customer']);
 
-header('Location: loginMenu.php');
+header('Location: clientloginMenu.php');
 ?>

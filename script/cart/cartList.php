@@ -27,7 +27,9 @@ $hasItems = count($cartList) > 0;
     <div class="whole">
         <div class="top-bar topheader">
             <div class="logo">
-                <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
+                <a href="http://localhost/shopp/script/clientToppage.php">
+                    <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
+                </a>
             </div>
             <div class="user-info">
                 <p>ようこそ、<?php echo htmlspecialchars($userName['customerName'] ?? 'ゲスト', ENT_QUOTES, 'UTF-8'); ?> さん <a href="https://www.google.com/">LYPプレミアム会員登録</a> (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
