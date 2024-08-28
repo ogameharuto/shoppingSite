@@ -1,9 +1,8 @@
 <?php
-require_once('../utilConnDB.php');
+require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB;
 $pdo = $utilConnDB->connect();
 
-// セッションから顧客番号を取得
 $userId = intval($_GET['userId']);
 $current_page = basename($_SERVER['PHP_SELF']);
 
@@ -29,10 +28,13 @@ if ($userId !== null) {
 </head>
 <body>
     <div class="navbar">
-        <a href="http://localhost/shopp/script/customerInformation.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'customerInformation.php') ? 'active' : ''; ?>">顧客情報</a>
-        <a href="http://localhost/shopp/script/UInfop01.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'UInfop01.php') ? 'active' : ''; ?>">顧客情報編集</a>
+        <a href="http://localhost/shopp/script/customerInformation/customerInformation.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'customerInformation.php') ? 'active' : ''; ?>">顧客情報</a>
+        <a href="http://localhost/shopp/script/customerInformation/UInfop01.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'UInfop01.php') ? 'active' : ''; ?>">顧客情報編集</a>
     </div>
     <h1>顧客管理</h1>
+    <form action="../myPage.php" method="get">
+        <button type="submit">マイページへ戻る</button>
+    </form>
     <table>
         <thead>
             <tr>
