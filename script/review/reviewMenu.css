@@ -1,0 +1,167 @@
+
+.product-info {
+    margin-bottom: 20px;
+}
+
+.product-info img {
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.product-info .product-name {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.stars {
+    display: inline-block;
+    position: relative;
+    font-size: 24px;
+}
+
+.star {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    color: lightgray;
+}
+
+.star.full {
+    color: gold;
+}
+
+.star .full-star,
+.star .half-star {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.star .full-star {
+    color: gold;
+}
+
+.star .half-star {
+    color: gold;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 50%;
+}
+
+.star.full .full-star {
+    clip: rect(0, auto, auto, 0);
+}
+
+.star.full .half-star {
+    clip: rect(0, 50%, auto, 0);
+}
+
+.star.half .full-star {
+    clip: rect(0, 50%, auto, 0);
+}
+
+.star.half .half-star {
+    clip: rect(0, auto, auto, 0);
+}
+
+form {
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+form button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+.customer-reviews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.review {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.review-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.product-image-and-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.review-text {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.product-image-and-name img {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.product-image-and-name .product-name {
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.evaluation {
+    color: gold;
+    font-size: 18px;
+    margin: 10px 0;
+}
+.customer-reviews .review {
+    margin-bottom: 20px;
+}
+
+.customer-reviews .review form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.customer-reviews .review .review-actions {
+    display: flex;
+    align-items: center;
+}

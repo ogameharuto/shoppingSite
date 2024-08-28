@@ -33,7 +33,7 @@ $userName = $user['customerName'];
             </div>
             <div class="top-links">
                 <a href="http://localhost/shopp/script/login/loginMenu.php">Yahoo! JAPAN 無料でお店を開こう！</a>
-                <a href="login/logOut.php">ログアウト</a>
+                <a href="login/clientLogOut.php">ログアウト</a>
             </div>
         </div>
         <div class="middle-bar">
