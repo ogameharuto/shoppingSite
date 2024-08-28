@@ -86,7 +86,7 @@ $hasItems = count($cartList) > 0;
                                         </div>
                                 </td>
                                 <td class="price">
-                                    <p class="priceNumber"><?php echo htmlspecialchars($item['price']); ?>円</p>
+                                    <p class="priceNumber"><?php echo number_format(htmlspecialchars($item['price'], ENT_QUOTES, 'UTF-8')); ?>円</p>
                                 </td>
                                 <td class="amount">
                                     <!-- 数量を入力できるフォーム -->
@@ -147,7 +147,7 @@ $hasItems = count($cartList) > 0;
                         <div class="promotion"></div>
                         <div class="amoment">
                             <div class="totalAmount">
-                                合計金額 <?php echo htmlspecialchars($price); ?>円
+                                合計金額 <?php echo number_format(htmlspecialchars($price)); ?>円
                             </div>
                         </div>
                         <form class="order" action="../../taoka/order1.php" method="post">

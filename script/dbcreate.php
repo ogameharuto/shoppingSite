@@ -168,11 +168,11 @@ $sql = 'CREATE TABLE storeCategory (
 $pdo->exec($sql);
 
 // 店舗カテゴリデータ挿入
-$sql = "INSERT INTO storeCategory (storeCategoryName, parentStoreCategoryNumber) VALUES
-  ('家電', NULL),
-  ('本', NULL),
-  ('スマホ', 1),
-  ('ノートパソコン', 1);";
+$sql = "INSERT INTO storeCategory (storeCategoryName, parentStoreCategoryNumber, storeNumber) VALUES
+  ('家電', NULL,1),
+  ('本', NULL, 2),
+  ('スマホ', 1, 1),
+  ('ノートパソコン', 1, 1);";
 $pdo->exec($sql);
 
 // 画像テーブル作成
@@ -197,7 +197,7 @@ $pdo->exec($sql);
 $sql = 'CREATE TABLE product (
   productNumber INT AUTO_INCREMENT PRIMARY KEY,
   productName VARCHAR(50) NOT NULL,
-  price DECIMAL(10, 2) NOT NULL,
+  price INT NOT NULL,
   categoryNumber INT NOT NULL,
   storeCategoryNumber INT,
   stockQuantity INT NOT NULL,
@@ -217,9 +217,9 @@ $pdo->exec($sql);
 
 // 商品データ挿入
 $sql = "INSERT INTO product (productName, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus, imageNumber) VALUES
-  ('iPhone 13', 799.99, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1,1),
-  ('MacBook Air', 999.99, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0,2),
-  ('Harry Potterq', 15.99, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0,3);";
+  ('iPhone 13', 79999, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1,1),
+  ('MacBook Air', 99999, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0,2),
+  ('Harry Potterq', 1599, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0,3);";
 $pdo->exec($sql);
 
 

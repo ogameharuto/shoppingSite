@@ -1,5 +1,5 @@
 <?php
-require_once('utilConnDB.php');
+require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
@@ -38,7 +38,6 @@ try {
                 <th>電話番号</th>        
                 <th>メールアドレス</th>
                 <th>店舗の説明</th>
-                <th>店舗の画像URL</th>
                 <th>追加情報</th>
                 <th>運営責任者</th>
                 <th>連絡先住所</th>
@@ -46,7 +45,7 @@ try {
                 <th>連絡先電話番号</th>
                 <th>連絡先メールアドレス</th>
                 <th>パスワード</th>
-                <th>aaaaa</th>
+                <th>編集</th>
             </tr>
             <tbody>
                 <?php if (!empty($stores)): ?>
@@ -62,7 +61,6 @@ try {
                             <td><?php echo htmlspecialchars($store['telephoneNumber'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($store['mailAddress'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($store['storeDescription'], ENT_QUOTES, 'UTF-8'); ?></td>
-                            <td><?php echo htmlspecialchars($store['storeImageURL'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($store['storeAdditionalInfo'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($store['operationsManager'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($store['contactAddress'], ENT_QUOTES, 'UTF-8'); ?></td>

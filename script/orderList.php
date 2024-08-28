@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['orderNumber'], $_POST
             $pdo->beginTransaction();
         }
 
-        $updateSql = "UPDATE `orderTable` SET orderStatus = :orderStatus WHERE orderNumber = :orderNumber";
+        $updateSql = "UPDATE `customer_orders` SET orderStatus = :orderStatus WHERE orderNumber = :orderNumber";
         $updateStmt = $pdo->prepare($updateSql);
         $updateStmt->execute([
             ':orderStatus' => $orderStatus,
@@ -69,7 +69,7 @@ $sql = "
         o.deliveryAddress, o.paymentMethodStatus, o.billingName, o.billingAddress,
         p.productName, od.quantity
     FROM 
-        `orderTable` o
+        `customer_orders` o
     JOIN 
         `orderDetail` od ON o.orderNumber = od.orderNumber
     JOIN 
