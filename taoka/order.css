@@ -34,10 +34,12 @@ span{
 .radiolabel{
     display: block;            /* ブロック化 */
     padding: 2% 2%;        /* 内側の余白量 */
-    margin-bottom: 2%;
     background-color: #c2c2c2; /* 背景色 */
     cursor: pointer;           /* マウスを指形に */
     width: 40%; /* ラベルの幅を固定 */
+}
+.buttom{
+    margin-bottom: 2%;
 }
 
 .orderbody .center{
@@ -58,9 +60,10 @@ span{
 }
 .contents1,.contents2,.contents3{
     display: block;
-    width: 50%;
+    width: 30%;
     margin-right: 3%;
 }
+
 #cardNumber{
     width: 10%;
 }
