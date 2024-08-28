@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
+ 
     // ラジオボタンにchangeイベントリスナーを追加
     paymentRadios.forEach(radio => {
         radio.addEventListener('change', function () {
