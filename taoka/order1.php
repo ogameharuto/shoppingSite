@@ -233,8 +233,9 @@
                         </div>
                         <div class="form-group">
                             <label for="expiryDate">有効期限 <nobr><span>（必須）</span></nobr></label>
-                            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" pattern="\d{2}/\d{2}"
-                                required data-error-message="MM/YY の形式で入力してください">
+                            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"
+                                pattern="\d{2}/\d{2}" required data-error-message="MM/YY の形式で入力してください">
+                            <span id="expiryDateError" class="hidden">存在する日付を入力してください。</span>
                         </div>
                         <div class="form-group">
                             <label for="securityCode">セキュリティコード <nobr><span>（必須）</span></nobr></label>
@@ -271,19 +272,19 @@
             ?>
             <h3>お届け希望時刻</h3>
             <label class="radiolabel">
-            <input type="radio" name="desiredDeliveryTime" value="06:00~09:00">06:00~09:00
+                <input type="radio" name="desiredDeliveryTime" value="06:00~09:00">06:00~09:00
             </label>
             <label class="radiolabel">
-            <input type="radio" name="desiredDeliveryTime" value="09:00~12:00">09:00~12:00
+                <input type="radio" name="desiredDeliveryTime" value="09:00~12:00">09:00~12:00
             </label>
             <label class="radiolabel">
-            <input type="radio" name="desiredDeliveryTime" value="12:00~15:00">12:00~15:00
+                <input type="radio" name="desiredDeliveryTime" value="12:00~15:00">12:00~15:00
             </label>
             <label class="radiolabel">
-            <input type="radio" name="desiredDeliveryTime" value="15:00~18:00">15:00~18:00
+                <input type="radio" name="desiredDeliveryTime" value="15:00~18:00">15:00~18:00
             </label>
             <label class="radiolabel">
-            <input type="radio" name="desiredDeliveryTime" value="18:00~21:00">18:00~21:00
+                <input type="radio" name="desiredDeliveryTime" value="18:00~21:00">18:00~21:00
             </label>
             <button type="submit">確認画面へ進む</button>
         </form>
