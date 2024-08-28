@@ -85,6 +85,7 @@ if ($stmt) {
         unset($_SESSION['cartList']);
         unset($_SESSION['checkOut']);
         unset($_SESSION['orderProductNumber']);
+        $_SESSION['orderNumber'] = $orderNumber;
         $pdo->commit();
     } else {
         throw new Exception("削除が失敗しました。");

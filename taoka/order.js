@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
- 
+
     // ラジオボタンにchangeイベントリスナーを追加
     paymentRadios.forEach(radio => {
         radio.addEventListener('change', function () {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 newCardFields.classList.remove('hidden');
                 Array.from(newCardFields.querySelectorAll('input')).forEach(input => input.required = true);
             }
-            else{
+            else {
                 newCardFields.classList.add('hidden');
                 Array.from(newCardFields.querySelectorAll('input')).forEach(input => input.required = false);
             }
@@ -54,24 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
         defaultRadio.dispatchEvent(new Event('change'));
     };
 
-    // 日付の存在確認
-    function isValidDate(month, year) {
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear() % 100;
-        const currentMonth = currentDate.getMonth() + 1;
-
-        if (year < currentYear || (year === currentYear && month < currentMonth)) {
-            return false; // 過去の日付は無効
-        }
-
-        return true; // 現在または将来の日付は有効
-    }
-
-    // カスタムエラーメッセージの設定
+    // フォームの送信時にバリデーションを行う
     document.getElementById('orderForm').addEventListener('submit', function (event) {
-        const inputs = this.querySelectorAll('input[pattern]');
+        const inputs = this.querySelectorAll('input[required]');
+        let isValid = true;
+
         inputs.forEach(input => {
-            if (input.validity.patternMismatch) {
+            if (!input.checkValidity()) {
+                isValid = false;
                 const errorMessage = input.getAttribute('data-error-message');
                 input.setCustomValidity(errorMessage);
             } else {
@@ -79,19 +69,43 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // 有効期限の日付チェック
+        // 有効期限のチェック
+        const expiryDateInput = document.getElementById('expiryDate');
+        const errorMessage = document.getElementById('expiryDateError');
         const expiryDateValue = expiryDateInput.value;
         const [month, year] = expiryDateValue.split('/').map(num => parseInt(num, 10));
 
         if (!isValidMonth(month) || !isValidYear(year) || !isValidDate(month, year)) {
             expiryDateInput.setCustomValidity('存在する日付を入力してください。');
             errorMessage.style.display = 'inline';
-            event.preventDefault();
+            isValid = false;
         } else {
             expiryDateInput.setCustomValidity('');
             errorMessage.style.display = 'none';
         }
+
+        if (!isValid) {
+            event.preventDefault(); // バリデーションエラーがあればフォーム送信を防ぐ
+        }
     });
+
+    function isValidDate(month, year) {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear() % 100;
+        const currentMonth = currentDate.getMonth() + 1;
+
+        // 月と年が有効かどうかチェック
+        if (month < 1 || month > 12 || year < 0 || year > 99) {
+            return false;
+        }
+
+        // 現在または将来の日付かどうかチェック
+        if (year < currentYear || (year === currentYear && month < currentMonth)) {
+            return false; // 過去の日付は無効
+        }
+
+        return true; // 現在または将来の日付は有効
+    }
 
     function isValidMonth(month) {
         return month >= 1 && month <= 12;
