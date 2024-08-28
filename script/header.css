@@ -21,7 +21,7 @@ header {
 }
 
 .logo img {
-    width: 100px;
+    width: 50%;
     height: auto;
 }
 
@@ -103,11 +103,6 @@ header {
 
 .nav-icons .icon.orders:before {
     content: '📦';
-    margin-right: 5px;
-}
-
-.nav-icons .icon.notifications:before {
-    content: '🔔';
     margin-right: 5px;
 }
 

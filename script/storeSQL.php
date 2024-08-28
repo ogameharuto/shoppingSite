@@ -377,11 +377,11 @@ public function fetchProductDataAndImages($pdo, $productNumber) {
         LEFT JOIN images i ON p.imageNumber = i.imageNumber
         WHERE p.productNumber IN ($placeholders)
     ";
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($productNumber);
     
     try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($productNumber);
+        
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "商品データと画像の取得エラー: " . $e->getMessage();

@@ -15,7 +15,6 @@ $products = $storeSQL->searchProducts($pdo, $query);
 
 // 商品番号のリストを取得
 $productNumbers = array_column($products, 'productNumber');
-
 // 商品データと画像を取得
 $productData = $storeSQL->fetchProductDataAndImages($pdo, $productNumbers);
 

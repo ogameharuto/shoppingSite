@@ -216,10 +216,10 @@ $sql = 'CREATE TABLE product (
 $pdo->exec($sql);
 
 // 商品データ挿入
-$sql = "INSERT INTO product (productName, price, categoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus, imageNumber) VALUES
-  ('iPhone 13', 79999, 3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1,1),
-  ('MacBook Air', 99999, 4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0,2),
-  ('Harry Potterq', 1599, 2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0,3);";
+$sql = "INSERT INTO product (productName, price, categoryNumber,storeCategoryNumber, stockQuantity, productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus, imageNumber) VALUES
+  ('iPhone 13', 79999, 10,3, 100, '最新のAppleスマートフォン', '2024-01-10', '2024-01-20', 1, 1,1),
+  ('MacBook Air', 99999, 10,4, 50, 'Appleの薄型ノートPC', '2024-02-15', '2024-02-25', 1, 0,2),
+  ('Harry Potterq', 1599, 24,2, 200, '人気のファンタジー小説', '2024-03-01', '2024-03-10', 2, 0,3);";
 $pdo->exec($sql);
 
 
