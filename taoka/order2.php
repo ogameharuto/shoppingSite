@@ -97,9 +97,7 @@ $_SESSION['checkOut']['email'] = $email;
             <div class="contents1">
                 <h3>お届け情報</h3>
                 <label>
-                    <nobr>
-                        <h4>お届け先</h4>
-                    </nobr>
+                    <h4>お届け先</h4>
                     <?php echo htmlspecialchars($firstname, ENT_QUOTES, 'utf-8'), " ", htmlspecialchars($lastname, ENT_QUOTES, 'utf-8'); ?>
                     <br>
                     <?php echo htmlspecialchars($firstname_kana, ENT_QUOTES, 'utf-8'), " ", htmlspecialchars($lastname_kana, ENT_QUOTES, 'utf-8'); ?>

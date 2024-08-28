@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
     <link rel="stylesheet" href="order.css">
+    <script src="order.js"></script>
 </head>
 
 <body>
@@ -207,42 +208,42 @@
 
             <h2>お支払い方法の選択</h2>
             <hr>
-            <label for="newCard" class="radiolabel">
-                <input type="radio" id="newCard" name="payment" value="新規クレジットカード" checked>
-                新規クレジットカード
-                <div id="newCardFields" data-required="newCard">
-                    <h3>新規クレジットカード</h3>
-                    <div class="form-group">
-                        <label for="cardNumber">カード番号 <nobr><span>（必須）</span></nobr></label>
-                        <input type="text" id="cardNumber" name="cardNumber1" placeholder="1234" pattern="\d{4}"
-                            required data-error-message="4ケタの半角数字で入力してください">
-                        <input type="text" id="cardNumber" name="cardNumber2" placeholder="5678" pattern="\d{4}"
-                            required data-error-message="4ケタの半角数字で入力してください">
-                        <input type="text" id="cardNumber" name="cardNumber3" placeholder="9012" pattern="\d{4}"
-                            required data-error-message="4ケタの半角数字で入力してください">
-                        <input type="text" id="cardNumber" name="cardNumber4" placeholder="3456" pattern="\d{4}"
-                            required data-error-message="4ケタの半角数字で入力してください">
+            <div class="buttom">
+                <label for="cashOnDelivery" class="radiolabel">
+                    <input type="radio" id="cashOnDelivery" name="payment" value="代引き" checked>
+                    代引き
+                </label>
+            </div>
+            <div class="buttom">
+                <label for="newCard" class="radiolabel">
+                    <input type="radio" id="newCard" name="payment" value="新規クレジットカード">
+                    新規クレジットカード
+                    <div id="newCardFields" data-required="newCard">
+                        <h3>新規クレジットカード</h3>
+                        <div class="form-group">
+                            <label for="cardNumber">カード番号 <nobr><span>（必須）</span></nobr></label>
+                            <input type="text" id="cardNumber" name="cardNumber1" placeholder="1234" pattern="\d{4}"
+                                required data-error-message="4ケタの半角数字で入力してください">
+                            <input type="text" id="cardNumber" name="cardNumber2" placeholder="5678" pattern="\d{4}"
+                                required data-error-message="4ケタの半角数字で入力してください">
+                            <input type="text" id="cardNumber" name="cardNumber3" placeholder="9012" pattern="\d{4}"
+                                required data-error-message="4ケタの半角数字で入力してください">
+                            <input type="text" id="cardNumber" name="cardNumber4" placeholder="3456" pattern="\d{4}"
+                                required data-error-message="4ケタの半角数字で入力してください">
+                        </div>
+                        <div class="form-group">
+                            <label for="expiryDate">有効期限 <nobr><span>（必須）</span></nobr></label>
+                            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" pattern="\d{2}/\d{2}"
+                                required data-error-message="MM/YY の形式で入力してください">
+                        </div>
+                        <div class="form-group">
+                            <label for="securityCode">セキュリティコード <nobr><span>（必須）</span></nobr></label>
+                            <input type="text" id="securityCode" name="securityCode" placeholder="123" pattern="\d{3}"
+                                required data-error-message="3桁の数字を入力してください">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="expiryDate">有効期限 <nobr><span>（必須）</span></nobr></label>
-                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" pattern="\d{2}/\d{2}"
-                            required data-error-message="MM/YY の形式で入力してください">
-                    </div>
-                    <div class="form-group">
-                        <label for="securityCode">セキュリティコード <nobr><span>（必須）</span></nobr></label>
-                        <input type="text" id="securityCode" name="securityCode" placeholder="123" pattern="\d{3}"
-                            required data-error-message="3桁の数字を入力してください">
-                    </div>
-                </div>
-            </label>
-            <label for="payLater" class="radiolabel">
-                <input type="radio" id="payLater" name="payment" value="ゆっくりお支払い">
-                ゆっくりお支払い
-                <div id="payLaterFields" data-required="payLater" class="hidden">
-                    <h3>ゆっくりお支払い</h3>
-                    <!-- ゆっくりお支払い用のフィールド -->
-                </div>
-            </label>
+                </label>
+            </div>
             <h2>お届け情報</h2>
             <hr>
             <h3>お届け方法</h3>
@@ -250,10 +251,11 @@
                 <input type="radio" id="deliveryMethod" name="deliveryMethod" value="宅配便">
                 宅配便
             </label>
-            <h3>お届け希望日(本日から一週間後まで)</h3>
+            <h3>お届け希望日(翌日から一週間後まで)</h3>
             <?php
             // 現在の日付を取得
             $currentDate = new DateTime();
+            $currentDate->modify('+1 day');
 
             // 1週間分の日付をラジオボタンで表示
             for ($i = 0; $i < 7; $i++) {
@@ -261,7 +263,7 @@
                 $dateString = $currentDate->format('Y月m日d');
                 echo '<label class="radiolabel">';
                 echo '<input type="radio" name="desiredDeliveryDate" value="' . $dateString . '"> ' . $dateString;
-                echo '</label><br>';
+                echo '</label>';
 
                 // 次の日に進める
                 $currentDate->modify('+1 day');
@@ -270,7 +272,6 @@
             <button type="submit">確認画面へ進む</button>
         </form>
     </div>
-    <script src="order.js"></script>
 </body>
 
 </html>

@@ -79,8 +79,8 @@ $categoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             ページ表示ステータス
             <br>
             <select name="pageDisplayStatus" required>
-                <option value="公開中">公開中</option>
-                <option value="非公開">非公開</option>
+                <option value="1">公開中</option>
+                <option value="0">非公開</option>
             </select>
             <p />
             <button type="submit">登録</button>

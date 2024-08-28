@@ -33,7 +33,7 @@ if (isset($_FILES['image'])) {
     // エラーチェックと条件を一度に確認し、エラーの場合は早期リターン
     if ($imageError !== 0 || !getimagesize($imageTmpName) || $imageSize > 500000 || !in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
         echo "アップロードに失敗しました。ファイルが画像でないか、許可されていない形式またはサイズが大きすぎます。";
-        return;
+        exit; // `return` ではなく `exit` を使用してスクリプトの実行を停止します
     }
 
     // ディレクトリが存在しない場合は作成
@@ -45,81 +45,114 @@ if (isset($_FILES['image'])) {
     $imageHash = hash('sha256', $imageData);
 
     try {
+        // トランザクション開始
         if (!$pdo->inTransaction()) {
             $pdo->beginTransaction();
         }
 
         $checkSql = "SELECT COUNT(*) FROM images WHERE storeNumber = :storeNumber AND imageHash = :imageHash";
-        $params[':storeNumber'] = $storeNumber;
-        $params[':imageHash'] = $imageHash;
         $checkStmt = $pdo->prepare($checkSql);
-        $checkStmt->execute($params);
+        $checkStmt->execute([
+            ':storeNumber' => $storeNumber,
+            ':imageHash' => $imageHash
+        ]);
         $imageExists = $checkStmt->fetchColumn();
 
-        if (!$imageExists) { // 画像が存在しない場合のみ保存
-            $uploadDir = '../script/uploads/';
-            $uploadFile = $uploadDir . basename($imageName);
+        if ($imageExists == 0) { // 画像が存在しない場合のみ保存
+            $uploadFile = $targetDir . basename($imageName);
 
             if (move_uploaded_file($imageTmpName, $uploadFile)) {
                 $insertSql = "INSERT INTO images (storeNumber, imageName, imageHash, addedDate) VALUES (:storeNumber, :imageName, :imageHash, NOW())";
-                $params[':storeNumber'] = $storeNumber;
-                $params[':imageName'] = $imageName;
-                $params[':imageHash'] = $imageHash;
                 $insertStmt = $pdo->prepare($insertSql);
-                $insertStmt->execute($params);
-                $pdo->commit();
+                $insertStmt->execute([
+                    ':storeNumber' => $storeNumber,
+                    ':imageName' => $imageName,
+                    ':imageHash' => $imageHash
+                ]);
                 $_SESSION['insImageHash'] = $imageHash;
+            } else {
+                // ファイルの移動に失敗した場合、ロールバック
+                $pdo->rollBack();
+                echo "画像のアップロードに失敗しました。";
+                exit;
             }
+        } else {
+            // 画像がすでに存在する場合、ロールバック
+            $pdo->rollBack();
+            echo "指定された画像はすでに他の商品で使用されています。";
+            exit;
         }
-    } catch (Exception $e) {
-        $pdo->rollBack();
-    }
-}
-else {
-    echo "流れてないよ";
-}
+        
+        // 画像の番号を取得
+        $imageNumberSql = "SELECT imageNumber FROM images WHERE imageHash = :imageHash";
+        $imageNumberStmt = $pdo->prepare($imageNumberSql);
+        $imageNumberStmt->execute([':imageHash' => $_SESSION['insImageHash']]);
+        $imageNumber = $imageNumberStmt->fetchColumn();
 
-$sql = "SELECT imageNumber
-        FROM images
-        Where imageHash = :imageHash";
-$params = [];
-$params[':imageHash'] = $_SESSION['insImageHash'];
-$stmt = $pdo->prepare($sql);
-$imageNumber = $stmt->execute($params);
+        // 画像のハッシュ値が他の商品で使用されているか確認
+        $checkProductSql = "SELECT COUNT(*) FROM product WHERE storeNumber = :storeNumber AND imageNumber = :imageNumber";
+        $checkProductStmt = $pdo->prepare($checkProductSql);
+        $checkProductStmt->execute([
+            ':storeNumber' => $storeNumber,
+            ':imageNumber' => $imageNumber
+        ]);
+        $imageUsed = $checkProductStmt->fetchColumn();
 
-$sql = "INSERT INTO product (
+        if ($imageUsed > 0) {
+            // 画像がすでに他の商品で登録されている場合、ロールバック
+            $pdo->rollBack();
+            echo "指定された画像はすでに他の商品で使用されています。商品を登録できません。";
+            exit;
+        }
+
+        // 商品をデータベースに挿入
+        $productInsertSql = "INSERT INTO product (
             productName, price, categoryNumber, storeCategoryNumber, stockQuantity, 
-            productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus,imageNumber
+            productDescription, dateAdded, releaseDate, storeNumber, pageDisplayStatus, imageNumber
         ) VALUES (
             :productName, :price, :categoryNumber, :storeCategoryNumber, :stockQuantity,
             :productDescription, :dateAdded, :releaseDate, :storeNumber, :pageDisplayStatus, :imageNumber
         )";
-$params = [];
-$params[':productName'] = $productName;
-$params[':price'] = $price;
-$params[':categoryNumber'] = $category;
-$params[':stockQuantity'] = $stock;
-$params[':productDescription'] = $productDescription;
-$params[':dateAdded'] = date("Y-m-d");
-$params[':releaseDate'] = $releaseDate;
-$params[':storeNumber'] = $storeNumber;
-$params[':pageDisplayStatus'] = $pageDisplayStatus;
-$params[':imageNumber'] = $imageNumber;
-$params[':storeCategoryNumber'] = null;
+        $productInsertStmt = $pdo->prepare($productInsertSql);
+        $result = $productInsertStmt->execute([
+            ':productName' => $productName,
+            ':price' => $price,
+            ':categoryNumber' => $category,
+            ':storeCategoryNumber' => null,
+            ':stockQuantity' => $stock,
+            ':productDescription' => $productDescription,
+            ':dateAdded' => date("Y-m-d"),
+            ':releaseDate' => $releaseDate,
+            ':storeNumber' => $storeNumber,
+            ':pageDisplayStatus' => $pageDisplayStatus,
+            ':imageNumber' => $imageNumber
+        ]);
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
+        if ($result) {
+            $pdo->commit();
+            $_SESSION['message'] = '登録が完了しました。';
+            header('Location: productManagerMenu.php');
+            exit;
+        } else {
+            // 商品登録に失敗した場合、ロールバック
+            $pdo->rollBack();
+            echo "商品登録に失敗しました。";
+            exit;
+        }
 
-if ($stmt == true) {
-    $utilConnDB->commit($pdo);
-    $_SESSION['message'] = '登録が完了しました。';
+    } catch (Exception $e) {
+        // 例外が発生した場合、ロールバック
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        echo "エラーが発生しました: " . $e->getMessage();
+        exit;
+    }
 } else {
-    $utilConnDB->rollback($pdo);
+    echo "画像が選択されていません。";
+    exit;
 }
 
-//DB切断
+// DB切断
 $utilConnDB->disconnect($pdo);
-
-//次に実行するモジュール
-header('Location: productManagerMenu.php')
 ?>
