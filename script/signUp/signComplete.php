@@ -10,7 +10,7 @@
     <div class="container">
         <h2>登録完了</h2>
         <p>登録が完了しました。</p>
-        <a href="signUpMenu.php" class="button">戻る</a>
+        <a href="../login/loginMenu.php" class="button">ログイン画面</a>
     </div>
 </body>
 </html>

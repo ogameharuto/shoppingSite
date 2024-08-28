@@ -24,7 +24,6 @@ $storeBeans->setFurigana(htmlspecialchars($_POST['storeNameFurigana'] ?? '', ENT
 $storeBeans->setTelephoneNumber(htmlspecialchars($_POST['phoneNumber'] ?? '', ENT_QUOTES, 'utf-8'));
 $storeBeans->setMailAddress(htmlspecialchars($_POST['mailAddres'] ?? '', ENT_QUOTES, 'utf-8'));
 $storeBeans->setStoreDescription(htmlspecialchars($_POST['storeIntroduction'] ?? '', ENT_QUOTES, 'utf-8'));
-$storeBeans->setStoreImageURL(htmlspecialchars($_POST['storeImageURL'] ?? '', ENT_QUOTES, 'utf-8'));
 $storeBeans->setStoreAdditionalInfo(htmlspecialchars($_POST['storeAdditionalInfo'] ?? '', ENT_QUOTES, 'utf-8'));
 $storeBeans->setOperationsManager(htmlspecialchars($_POST['operationsManager'] ?? '', ENT_QUOTES, 'utf-8'));
 $storeBeans->setContactAddress(htmlspecialchars($_POST['contactAddress'] ?? '', ENT_QUOTES, 'utf-8'));

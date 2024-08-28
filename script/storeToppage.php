@@ -65,7 +65,7 @@ if (!isset($_SESSION['store'])) {
                         <div class="collapsible-header">商品・画像・在庫</div>
                         <div class="collapsible-content">
                             <p><a href="../taoka/productInsMenu.php">商品データ登録</a></p>
-                            <p><a href="../taoka/A.php">商品管理</a></p>
+                            <p><a href="../taoka/productManagerMenu.php">商品管理</a></p>
                             <p><a href="productCategory/categoryManagement.php">カテゴリ管理</a></p>
                             <p><a href="imageIns/imageInsMenu.php">画像管理</a></p>
                             <p><a href="stockEdit/productStructure.php">在庫管理</a></p>
@@ -74,13 +74,7 @@ if (!isset($_SESSION['store'])) {
                     <li class="collapsible">
                         <div class="collapsible-header">ストア構築</div>
                         <div class="collapsible-content">
-                            <p><a href="">ストア情報設定</a></p>
-                            <p><a href="">カート設定</a></p>
-                            <p><a href="">配送日情報設定</a></p>
-                            <p><a href="">ストアエディタ基本設定</a></p>
-                            <p><a href="">ページ編集</a></p>
-                            <p><a href="">ストアデザイン</a></p>
-                            <p><a href="">反映管理</a></p>
+                            <p><a href="http://localhost/shopp/script/storeManagerMenu.php">ストア情報設定</a></p>
                         </div>
                     </li>
                 </ul>

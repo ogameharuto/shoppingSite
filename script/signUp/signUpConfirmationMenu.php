@@ -57,11 +57,6 @@
                 <input type="hidden" name="storeIntroduction" value="<?php echo htmlspecialchars($_POST['storeIntroduction']); ?>">
             </div>
             <div class="group">
-                <label for="storeImageURl">店舗画像URL</label>
-                <p><?php echo htmlspecialchars($_POST['storeImageURL']); ?></p>
-                <input type="hidden" name="storeImageURL" value="<?php echo htmlspecialchars($_POST['storeImageURL']); ?>">
-            </div>
-            <div class="group">
                 <label for="storeAdditionalInfo">店舗情報補足</label>
                 <p><?php echo htmlspecialchars($_POST['storeAdditionalInfo']); ?></p>
                 <input type="hidden" name="storeAdditionalInfo" value="<?php echo htmlspecialchars($_POST['storeAdditionalInfo']); ?>">

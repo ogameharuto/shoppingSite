@@ -17,7 +17,7 @@
             </div>
             <div class="group">
                 <label for="postalCode">会社郵便番号<span class="required">必須</span></label>
-                <input type="text" id="postalCode" name="postalCode" value="<?php echo htmlspecialchars($_POST['postalCode'] ?? ''); ?>" required>
+                <input type="text" id="postalCode" name="postalCode" value="<?php echo htmlspecialchars($_POST['postalCode'] ?? ''); ?>" required pattern="\d{3}-?\d{4}" title="数字のみを入力してください。">
             </div>
             <div class="group">
                 <label for="fullAddress">住所<span class="required">必須</span></label>
@@ -33,11 +33,11 @@
             </div>
             <div class="group">
                 <label for="storeNameFurigana">店舗名(フリガナ)<span class="required">必須</span></label>
-                <input type="text" id="storeNameFurigana" name="storeNameFurigana" value="<?php echo htmlspecialchars($_POST['storeNameFurigana'] ?? ''); ?>">
+                <input type="text" id="storeNameFurigana" name="storeNameFurigana" value="<?php echo htmlspecialchars($_POST['storeNameFurigana'] ?? ''); ?>" pattern="(?=.*?[\u30A1-\u30FC])[\u30A1-\u30FC\s]*" title="カタカナのみを入力してください。">
             </div>
             <div class="group">
                 <label for="phoneNumber">電話番号<span class="required">必須</span></label>
-                <input type="text" id="phoneNumber" name="phoneNumber" value="<?php echo htmlspecialchars($_POST['phoneNumber'] ?? ''); ?>" required>
+                <input type="text" id="phoneNumber" name="phoneNumber" value="<?php echo htmlspecialchars($_POST['phoneNumber'] ?? ''); ?>" required pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" title="数字のみを入力してください。">
             </div>
             <div class="group">
                 <label for="mailAddres">メールアドレス<span class="required">必須</span></label>
@@ -46,10 +46,6 @@
             <div class="group">
                 <label for="storeIntroduction">店舗紹介文<span class="optional">任意</span></label>
                 <input type="text" id="storeIntroduction" name="storeIntroduction" value="<?php echo htmlspecialchars($_POST['storeIntroduction'] ?? ''); ?>">
-            </div>
-            <div class="group">
-                <label for="storeImageURl">店舗画像URL<span class="required">必須</span></label>
-                <input type="text" id="storeImageURL" name="storeImageURL" value="<?php echo htmlspecialchars($_POST['storeImageURL'] ?? ''); ?>" required>
             </div>
             <div class="group">
                 <label for="storeAdditionalInfo">店舗情報補足<span class="optional">任意</span></label>
@@ -65,11 +61,11 @@
             </div>
             <div class="group">
                 <label for="contactPostalCode">お問い合わせ先郵便番号<span class="required">必須</span></label>
-                <input type="text" id="contactPostalCode" name="contactPostalCode" value="<?php echo htmlspecialchars($_POST['contactPostalCode'] ?? ''); ?>" required>
+                <input type="text" id="contactPostalCode" name="contactPostalCode" value="<?php echo htmlspecialchars($_POST['contactPostalCode'] ?? ''); ?>" required pattern="\d{3}-?\d{4}" title="数字のみを入力してください。">
             </div>
             <div class="group">
                 <label for="contactPhoneNumber">お問い合わせ先電話番号<span class="required">必須</span></label>
-                <input type="text" id="contactPhoneNumber" name="contactPhoneNumber" value="<?php echo htmlspecialchars($_POST['contactPhoneNumber'] ?? ''); ?>" required>
+                <input type="text" id="contactPhoneNumber" name="contactPhoneNumber" value="<?php echo htmlspecialchars($_POST['contactPhoneNumber'] ?? ''); ?>" required pattern="\d{2,4}-?\d{2,4}-?\d{3,4}" title="数字のみを入力してください。">
             </div>
             <div class="group">
                 <label for="contactEmailAddress">お問い合わせ先メールアドレス<span class="required">必須</span></label>

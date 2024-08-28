@@ -1,5 +1,5 @@
 <?php
-require_once('utilConnDB.php');
+require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
@@ -28,38 +28,8 @@ try {
         $contactEmailAddress = filter_input(INPUT_POST, 'contactEmailAddress', FILTER_SANITIZE_EMAIL);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
-        // Handle file upload
-        $storeImageURL = '';
-        if (isset($_FILES['storeImage']) && $_FILES['storeImage']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = 'uploads/';
-            $uploadFile = $uploadDir . basename($_FILES['storeImage']['name']);
-            $fileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
-
-            // Validate file type
-            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-            if (in_array($fileType, $allowedTypes)) {
-                if (move_uploaded_file($_FILES['storeImage']['tmp_name'], $uploadFile)) {
-                    $storeImageURL = $uploadFile;
-                } else {
-                    throw new Exception('画像のアップロードに失敗しました。');
-                }
-            } else {
-                throw new Exception('無効なファイルタイプです。');
-            }
-        } else {
-            // Retrieve the existing image URL if no new image is uploaded
-            $stmt = $pdo->prepare('SELECT storeImageURL FROM store WHERE storeNumber = :storeNumber');
-            $stmt->bindParam(':storeNumber', $storeNumber, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            $storeImageURL = $result['storeImageURL'];
-        }
-
-        // Hash the password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
         // Update store information
-        $stmt = $pdo->prepare('UPDATE store SET companyName = :companyName, companyPostalCode = :companyPostalCode, companyAddress = :companyAddress, companyRepresentative = :companyRepresentative, storeName = :storeName, furigana = :furigana, telephoneNumber = :telephoneNumber, mailAddress = :mailAddress, storeDescription = :storeDescription, storeImageURL = :storeImageURL, storeAdditionalInfo = :storeAdditionalInfo, operationsManager = :operationsManager, contactAddress = :contactAddress, contactPostalCode = :contactPostalCode, contactPhoneNumber = :contactPhoneNumber, contactEmailAddress = :contactEmailAddress, password = :password WHERE storeNumber = :storeNumber');
+        $stmt = $pdo->prepare('UPDATE store SET companyName = :companyName, companyPostalCode = :companyPostalCode, companyAddress = :companyAddress, companyRepresentative = :companyRepresentative, storeName = :storeName, furigana = :furigana, telephoneNumber = :telephoneNumber, mailAddress = :mailAddress, storeDescription = :storeDescription, storeAdditionalInfo = :storeAdditionalInfo, operationsManager = :operationsManager, contactAddress = :contactAddress, contactPostalCode = :contactPostalCode, contactPhoneNumber = :contactPhoneNumber, contactEmailAddress = :contactEmailAddress, password = :password WHERE storeNumber = :storeNumber');
 
         $stmt->bindParam(':companyName', $companyName, PDO::PARAM_STR);
         $stmt->bindParam(':companyPostalCode', $companyPostalCode, PDO::PARAM_STR);
@@ -70,20 +40,19 @@ try {
         $stmt->bindParam(':telephoneNumber', $telephoneNumber, PDO::PARAM_STR);
         $stmt->bindParam(':mailAddress', $mailAddress, PDO::PARAM_STR);
         $stmt->bindParam(':storeDescription', $storeDescription, PDO::PARAM_STR);
-        $stmt->bindParam(':storeImageURL', $storeImageURL, PDO::PARAM_STR);
         $stmt->bindParam(':storeAdditionalInfo', $storeAdditionalInfo, PDO::PARAM_STR);
         $stmt->bindParam(':operationsManager', $operationsManager, PDO::PARAM_STR);
         $stmt->bindParam(':contactAddress', $contactAddress, PDO::PARAM_STR);
         $stmt->bindParam(':contactPostalCode', $contactPostalCode, PDO::PARAM_STR);
         $stmt->bindParam(':contactPhoneNumber', $contactPhoneNumber, PDO::PARAM_STR);
         $stmt->bindParam(':contactEmailAddress', $contactEmailAddress, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
         $stmt->bindParam(':storeNumber', $storeNumber, PDO::PARAM_INT);
         $stmt->execute();
 
         // Commit the transaction
         $pdo->commit();
-        echo '更新が成功しました。<br><a href="editStore.php?storeNumber=' . htmlspecialchars($storeNumber, ENT_QUOTES, 'UTF-8') . '">戻る</a>';
+        header('Location: storeManagerMenu.php');
     }
 } catch (PDOException $e) {
     // Rollback transaction on error
