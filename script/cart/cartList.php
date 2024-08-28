@@ -44,12 +44,9 @@ $hasItems = count($cartList) > 0;
         <div class="cartListText">
             <h1 class="topTitle">ショッピングカート一覧</h1>
         </div>
-        <div class="storName"></div>
-        <div class="Delivery"></div>
-        
         <?php if ($hasItems): ?>
             <div class="shipping">
-                3日以内に発送（メーカー在庫）
+                1週間以内に発送
             </div>
             <div class="aa">
                 <table class="product">
@@ -209,10 +206,9 @@ function toggleUpdateButton(productNumber) {
 }
 function confirmDeletion(event) {
     if (!confirm('このアイテムを削除してもよろしいですか？')) {
-        event.preventDefault(); // 削除をキャンセル
+        event.preventDefault(); 
     }
 }
 </script>
-
 </body>
 </html>

@@ -4,27 +4,29 @@ header('Content-Type:text/plain; charset=utf-8');
 
 class StoreSQL{
 
-    // 顧客ごとにカートテーブル参照
-    public function selectCartItems($pdo, $customerNumber) {
-        // SQL文生成
-        $sql = 'SELECT 
-                    p.productNumber,
-                    p.productName,
-                    p.price,
-                    c.quantity,
-                    p.productDescription
-                FROM cart c
-                JOIN product p ON c.productNumber = p.productNumber
-                WHERE c.customerNumber = :customerNumber';
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':customerNumber', $customerNumber, PDO::PARAM_INT);
-        
-        $stmt->execute();
-        $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        return $cartItems;
-    }
+// 顧客ごとにカートテーブル参照
+public function selectCartItems($pdo, $customerNumber) {
+    // SQL文生成
+    $sql = 'SELECT 
+                p.productNumber,
+                p.productName,
+                p.price,
+                c.quantity,
+                p.productDescription,
+                s.storeName
+            FROM cart c
+            JOIN product p ON c.productNumber = p.productNumber
+            JOIN store s ON p.storeNumber = s.storeNumber
+            WHERE c.customerNumber = :customerNumber';
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':customerNumber', $customerNumber, PDO::PARAM_INT);
+    
+    $stmt->execute();
+    $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    return $cartItems;
+}
 
     //ストア側のログイン
     public function select($pdo, $loginData) {
