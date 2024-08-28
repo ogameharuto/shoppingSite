@@ -1,17 +1,18 @@
 <?php
+session_start();
 require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
+$storeNumber = $_SESSION['store']['storeNumber'];
+
 // カテゴリデータの取得
-$query = "SELECT * FROM storecategory";
+$query = "SELECT * FROM storecategory WHERE storeNumber = :storeNumber";
+$result = $pdo->prepare($query);
+$result->bindValue(':storeNumber', $storeNumber, PDO::PARAM_INT);
+$result->execute();
+
 try {
-    $result = $pdo->query($query);
-
-    if (!$result) {
-        throw new PDOException("クエリ実行に失敗しました: " . implode(", ", $pdo->errorInfo()));
-    }
-
     $categories = [];
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $categories[] = $row;

@@ -86,7 +86,7 @@ unset($_SESSION['images']);
                                 ?>
                                 <p><a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
                                 <p>
-                                    <span class="price"><?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>円</span>
+                                    <span class="price"><?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?>円</span>
                                     <span class="postage">＋送料</span>
                                 </p>
                                 <p>

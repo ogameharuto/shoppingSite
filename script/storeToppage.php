@@ -47,10 +47,6 @@ if (!isset($_SESSION['store'])) {
                     <li>新規注文 <span class="badge">〇件</span></li>
                     <li>注文未完了 <span class="badge">〇件</span></li>
                 </ul>
-                <ul class="sidebar-list">
-                    <li class="subTitle">お問い合わせ管理ツール</li>
-                    <li>未回答 <span class="badge">〇件</span></li>
-                </ul>
             </div>
             <div class="sidebar-section">
                 <h2>ツールメニュー</h2>

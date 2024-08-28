@@ -168,11 +168,11 @@ $sql = 'CREATE TABLE storeCategory (
 $pdo->exec($sql);
 
 // 店舗カテゴリデータ挿入
-$sql = "INSERT INTO storeCategory (storeCategoryName, parentStoreCategoryNumber) VALUES
-  ('家電', NULL),
-  ('本', NULL),
-  ('スマホ', 1),
-  ('ノートパソコン', 1);";
+$sql = "INSERT INTO storeCategory (storeCategoryName, parentStoreCategoryNumber, storeNumber) VALUES
+  ('家電', NULL,1),
+  ('本', NULL, 2),
+  ('スマホ', 1, 1),
+  ('ノートパソコン', 1, 1);";
 $pdo->exec($sql);
 
 // 画像テーブル作成

@@ -138,7 +138,7 @@ if(empty($user['customerNumber'])){
                             <?php else: ?>
                                 <img src="default-image.png" alt="商品画像がありません">
                             <?php endif; ?>
-                                <p>価格: <?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8') ?>円</p>
+                                <p>価格: <?= number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')) ?>円</p>
                             </a>
                         </div>
                     <?php endforeach; ?>
@@ -168,7 +168,7 @@ if(empty($user['customerNumber'])){
                                             <?php else: ?>
                                                 <img src="default-image.png" alt="商品画像がありません">
                                             <?php endif; ?>
-                                            <p>価格: <?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8') ?>円</p>
+                                            <p>価格: <?= number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')) ?>円</p>
                                         </a>
                                     </div>
                                 <?php endforeach; ?>

@@ -76,7 +76,7 @@ function renderStars($rating) {
                         <p class="elPriceName">通常価格（税込）</p>
                         <div class="elPriceArea">
                             <div class="elItemPriceInner">
-                                <p><span class="elPriceNumber" itemprop="price"><?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8') ?></span><span class="elPriceUnit">円</span></p>
+                                <p><span class="elPriceNumber" itemprop="price"><?= number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')) ?></span><span class="elPriceUnit">円</span></p>
                             </div>
                             <p class="elPostageFree">送料無料<span class="elPostagePref">（東京都）</span></p>
                         </div>
@@ -160,7 +160,7 @@ function renderStars($rating) {
                                 <div class="elPriceWrap">
                                     <p class="elPriceTitle">通常価格（税込）</p>
                                     <p class="elPriceData">
-                                        <span class="elPrice" itemprop="price"><?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8') ?><span class="elUnit">円</span></span>
+                                        <span class="elPrice" itemprop="price"><?= number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')) ?><span class="elUnit">円</span></span>
                                     </p>
                                 </div>
                                 <p class="elPostageWrap isFree">
