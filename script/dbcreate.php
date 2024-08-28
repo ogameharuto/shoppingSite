@@ -234,6 +234,7 @@ $sql = 'CREATE TABLE customer_orders (
   deliveryAddress VARCHAR(100) NOT NULL,
   deliveryPostCode VARCHAR(100) NOT NULL,
   deliveryPhone VARCHAR(100) NOT NULL,
+  deliveryDateTime VARCHAR(50) NOT NULL,
   paymentMethodStatus VARCHAR(50) NOT NULL,
   billingName VARCHAR(50) NOT NULL,
   billingFurigana VARCHAR(50),

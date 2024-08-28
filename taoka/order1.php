@@ -260,7 +260,7 @@
             // 1週間分の日付をラジオボタンで表示
             for ($i = 0; $i < 7; $i++) {
                 // 日付をフォーマットして表示
-                $dateString = $currentDate->format('Y月m日d');
+                $dateString = $currentDate->format('Y年m月d日');
                 echo '<label class="radiolabel">';
                 echo '<input type="radio" name="desiredDeliveryDate" value="' . $dateString . '"> ' . $dateString;
                 echo '</label>';
@@ -269,6 +269,22 @@
                 $currentDate->modify('+1 day');
             }
             ?>
+            <h3>お届け希望時刻</h3>
+            <label class="radiolabel">
+            <input type="radio" name="desiredDeliveryTime" value="06:00~09:00">06:00~09:00
+            </label>
+            <label class="radiolabel">
+            <input type="radio" name="desiredDeliveryTime" value="09:00~12:00">09:00~12:00
+            </label>
+            <label class="radiolabel">
+            <input type="radio" name="desiredDeliveryTime" value="12:00~15:00">12:00~15:00
+            </label>
+            <label class="radiolabel">
+            <input type="radio" name="desiredDeliveryTime" value="15:00~18:00">15:00~18:00
+            </label>
+            <label class="radiolabel">
+            <input type="radio" name="desiredDeliveryTime" value="18:00~21:00">18:00~21:00
+            </label>
             <button type="submit">確認画面へ進む</button>
         </form>
     </div>

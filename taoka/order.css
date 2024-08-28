@@ -26,9 +26,10 @@ span{
 .form-group label {
     width: 15em; /* ラベルの幅を固定 */
 }
+
 .form-group input, .form-group select {
     padding: 5px;
-    margin-left: 10px;
+    margin-left: 0.5%;
 }
 
 .radiolabel{
@@ -66,4 +67,8 @@ span{
 
 #cardNumber{
     width: 10%;
+}
+
+#newCardFields .form-group label{
+    width: 14em;
 }

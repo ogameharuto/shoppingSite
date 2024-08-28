@@ -31,6 +31,7 @@ $payment = htmlspecialchars($_POST['payment'], ENT_QUOTES, 'utf-8');
 $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
 $deliveryMethod = htmlspecialchars($_POST['deliveryMethod'], ENT_QUOTES, 'utf-8');
 $desiredDeliveryDate = htmlspecialchars($_POST['desiredDeliveryDate'], ENT_QUOTES, 'utf-8');
+$desiredDeliveryTime = htmlspecialchars($_POST['desiredDeliveryTime'], ENT_QUOTES, 'utf-8');
 
 // セッションデータの初期化
 $_SESSION['checkOut'] = [];
@@ -72,7 +73,7 @@ if ($billingAddress == "その他住所を入力") {
 
 // その他情報の保存
 $_SESSION['checkOut']['deliveryMethod'] = $deliveryMethod;
-$_SESSION['checkOut']['desiredDeliveryDate'] = $desiredDeliveryDate;
+$_SESSION['checkOut']['desiredDeliveryDateTime'] = $desiredDeliveryDate.$desiredDeliveryTime;
 $_SESSION['checkOut']['payment'] = $payment;
 $_SESSION['checkOut']['email'] = $email;
 ?>
@@ -112,7 +113,11 @@ $_SESSION['checkOut']['email'] = $email;
                 </label>
                 <label>
                     <h4>お届け日時</h4>
-                    <?php echo htmlspecialchars($desiredDeliveryDate, ENT_QUOTES, 'utf-8'); ?>
+                    <?php 
+                    echo htmlspecialchars($desiredDeliveryDate, ENT_QUOTES, 'utf-8');
+                    echo '<br>';
+                    echo htmlspecialchars($desiredDeliveryTime, ENT_QUOTES, 'utf-8'); 
+                    ?>
                 </label>
             </div>
             <div class="contents2">
@@ -147,8 +152,8 @@ $_SESSION['checkOut']['email'] = $email;
                         echo htmlspecialchars($expiryDate, ENT_QUOTES, 'utf-8');
                         echo "<br>";
                         echo htmlspecialchars($securityCode, ENT_QUOTES, 'utf-8');
-                    } elseif ($payment == "ゆっくりお支払い") {
-                        echo "ゆっくりお支払い";
+                    } elseif ($payment == "代引き") {
+                        echo $payment;
                     }
                     ?>
                 </label>
