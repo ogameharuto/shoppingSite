@@ -163,7 +163,7 @@ $_SESSION['checkOut']['email'] = $email;
                 <label>
                     <h4>ご請求明細</h4>
                     <p>合計金額:</p>
-                    <?php echo htmlspecialchars($totalPrice, ENT_QUOTES, 'utf-8'); ?>
+                    <?php echo number_format(htmlspecialchars($totalPrice, ENT_QUOTES, 'UTF-8')) ?>
                 </label>
                 <div class="btn">
                     <input type="submit" value="ご注文を確定する">
