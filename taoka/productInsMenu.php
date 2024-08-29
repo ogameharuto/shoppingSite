@@ -91,7 +91,7 @@ $shoppCategoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </select>
             <p />
             <button type="submit">登録</button>
-            <button type="button" onclick="location.href='skillMenu.php'">戻る</button>
+            <button type="button" onclick="location.href='../script/storeToppage.php'">戻る</button>
         </div>
     </form>
 </body>

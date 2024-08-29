@@ -112,11 +112,10 @@ $categoryTree = buildTree($categories);
     <div class="container">
         <div class="header">
             <div class="navbar">
-                <a href="" class="nav-item <?php echo ($current_page == '') ? 'active' : ''; ?>">ページ編集</a>
                 <a href="http://localhost/shopp/taoka/productManagerMenu.php" class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
                 <a href="http://localhost/shopp/script/stockEdit/productStructure.php" class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
                 <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php" class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
-                <a href="" class="nav-item <?php echo ($current_page == '') ? 'active' : ''; ?>">カテゴリ管理</a>
+                <a href="http://localhost/shopp/script/productCategory/categoryManagement.php" class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
             </div>
         </div>
         <div class="content">
