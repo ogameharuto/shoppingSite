@@ -233,8 +233,25 @@
                         </div>
                         <div class="form-group">
                             <label for="expiryDate">有効期限 <nobr><span>（必須）</span></nobr></label>
-                            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"
-                                pattern="\d{2}/\d{2}" required data-error-message="MM/YY の形式で入力してください">
+                            <div id="expiryDate" class="flex">
+                                <select id="expiryMonth" name="expiryMonth" required>
+                                    <option value="" disabled selected>月</option>
+                                    <?php for ($month = 1; $month <= 12; $month++): ?>
+                                        <option value="<?= str_pad($month, 2, '0', STR_PAD_LEFT) ?>">
+                                            <?= str_pad($month, 2, '0', STR_PAD_LEFT) ?>
+                                        </option>
+                                    <?php endfor; ?>
+                                </select>
+                                <select id="expiryYear" name="expiryYear" required>
+                                    <option value="" disabled selected>年</option>
+                                    <?php
+                                    $currentYear = date('Y');
+                                    for ($year = $currentYear; $year <= $currentYear + 13; $year++):
+                                        ?>
+                                        <option value="<?= $year ?>"><?= $year ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="securityCode">セキュリティコード <nobr><span>（必須）</span></nobr></label>
@@ -263,10 +280,9 @@
                 $dateString = $currentDate->format('Y年m月d日');
                 echo '<label class="radiolabel">';
                 echo '<input type="radio" name="desiredDeliveryDate" value="' . $dateString . '"';
-                if($i == 0){
+                if ($i == 0) {
                     echo 'checked> ' . $dateString;
-                }
-                else{
+                } else {
                     echo '> ' . $dateString;
                 }
                 echo '</label>';

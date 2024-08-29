@@ -145,11 +145,12 @@ $_SESSION['checkOut']['email'] = $email;
                     <?php
                     if ($payment == "新規クレジットカード") {
                         $cardNumber = htmlspecialchars($_POST['cardNumber4'], ENT_QUOTES, 'utf-8');
-                        $expiryDate = htmlspecialchars($_POST['expiryDate'], ENT_QUOTES, 'utf-8');
+                        $expiryMonth = htmlspecialchars($_POST['expiryMonth'], ENT_QUOTES, 'utf-8');
+                        $expiryYear = htmlspecialchars($_POST['expiryYear'], ENT_QUOTES, 'utf-8');
                         $securityCode = htmlspecialchars($_POST['securityCode'], ENT_QUOTES, 'utf-8');
                         echo "下四桁 ", htmlspecialchars($cardNumber, ENT_QUOTES, 'utf-8');
                         echo "<br>";
-                        echo htmlspecialchars($expiryDate, ENT_QUOTES, 'utf-8');
+                        echo htmlspecialchars($expiryMonth, ENT_QUOTES, 'utf-8').'/'.htmlspecialchars($expiryYear, ENT_QUOTES, 'utf-8');
                         echo "<br>";
                         echo htmlspecialchars($securityCode, ENT_QUOTES, 'utf-8');
                     } elseif ($payment == "代引き") {
