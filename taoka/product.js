@@ -1,29 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded and parsed');  // ページ読み込み時の確認
-
-    const messageElement = document.getElementById('message');
-    if (messageElement && messageElement.dataset.message) {
-        alert(messageElement.dataset.message);
-    }
-
     const categoriesElement = document.getElementById('categories');
 
     // カテゴリのクリックイベントを監視
     categoriesElement.addEventListener('click', (e) => {
         const target = e.target;
+
+        // クリックされた要素がリンクの場合
         if (target.tagName === 'A') {
             e.preventDefault(); // デフォルトのリンク遷移を防ぐ
-            const path = target.getAttribute('data-path');  // データパス属性を直接取得
-            console.log('Category clicked:', path);  // カテゴリクリック時のログ
+            const path = target.getAttribute('data-path'); // data-path 属性からパスを取得
 
-            updateBreadcrumb(path);  // パンくずリストを更新
-            fetchProducts({ category: path });  // 商品リストを更新
+            // デバッグ用に path をログに表示
+            console.log('Clicked path:', path);
+
+            if (path === 'ストアトップ') {
+                // ストアトップがクリックされた場合、すべての商品を表示
+                updateBreadcrumb('ストアトップ');
+                fetchProducts({}); // カテゴリパラメータなしですべての商品を取得
+            } else {
+                // その他のカテゴリがクリックされた場合
+                updateBreadcrumb(path);
+                fetchProducts({ category: path });
+            }
         }
     });
 });
 
 // パンくずリストを更新する関数
 function updateBreadcrumb(path) {
+    if (!path) {
+        console.error('Path is null or undefined');
+        return;
+    }
+    
     const breadcrumbElement = document.getElementById('breadcrumb');
     const parts = path.split('/');
     breadcrumbElement.innerHTML = parts.map((part, index) => {
@@ -31,6 +40,11 @@ function updateBreadcrumb(path) {
         return `<a href="#" data-path="${linkPath}">${escapeHtml(part)}</a>`;
     }).join(' > ');
     console.log('Breadcrumb updated:', breadcrumbElement.innerHTML);  // パンくずリスト更新時のログ
+
+    // パスが「ストアトップ」の場合は全商品を表示する
+    if (path === 'ストアトップ') {
+        fetchProducts({});
+    }
 }
 
 // 商品リストを更新する関数
@@ -101,9 +115,9 @@ async function fetchProducts(params) {
 // HTMLエスケープ関数
 function escapeHtml(text) {
     return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }

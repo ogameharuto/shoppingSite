@@ -65,9 +65,12 @@ $stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // カテゴリーデータを取得
-$sql = "SELECT storeCategoryNumber, storeCategoryName, parentStoreCategoryNumber FROM storecategory";
+$sql = "SELECT storeCategoryNumber, storeCategoryName, parentStoreCategoryNumber 
+        FROM storecategory
+        WHERE storeNumber = :storeNumber";
+$params = [':storeNumber' => $storeNumber];
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$stmt->execute($params);
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // カテゴリツリーを構築する関数
@@ -167,30 +170,31 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                 </div>
                 <div id="categories" class="sitemap">
                     <ul>
-                        <li data-path="ストアトップ/">
-                            <a href="#" onclick="updateBreadcrumb('ストアトップ')">ストアトップ</a>
-                            <?php if (!empty($categoryTree)): ?>
-                                <ul>
-                                    <?php
-                                    function renderTree($tree, $parentPath = 'ストアトップ') {
-                                        foreach ($tree as $node) {
-                                            $currentPath = $parentPath . '/' . $node['storeCategoryName'];
-                                            echo '<li data-path="' . htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') . '">';
-                                            echo '<a href="#" data-path="' . htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($node['storeCategoryName'], ENT_QUOTES, 'UTF-8') . '</a>';
-                                            if (!empty($node['children'])) {
-                                                echo '<ul>';
-                                                renderTree($node['children'], $currentPath);
-                                                echo '</ul>';
-                                            }
-                                            echo '</li>';
-                                        }
-                                    }                                    
-                                    // ツリーの表示
-                                    renderTree($categoryTree);
-                                    ?>
-                                </ul>
-                            <?php endif; ?>
+                        <li data-path="ストアトップ">
+                            <a href="#" data-path="ストアトップ" onclick="updateBreadcrumb('ストアトップ')">ストアトップ</a>
                         </li>
+                        <?php if (!empty($categoryTree)): ?>
+                            <ul>
+                                <?php
+                                function renderTree($tree, $parentPath = 'ストアトップ')
+                                {
+                                    foreach ($tree as $node) {
+                                        $currentPath = $parentPath . '/' . $node['storeCategoryName'];
+                                        echo '<li data-path="' . htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') . '">';
+                                        echo '<a href="#" data-path="' . htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($node['storeCategoryName'], ENT_QUOTES, 'UTF-8') . '</a>';
+                                        if (!empty($node['children'])) {
+                                            echo '<ul>';
+                                            renderTree($node['children'], $currentPath);
+                                            echo '</ul>';
+                                        }
+                                        echo '</li>';
+                                    }
+                                }
+                                // ツリーの表示
+                                renderTree($categoryTree);
+                                ?>
+                            </ul>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -251,11 +255,11 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
             alert("削除する商品を選んでください.");
             return;
         }
-        else if(confirm('削除しますか？')){ 
-            return true; 
-        }else{
-            alert('キャンセルされました'); 
-            return false; 
+        else if (confirm('削除しますか？')) {
+            return true;
+        } else {
+            alert('キャンセルされました');
+            return false;
         }
     }
     function handleEditButtonClick() {

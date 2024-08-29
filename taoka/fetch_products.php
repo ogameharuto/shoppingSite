@@ -24,22 +24,30 @@ function getStoreCategoryNumber($categoryPath, $pdo)
 
 $categoryNumber = getStoreCategoryNumber($categoryPath, $pdo);
 
-if ($categoryNumber !== null) {
-    // 商品データを取得
-    $stmt = $pdo->prepare(
-        "SELECT p.productNumber, p.productName, p.pageDisplayStatus, i.imageName
+// SQLクエリを準備
+$sql = "SELECT p.productNumber, p.productName, p.pageDisplayStatus, i.imageName
         FROM product p
         LEFT JOIN images i ON p.imageNumber = i.imageNumber
-        WHERE p.storeCategoryNumber = :storeCategoryNumber AND p.storeNumber = :storeNumber"
-    );
-    $stmt->execute([':storeCategoryNumber' => $categoryNumber, ':storeNumber' => $storeNumber]);
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // デバッグ用ログ
-    error_log('Fetched products: ' . json_encode($products));
-} else {
-    $products = [];
+        WHERE p.storeNumber = :storeNumber";
+
+// カテゴリ番号が存在する場合はWHERE句に追加
+if ($categoryNumber !== null) {
+    $sql .= " AND p.storeCategoryNumber = :storeCategoryNumber";
 }
+
+$stmt = $pdo->prepare($sql);
+
+$params = ['storeNumber' => $storeNumber];
+
+if ($categoryNumber !== null) {
+    $params['storeCategoryNumber'] = $categoryNumber;
+}
+
+$stmt->execute($params);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// デバッグ用ログ
+error_log('Fetched products: ' . json_encode($products));
 
 // JSONとして商品データを返す
 header('Content-Type: application/json');

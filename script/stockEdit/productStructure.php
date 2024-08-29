@@ -75,9 +75,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 // カテゴリーデータを取得
-$sql = "SELECT * FROM storecategory";
+$sql = "SELECT storeCategoryNumber, storeCategoryName, parentStoreCategoryNumber 
+        FROM storecategory
+        WHERE storeNumber = :storeNumber";
+$params = [':storeNumber' => $storeNumber];
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$stmt->execute($params);
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
