@@ -18,60 +18,6 @@ $storeNumber = $store['storeNumber'];
 
 $message = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
-    $image = $_FILES['image'];
-    $imageName = $image['name'];
-    $imageTmpName = $image['tmp_name'];
-    $imageSize = $image['size'];
-    $imageError = $image['error'];
-    $imageType = $image['type'];
-
-    if ($imageError === 0) {
-        $imageData = file_get_contents($imageTmpName);
-        $imageHash = hash('sha256', $imageData);
-
-        try {
-            if (!$pdo->inTransaction()) {
-                $pdo->beginTransaction();
-            }
-
-            $checkSql = "SELECT COUNT(*) FROM images WHERE storeNumber = :storeNumber AND imageHash = :imageHash";
-            $checkStmt = $pdo->prepare($checkSql);
-            $checkStmt->execute([
-                ':storeNumber' => $storeNumber,
-                ':imageHash' => $imageHash
-            ]);
-            $imageExists = $checkStmt->fetchColumn();
-
-            if ($imageExists) {
-                $message = "この店舗で同じ画像がすでに登録されています。";
-            } else {
-                $uploadDir = '../uploads/';
-                $uploadFile = $uploadDir . basename($imageName);
-
-                if (move_uploaded_file($imageTmpName, $uploadFile)) {
-                    $insertSql = "INSERT INTO images (storeNumber, imageName, imageHash, addedDate) VALUES (:storeNumber, :imageName, :imageHash, NOW())";
-                    $insertStmt = $pdo->prepare($insertSql);
-                    $insertStmt->execute([
-                        ':storeNumber' => $storeNumber,
-                        ':imageName' => $imageName,
-                        ':imageHash' => $imageHash
-                    ]);
-                    $pdo->commit();
-                    $message = "画像が正常にアップロードされました。";
-                } else {
-                    $message = "画像のアップロードに失敗しました。";
-                }
-            }
-        } catch (Exception $e) {
-            $pdo->rollBack();
-            $message = "エラーが発生しました: " . $e->getMessage();
-        }
-    } else {
-        $message = "画像のアップロード中にエラーが発生しました。";
-    }
-}
-
 // 画像の削除処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_image_number'])) {
     $imageNumber = $_POST['delete_image_number'];
@@ -130,18 +76,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
 <body>
     <div class="navbar">
+        <a href="http://localhost/shopp/script/storeToppage.php" class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
         <a href="http://localhost/shopp/taoka/productManagerMenu.php" class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
         <a href="http://localhost/shopp/script/stockEdit/productStructure.php" class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
         <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php" class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
         <a href="http://localhost/shopp/script/productCategory/categoryManagement.php" class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
     </div>
-    <h1>画像をアップロードし、一覧表示する</h1>
-    <form action="" method="post" enctype="multipart/form-data">
-        <label for="image">画像ファイル:</label>
-        <input type="file" name="image" id="image" required>
-        <input type="submit" name="submit" value="アップロード">
-    </form>
-
     <h2>画像一覧</h2>
     <table>
         <thead>

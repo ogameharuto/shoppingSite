@@ -73,7 +73,6 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
 // カテゴリーデータを取得
 $sql = "SELECT storeCategoryNumber, storeCategoryName, parentStoreCategoryNumber 
         FROM storecategory
@@ -115,6 +114,7 @@ $categoryTree = buildTree($categories);
     <div class="container">
         <div class="header">
             <div class="navbar">
+                <a href="http://localhost/shopp/script/storeToppage.php" class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
                 <a href="http://localhost/shopp/taoka/productManagerMenu.php" class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
                 <a href="http://localhost/shopp/script/stockEdit/productStructure.php" class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
                 <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php" class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
@@ -191,7 +191,6 @@ $categoryTree = buildTree($categories);
                             <th>商品コード</th>
                             <th>画像</th>
                             <th>商品名</th>
-                            <th>カテゴリ</th>
                             <th>在庫数</th>
                             <th>ステータス</th>
                         </tr>
@@ -209,7 +208,6 @@ $categoryTree = buildTree($categories);
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo htmlspecialchars($row['productName'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?php echo htmlspecialchars($row['storeCategoryName'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?php echo htmlspecialchars($row['stockQuantity'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php if ($row['pageDisplayStatus'] == 1): ?>
