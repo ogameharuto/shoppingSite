@@ -327,6 +327,20 @@ $sql = 'CREATE TABLE deliveryOptions (
   );';
 $pdo->exec($sql);
 
+//お気に入り
+$sql = 'CREATE TABLE favoriteProducts (
+  favoriteItemNumber INT AUTO_INCREMENT PRIMARY KEY,
+  customerNumber INT NOT NULL,
+  productNumber INT NOT NULL,
+  addeddate date,
+  FOREIGN KEY (customerNumber) REFERENCES customer(customerNumber) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (productNumber) REFERENCES product(productNumber) ON DELETE CASCADE ON UPDATE CASCADE
+);';
+$pdo->exec($sql);
+
+
+
+
 /*
  * SQL文実行
  */

@@ -41,20 +41,12 @@ if (!isset($_SESSION['store'])) {
     <div class="container">
         <aside class="sidebar">
             <div class="sidebar-section">
-                <h2>お知らせ</h2>
-                <ul class="sidebar-list">
-                    <li class="subTitle">注文管理</li>
-                    <li>新規注文 <span class="badge">〇件</span></li>
-                    <li>注文未完了 <span class="badge">〇件</span></li>
-                </ul>
-            </div>
-            <div class="sidebar-section">
                 <h2>ツールメニュー</h2>
                 <ul class="sidebar-list">
                     <li class="collapsible">
                         <div class="collapsible-header">注文管理</div>
                         <div class="collapsible-content">
-                        <p><a href="orderList.php">注文管理設定</a></p>
+                        <p><a href="orderList.php">注文管理</a></p>
                         </div>
                     </li>
                     <li class="collapsible">
