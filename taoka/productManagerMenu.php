@@ -123,6 +123,8 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
     <div class="container">
         <div class="header">
             <div class="navbar">
+                <a href="http://localhost/shopp/script/storeToppage.php" 
+                    class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
                 <a href="http://localhost/shopp/taoka/productManagerMenu.php"
                     class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
                 <a href="http://localhost/shopp/script/stockEdit/productStructure.php"

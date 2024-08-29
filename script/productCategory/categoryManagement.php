@@ -5,7 +5,7 @@ $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
 $storeNumber = $_SESSION['store']['storeNumber'];
-
+$current_page = basename($_SERVER['PHP_SELF']);
 // カテゴリデータの取得
 $query = "SELECT * FROM storecategory WHERE storeNumber = :storeNumber";
 $result = $pdo->prepare($query);
@@ -31,11 +31,13 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カテゴリ管理</title>
     <link rel="stylesheet" href="categoryManagement.css">
+    <link rel="stylesheet" href="../stockEdit/productStructure.css">
 </head>
 <body>
     <div class="header">
         <div class="navbar">
-            <a href="" class="nav-item <?php echo ($current_page == '') ? 'active' : ''; ?>">ページ編集</a>
+            <a href="http://localhost/shopp/script/storeToppage.php" 
+                class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
             <a href="http://localhost/shopp/taoka/productManagerMenu.php"
                 class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
             <a href="http://localhost/shopp/script/stockEdit/productStructure.php"
@@ -43,7 +45,7 @@ try {
             <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php"
                 class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
             <a href="http://localhost/shopp/script/productCategory/categoryManagement.php"
-                class="nav-item <?php echo ($current_page == '') ? 'active' : ''; ?>">カテゴリ管理</a>
+                class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
         </div>
     </div>
     <h1>カテゴリ管理</h1>

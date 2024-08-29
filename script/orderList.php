@@ -61,6 +61,7 @@ $orderNumber = $_GET['orderNumber'] ?? '';
 $orderDateFrom = $_GET['orderDateFrom'] ?? '';
 $orderDateTo = $_GET['orderDateTo'] ?? '';
 $paymentMethodStatus = $_GET['paymentMethodStatus'] ?? '';
+$orderStatus = $_GET['orderStatus'] ?? '';
 
 // 店舗に関連する注文を取得
 $sql = "
@@ -96,6 +97,11 @@ if ($orderDateFrom && $orderDateTo) {
 if ($paymentMethodStatus) {
     $sql .= " AND o.paymentMethodStatus = :paymentMethodStatus";
     $params[':paymentMethodStatus'] = $paymentMethodStatus;
+}
+
+if ($orderStatus) {
+    $sql .= " AND o.orderStatus = :orderStatus";
+    $params[':orderStatus'] = $orderStatus;
 }
 
 $stmt = $pdo->prepare($sql);
@@ -135,6 +141,15 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <option value="クレジットカード" <?php if ($paymentMethodStatus == 'クレジットカード') echo 'selected'; ?>>クレジットカード</option>
                 <option value="銀行振込" <?php if ($paymentMethodStatus == '銀行振込') echo 'selected'; ?>>銀行振込</option>
                 <option value="代引き" <?php if ($paymentMethodStatus == '代引き') echo 'selected'; ?>>代引き</option>
+            </select>
+        </div>
+        <div>
+            <label for="orderStatus">注文ステータス: </label>
+            <select id="orderStatus" name="orderStatus">
+                <option value="">選択</option>
+                <option value="受注済み" <?php if ($orderStatus == '受注済み') echo 'selected'; ?>>受注済み</option>
+                <option value="配送中" <?php if ($orderStatus == '配送中') echo 'selected'; ?>>配送中</option>
+                <option value="配送完了" <?php if ($orderStatus == '配送完了') echo 'selected'; ?>>配送完了</option>
             </select>
         </div>
         <div class="action-buttons">
