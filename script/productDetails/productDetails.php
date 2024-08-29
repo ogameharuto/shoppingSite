@@ -59,15 +59,18 @@ function renderStars($rating) {
         </div>
         <div class="productList">
             <div class="product">
-                <div class="image">
-                    <?php if (!empty($images)): ?>
-                        <?php foreach ($images as $image): ?>
+            <div class="image">
+                <?php if (!empty($images)): ?>
+                    <?php foreach ($images as $image): ?>
+                        <div class="image-wrapper">
                             <img src="../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>画像がありません。</p>
-                    <?php endif; ?>
-                </div>
+                            <button class="favorite-button" data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">&#9829;</button> <!-- ハート型ボタン -->
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>画像がありません。</p>
+                <?php endif; ?>
+            </div>
                 <div class="detail">
                     <div class="mdItemName">
                         <p class="elName"><?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?></p>
@@ -199,6 +202,44 @@ function renderStars($rating) {
                 </div>
             </div>
         </div>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteButtons = document.querySelectorAll('.favorite-button');
+
+    favoriteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productNumber = this.getAttribute('data-product-number');
+            
+            // ボタンの色を変更
+            this.classList.toggle('active');
+            
+            // 商品番号を取得（ここで商品番号を使用して処理を行う）
+            console.log('商品番号:', productNumber);
+
+            // AJAXリクエストで商品番号をサーバーに送信
+            fetch('addFavorite.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productNumber: productNumber })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('商品がテーブルに追加されました。');
+                } else {
+                    console.log('エラーが発生しました:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('エラーが発生しました:', error);
+            });
+        });
+    });
+});
+
+        </script>
     </div>
 </body>
 </html>
