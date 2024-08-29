@@ -35,7 +35,7 @@ VALUES
 :deliveryPostCode, :deliveryPhone, :deliveryDateTime, :paymentMethodStatus, :billingName, 
 :billingFurigana, :billingAddress, :billingPostCode, :billingPhone);";
 $params[':customerNumber'] = $_SESSION['customer']['customerNumber'];
-$params[':orderDateTime'] = date("Y年m月d日 H:i:s");
+$params[':orderDateTime'] = date("Y-m-d H:i:s");
 $params[':orderStatus'] = $orderStatus;
 $params[':deliveryName'] = $deliveryName;
 $params[':deliveryFurigana'] = $deliveryFurigana;
