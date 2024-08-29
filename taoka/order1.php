@@ -235,7 +235,6 @@
                             <label for="expiryDate">有効期限 <nobr><span>（必須）</span></nobr></label>
                             <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"
                                 pattern="\d{2}/\d{2}" required data-error-message="MM/YY の形式で入力してください">
-                            <span id="expiryDateError" class="hidden">存在する日付を入力してください。</span>
                         </div>
                         <div class="form-group">
                             <label for="securityCode">セキュリティコード <nobr><span>（必須）</span></nobr></label>
