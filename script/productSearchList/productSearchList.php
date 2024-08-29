@@ -1,16 +1,20 @@
 <?php
 session_start(); // セッション開始
+require_once('../../utilConnDB.php');
+
+$utilConnDB = new UtilConnDB();
+$pdo = $utilConnDB->connect();
 
 // セッションから検索結果を取得
 $products = $_SESSION['products'] ?? [];
 $query = $_SESSION['searchTerm'] ?? '';
 $images = $_SESSION['images'] ?? [];
+$customerNumber = $_SESSION['customer']['customerNumber'];
 
 // セッションデータの削除
 unset($_SESSION['products']);
 unset($_SESSION['searchTerm']);
 unset($_SESSION['images']);
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -83,21 +87,27 @@ unset($_SESSION['images']);
                                 } else {
                                     echo '<p>画像がありません。</p>';
                                 }
+                                
+                                // お気に入りに追加されているか確認
+                                $favoriteActive = false;
+                                $sql = "SELECT COUNT(*) FROM favoriteProducts WHERE customerNumber = :customerNumber AND productNumber = :productNumber";
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->bindParam(':customerNumber', $customerNumber, PDO::PARAM_INT);
+                                $stmt->bindParam(':productNumber', $product['productNumber'], PDO::PARAM_INT);
+                                $stmt->execute();
+                                
+                                $count = $stmt->fetchColumn();
+                                if ($count > 0) {
+                                    $favoriteActive = true;
+                                }
                                 ?>
                                 <p><a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
                                 <p>
                                     <span class="price"><?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?>円</span>
-                                    <span class="postage">＋送料</span>
                                 </p>
-                                <p>
-                                    <a href="<?php echo htmlspecialchars($product['storeName'], ENT_QUOTES, 'UTF-8'); ?>" class="store">
-                                        <span><?php echo htmlspecialchars($product['storeName'], ENT_QUOTES, 'UTF-8'); ?></span>
-                                    </a>
-                                </p>
-                                <button class="favoriteBtn">
-                                    <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true" class="Symbol">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M39.4 11.57a8.94 8.94 0 0 0-12.55 0L24 14.4l-2.85-2.82a8.94 8.94,0 0 0-12.55 0 8.7 8.7 0 0 0 0 12.4l2.85 2.83 12.2 12.05c.2.2.51.2.7 0l1.05-1.02L36.55 26.8l2.85-2.82a8.7 8.7 0 0 0 0-12.4Z"></path>
-                                    </svg>
+                                <button class="favorite-button <?php echo $favoriteActive ? 'active' : ''; ?>"
+                                    data-product-number="<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                    data-customer-number="<?php echo htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8'); ?>">&#9829;
                                 </button>
                             </div>
                         </div>
@@ -108,58 +118,41 @@ unset($_SESSION['images']);
         </div>
     </main>
     <script>
-        function sortProducts() {
-            const productSort = document.getElementById('productSelect').value;
-            const priceSort = document.getElementById('priceSelect').value;
+        document.addEventListener('DOMContentLoaded', function() {
+            const favoriteButtons = document.querySelectorAll('.favorite-button');
 
-            fetch('fetchProducts.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    productSort: productSort,
-                    priceSort: priceSort
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                renderProducts(data);
-            })
-            .catch(error => console.error('Error:', error));
-        }
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productNumber = this.getAttribute('data-product-number');
+                    const customerNumber = this.getAttribute('data-customer-number');
+                    const isActive = this.classList.contains('active');
 
-        function renderProducts(products) {
-            const productList = document.getElementById('productList');
-            productList.innerHTML = '';
+                    // ボタンの色を変更
+                    this.classList.toggle('active');
 
-            products.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.classList.add('product');
-                productDiv.innerHTML = `
-                    <div class="width">
-                        ${product.images.map(image => `<img src="../imageIns/uploads/${image.imageName}" alt="${image.imageName}" width="120" height="120">`).join('') || '<p>画像がありません。</p>'}
-                        <p><a href="productDetailsMain.php?productNumber=${product.productNumber}" class="text">${product.productName}</a></p>
-                        <p>
-                            <span class="price">${product.price}円</span>
-                            <span class="postage">＋送料</span>
-                        </p>
-                        <p>
-                            <a href="${product.storeName}" class="store">
-                                <span>${product.storeName}</span>
-                            </a>
-                        </p>
-                        <button class="favoriteBtn">
-                            <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true" class="Symbol">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M39.4 11.57a8.94 8.94 0 0 0-12.55 0L24 14.4l-2.85-2.82a8.94 8.94,0 0 0-12.55 0 8.7 8.7 0 0 0 0 12.4l2.85 2.83 12.2 12.05c.2.2.51.2.7 0l1.05-1.02L36.55 26.8l2.85-2.82a8.7 8.7 0 0 0 0-12.4Z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                `;
+                    // AJAXリクエストで商品番号と顧客番号をサーバーに送信
+                    fetch('../productDetails/toggleFavorite.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productNumber: productNumber, customerNumber: customerNumber, isActive: isActive })
 
-                productList.appendChild(productDiv);
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('お気に入りリストが更新されました。');
+                        } else {
+                            console.log('エラーが発生しました:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('エラーが発生しました:', error);
+                    });
+                });
             });
-        }
+        });
     </script>
 </body>
 </html>

@@ -187,3 +187,15 @@ a {
     background-color: #ffcc00;
     border-color: #ffcc00;
 }
+.favorite-button {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 40px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.favorite-button.active {
+    color: palevioletred;
+}

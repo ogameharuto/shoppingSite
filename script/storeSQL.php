@@ -126,29 +126,40 @@ public function selectCartItems($pdo, $customerNumber) {
     }
     
 
-    //商品の情報更新
-    public function productUpdSelect($pdo, $selectedProductNumbers){
+    public function productUpdSelect($pdo, $selectedProductNumbers) {
         // SQLクエリの作成
         $sql = "SELECT 
-                    p.productNumber AS productNumber, 
-                    p.productName AS productName, 
-                    p.price AS price, 
-                    p.dateAdded AS dateAdded,
-                    p.releaseDate AS releaseDate,
-                    i.imageHash AS imageHash, 
-                    i.imageName AS imageName
-                FROM product p
-                LEFT JOIN images i ON p.imageNumber = i.imageNumber
-                WHERE p.productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
-    
-        // クエリの準備と実行
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($selectedProductNumbers);
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-        return $products;
-    }
+            p.productNumber AS productNumber, 
+            p.productName AS productName, 
+            p.price AS price, 
+            p.dateAdded AS dateAdded,
+            p.releaseDate AS releaseDate,
+            i.imageHash AS imageHash, 
+            i.imageName AS imageName,
+            sc.storeCategoryNumber AS storeCategoryNumber,
+            sc.storeCategoryName AS storeCategoryName,
+            c.categoryNumber AS categoryNumber,
+            c.categoryName AS categoryName
+        FROM product p
+        LEFT JOIN images i ON p.imageNumber = i.imageNumber
+        LEFT JOIN storeCategory sc ON p.storeCategoryNumber = sc.storeCategoryNumber
+        LEFT JOIN category c ON p.categoryNumber = c.categoryNumber
+        WHERE p.productNumber IN (" . implode(',', array_fill(0, count($selectedProductNumbers), '?')) . ")";
 
+        
+        // クエリの準備と実行
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($selectedProductNumbers);
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $products;
+        } catch (PDOException $e) {
+            // エラーハンドリング
+            error_log('Query failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
     // 顧客番号に基づいて商品データを取得
     public function productSelect($pdo, $storeNumber){
         $sql = "SELECT productNumber, productName, categoryNumber, stockQuantity, pageDisplayStatus 
@@ -172,23 +183,26 @@ public function selectCartItems($pdo, $customerNumber) {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //商品検索
+    // 商品検索
     public function searchProducts($pdo, $query) {
         // SQLクエリの構築
         $sql = "SELECT p.productNumber, p.productName, p.price, p.productDescription, c.categoryName, s.storeName
                 FROM product p
                 JOIN category c ON p.categoryNumber = c.categoryNumber
                 JOIN store s ON p.storeNumber = s.storeNumber
-                WHERE p.productName LIKE :query 
-                OR c.categoryName LIKE :query 
-                OR s.storeName LIKE :query 
-                OR p.productDescription LIKE :query";
-    
+                WHERE p.pageDisplayStatus = 1
+                AND (
+                    p.productName LIKE :query 
+                    OR c.categoryName LIKE :query 
+                    OR s.storeName LIKE :query 
+                    OR p.productDescription LIKE :query
+                )";
+        
         // 子カテゴリも含める
         $sql .= " OR c.categoryNumber IN (SELECT categoryNumber FROM category WHERE parentCategoryNumber IN (SELECT categoryNumber FROM category WHERE categoryName LIKE :query))";
         
         $stmt = $pdo->prepare($sql);
-    
+
         // パラメータのバインド
         $stmt->bindValue(':query', '%' . $query . '%');
         
@@ -198,7 +212,7 @@ public function selectCartItems($pdo, $customerNumber) {
         
         return $products; // 結果を返す
     }
-    
+
     // 商品番号からストア情報を取得
     public function getStoreByProductNumber($pdo, $productNumber) {
         $sql = "
@@ -356,9 +370,9 @@ public function selectCartItems($pdo, $customerNumber) {
     }
 
 // 商品ごとの詳細データと画像を取得
-public function fetchProductDataAndImages($pdo, $productNumber) {
+public function fetchProductDataAndImages($pdo, $productNumbers) {
     // プレースホルダーを作成
-    $placeholders = implode(',', array_fill(0, count($productNumber), '?'));
+    $placeholders = implode(',', array_fill(0, count($productNumbers), '?'));
 
     $sql = "
         SELECT 
@@ -378,11 +392,12 @@ public function fetchProductDataAndImages($pdo, $productNumber) {
         FROM product p
         LEFT JOIN images i ON p.imageNumber = i.imageNumber
         WHERE p.productNumber IN ($placeholders)
+        AND p.pageDisplayStatus = 1
     ";
     
     try {
         $stmt = $pdo->prepare($sql);
-        $stmt->execute($productNumber);
+        $stmt->execute($productNumbers);
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {

@@ -36,6 +36,7 @@ $sql = "
     FROM product p
     LEFT JOIN images i ON p.imageNumber = i.imageNumber
     WHERE p.categoryNumber IN (" . implode(',', array_fill(0, count($categoryIds), '?')) . ")
+    AND p.pageDisplayStatus = 1
 ";
 $stmt = $pdo->prepare($sql);
 $stmt->execute($categoryIds);

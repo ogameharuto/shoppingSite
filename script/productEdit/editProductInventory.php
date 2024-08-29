@@ -1,10 +1,27 @@
 <?php
 session_start();
 
-// 商品一覧ページから送信された選択された商品のIDを取得
-$products = $_SESSION['product'] ?? [];
-?>
+// データベース接続設定
+require_once('../../utilConnDB.php');
+$utilConnDB = new UtilConnDB();
+$pdo = $utilConnDB->connect();
 
+// 商品一覧ページから送信された選択された商品のIDを取得
+$products = $_SESSION['products'] ?? [];
+$storeNumber = $_SESSION['store']['storeNumber'];
+// カテゴリ情報を取得
+$sql = "SELECT categoryNumber, categoryName FROM category";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$shoppCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// カテゴリ情報を取得
+$sql = "SELECT storeCategoryNumber, storeCategoryName FROM storecategory WHERE storeNumber = :storeNumber";
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':storeNumber', $storeNumber, PDO::PARAM_INT);
+$stmt->execute();
+$storeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +42,6 @@ $products = $_SESSION['product'] ?? [];
             <p>商品の情報を編集します。変更内容を確認してください。</p>
         </div>
         <div class="content">
-            <!-- enctype を追加 -->
             <form action="updateInventory.php" method="POST" enctype="multipart/form-data" onsubmit="return confirmUpdate();">
                 <table class="edit-table">
                     <thead>
@@ -35,6 +51,8 @@ $products = $_SESSION['product'] ?? [];
                             <th>編集する商品画像</th>
                             <th>商品名</th>
                             <th>特価</th>
+                            <th>ショップカテゴリ</th>
+                            <th>ストアカテゴリ</th>
                             <th>販売開始日</th>
                             <th>販売終了日</th>
                         </tr>
@@ -58,6 +76,26 @@ $products = $_SESSION['product'] ?? [];
                             </td>
                             <td>
                                 <input type="text" name="price[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>">
+                            </td>
+                            <td>
+                                <select name="storeCategoryNumber[<?php echo htmlspecialchars($product['productNumber']); ?>]">
+                                    <?php foreach ($storeCategories as $category): ?>
+                                        <option value="<?php echo htmlspecialchars($category['storeCategoryNumber']); ?>"
+                                            <?php if ($product['storeCategoryNumber'] == $category['storeCategoryNumber']) echo 'selected'; ?>>
+                                            <?php echo htmlspecialchars($category['storeCategoryName']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="categoryNumber[<?php echo htmlspecialchars($product['productNumber']); ?>]">
+                                    <?php foreach ($shoppCategories as $category): ?>
+                                        <option value="<?php echo htmlspecialchars($category['categoryNumber']); ?>"
+                                            <?php if ($product['categoryNumber'] == $category['categoryNumber']) echo 'selected'; ?>>
+                                            <?php echo htmlspecialchars($category['categoryName']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </td>
                             <td>
                                 <input type="text" name="dateAdded[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($product['dateAdded']); ?>">

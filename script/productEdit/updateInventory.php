@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $specialPrices = $_POST['price'] ?? [];
     $startDates = $_POST['dateAdded'] ?? [];
     $endDates = $_POST['releaseDate'] ?? [];
+    $storeCategoryNumbers = $_POST['storeCategoryNumber'] ?? [];
+    $categoryNumbers = $_POST['categoryNumber'] ?? [];
 
     // データ検証
     foreach ($specialPrices as $productNumber => $price) {
@@ -37,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $price = $specialPrices[$productNumber] ?? null;
             $dateAdded = $startDates[$productNumber] ?? null;
             $releaseDate = $endDates[$productNumber] ?? null;
+            $storeCategoryNumber = $storeCategoryNumbers[$productNumber] ?? null;
+            $categoryNumber = $categoryNumbers[$productNumber] ?? null;
 
             // 画像のアップロード処理
             $imageNumber = null; // デフォルトでは null に設定
@@ -122,6 +126,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($imageNumber !== null) {
                 $sql .= ", imageNumber = :imageNumber";
             }
+            if ($storeCategoryNumber !== null) {
+                $sql .= ", storeCategoryNumber = :storeCategoryNumber";
+            }
+            if ($categoryNumber !== null) {
+                $sql .= ", categoryNumber = :categoryNumber";
+            }
             $sql .= " WHERE productNumber = :productNumber";
 
             $statement = $pdo->prepare($sql);
@@ -132,6 +142,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $statement->bindParam(':productNumber', $productNumber, PDO::PARAM_INT);
             if ($imageNumber !== null) {
                 $statement->bindParam(':imageNumber', $imageNumber, PDO::PARAM_INT);
+            }
+            if ($storeCategoryNumber !== null) {
+                $statement->bindParam(':storeCategoryNumber', $storeCategoryNumber, PDO::PARAM_INT);
+            }
+            if ($categoryNumber !== null) {
+                $statement->bindParam(':categoryNumber', $categoryNumber, PDO::PARAM_INT);
             }
 
             $statement->execute();

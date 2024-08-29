@@ -104,7 +104,6 @@ if (isset($_POST['categoryName'])) {
             <td>{$product['productNumber']}</td>
             <td>{$productImage}</td>
             <td>{$product['productName']}</td>
-            <td>{$categoryName}</td>
             <td>{$product['stockQuantity']}</td>
             <td>{$status}</td>
         </tr>";
