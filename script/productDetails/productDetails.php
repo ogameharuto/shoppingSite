@@ -1,15 +1,35 @@
 <?php
 session_start();
+require_once('../../utilConnDB.php');
+
+$utilConnDB = new UtilConnDB();
+$pdo = $utilConnDB->connect();
 
 $product = isset($_SESSION['product']) ? $_SESSION['product'] : null;
 $categoryTreeHTML = isset($_SESSION['categoryTreeHTML']) ? $_SESSION['categoryTreeHTML'] : '';
 $reviews = isset($_SESSION['reviews']) ? $_SESSION['reviews'] : [];
 $stores = isset($_SESSION['stores']) ? $_SESSION['stores'] : null;
 $images = isset($_SESSION['image']) ? $_SESSION['image'] : [];
+$customerNumber = isset($_SESSION['customer']['customerNumber']) ? $_SESSION['customer']['customerNumber'] : null;
 
 if (!$product || !$stores) {
     echo "表示するデータがありません。";
     exit;
+}
+
+$favoriteActive = false;
+
+if ($customerNumber) {
+    $sql = "SELECT COUNT(*) FROM favoriteProducts WHERE customerNumber = :customerNumber AND productNumber = :productNumber";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':customerNumber', $customerNumber, PDO::PARAM_INT);
+    $stmt->bindParam(':productNumber', $product['productNumber'], PDO::PARAM_INT);
+    $stmt->execute();
+    
+    $count = $stmt->fetchColumn();
+    if ($count > 0) {
+        $favoriteActive = true; 
+    }
 }
 
 function renderStars($rating) {
@@ -60,7 +80,10 @@ function renderStars($rating) {
                     <?php foreach ($images as $image): ?>
                         <div class="image-wrapper">
                             <img src="../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
-                            <button class="favorite-button" data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">&#9829;</button>
+                            <button class="favorite-button <?= $favoriteActive ? 'active' : '' ?>"
+                                    data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>" 
+                                    data-customer-number="<?= htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8') ?>">&#9829;
+                            </button>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -200,25 +223,24 @@ document.addEventListener('DOMContentLoaded', function() {
     favoriteButtons.forEach(button => {
         button.addEventListener('click', function() {
             const productNumber = this.getAttribute('data-product-number');
-            
+            const customerNumber = this.getAttribute('data-customer-number');
+            const isActive = this.classList.contains('active');
+
             // ボタンの色を変更
             this.classList.toggle('active');
-            
-            // 商品番号を取得（ここで商品番号を使用して処理を行う）
-            console.log('商品番号:', productNumber);
 
-            // AJAXリクエストで商品番号をサーバーに送信
-            fetch('favoriteproducts.php', {
+            // AJAXリクエストで商品番号と顧客番号をサーバーに送信
+            fetch('toggleFavorite.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ productNumber: productNumber })
+                body: JSON.stringify({ productNumber: productNumber, customerNumber: customerNumber, isActive: isActive })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log('商品がテーブルに追加されました。');
+                    console.log('商品がお気に入りに追加されました。');
                 } else {
                     console.log('エラーが発生しました:', data.message);
                 }

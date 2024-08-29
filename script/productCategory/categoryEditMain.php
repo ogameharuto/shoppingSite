@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $storeCategoryNumber = isset($_POST['storeCategoryNumber']) ? intval($_POST['storeCategoryNumber']) : null;
     $storeCategoryName = isset($_POST['storeCategoryName']) ? trim($_POST['storeCategoryName']) : null;
     $parentStoreCategoryNumber = isset($_POST['parentStoreCategoryNumber']) ? (empty($_POST['parentStoreCategoryNumber']) ? null : intval($_POST['parentStoreCategoryNumber'])) : null;
-
     if ($storeCategoryNumber === null || empty($storeCategoryName)) {
         die("カテゴリ番号またはカテゴリ名が不足しています。");
     }

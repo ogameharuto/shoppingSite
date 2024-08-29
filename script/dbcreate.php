@@ -53,7 +53,8 @@ $tables = [
   'store',
   'customer',
   'category',
-  'deliveryOptions'
+  'deliveryOptions',
+  'favoriteProducts'
 ];
 
 foreach ($tables as $table) {

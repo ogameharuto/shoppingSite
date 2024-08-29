@@ -1,41 +1,15 @@
 <?php
+session_start();
 require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-// GETパラメータからproductNumberを取得
-$productNumber = json_decode(file_get_contents('php://input'), true);
-$customerNumber = 2;
+$customerNumber = $_GET['userId'];
 
 try {
     if (!$pdo->inTransaction()) {
         $pdo->beginTransaction();
     }
-    
-    // データの抽出
-    $sql = "SELECT customerNumber FROM customer";
-    $stmt = $pdo->query($sql);
-
-    // データの挿入
-    $insertSql = "INSERT INTO favoriteproducts (customerNumber, productNumber, addeddate) 
-                  VALUES (:customerNumber, :productNumber, :addeddate)";
-    $insertStmt = $pdo->prepare($insertSql);
-
-    // 現在の日時を取得
-    $addeddate = date('Y-m-d H:i:s');
-
-    // 各顧客に対してデータを挿入
-//    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $insertStmt->execute([
-            ':customerNumber' => $customerNumber,
-            ':productNumber' => $productNumber['productNumber'],
-            ':addeddate' => $addeddate
-        ]);
-  //  }
-
-    $pdo->commit(); // トランザクションのコミット
-    /*echo 'Data inserted successfully.';*/
-
     // 挿入されたデータを取得して表示するためのクエリ
     $productsSql = "
         SELECT fp.productNumber, fp.customerNumber,  p.productName, p.price, p.storeNumber ,i.imageNumber,i.imageName
@@ -46,14 +20,12 @@ try {
 
     ";
     $productsStmt = $pdo->prepare($productsSql);
-    $productsStmt->execute([
-                            ':customerNumber' => $customerNumber,]);
+    $productsStmt->execute([':customerNumber' => $customerNumber,]);
     $products = $productsStmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $pdo->rollBack(); // エラー発生時にロールバック
     echo 'Error: ' . $e->getMessage();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
