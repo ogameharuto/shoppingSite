@@ -248,7 +248,7 @@
             <hr>
             <h3>お届け方法</h3>
             <label for="deliveryMethod" class="radiolabel">
-                <input type="radio" id="deliveryMethod" name="deliveryMethod" value="宅配便">
+                <input type="radio" id="deliveryMethod" name="deliveryMethod" value="宅配便" checked>
                 宅配便
             </label>
             <h3>お届け希望日(翌日から一週間後まで)</h3>
@@ -262,7 +262,13 @@
                 // 日付をフォーマットして表示
                 $dateString = $currentDate->format('Y年m月d日');
                 echo '<label class="radiolabel">';
-                echo '<input type="radio" name="desiredDeliveryDate" value="' . $dateString . '"> ' . $dateString;
+                echo '<input type="radio" name="desiredDeliveryDate" value="' . $dateString . '"';
+                if($i == 0){
+                    echo 'checked> ' . $dateString;
+                }
+                else{
+                    echo '> ' . $dateString;
+                }
                 echo '</label>';
 
                 // 次の日に進める
@@ -271,7 +277,7 @@
             ?>
             <h3>お届け希望時刻</h3>
             <label class="radiolabel">
-                <input type="radio" name="desiredDeliveryTime" value="06:00~09:00">06:00~09:00
+                <input type="radio" name="desiredDeliveryTime" value="06:00~09:00" checked>06:00~09:00
             </label>
             <label class="radiolabel">
                 <input type="radio" name="desiredDeliveryTime" value="09:00~12:00">09:00~12:00
