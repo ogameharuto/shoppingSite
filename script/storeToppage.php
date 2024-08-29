@@ -28,8 +28,7 @@ if (!isset($_SESSION['store'])) {
     <div class="content-header">
         <span>お客様番号:<?php echo $storeNumber['storeNumber'] ?></span>
         <span class="name">お名前：<?php echo $storeNumber['companyRepresentative'] ?>さん</span>
-        （<a href="" class="">登録情報</a>-
-        <a href="login/logOut.php" class="logOut">ログアウト</a>）
+        （<a href="login/logOut.php" class="logOut">ログアウト</a>）
     </div>
     <div class="container">
         <aside class="sidebar">
