@@ -12,20 +12,17 @@ require_once ('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-// カテゴリパスを取得
-$categoryPath = isset($_GET['category']) ? $_GET['category'] : '';
+$sql = "SELECT storeCategoryNumber, storeCategoryName FROM storeCategory";
 
-if (isset($_SESSION['skillBeans'])) {
-    $skillBeans = $_SESSION['skillBeans'];
-    /* SESSION変数をクリア */
-    unset($_SESSION['skillBeans']);
-}
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$storeCategoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $sql = "SELECT categoryName, categoryNumber FROM category";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$categoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$shoppCategoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -54,12 +51,22 @@ $categoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <br>
             <input type="number" name="price" size="22" value="" required/>
             <p />
-            カテゴリ
+            ショップカテゴリ
             <br>
-            <select name="category" required>
+            <select name="shoppCategory" required>
                 <?php
-                foreach ($categoryList as $list) {
+                foreach ($shoppCategoryList as $list) {
                     echo '<option value="' . $list["categoryNumber"] . '">' . $list["categoryName"] . '</option>';
+                }
+                ?>
+            </select>
+            <p />
+            ストアカテゴリ
+            <br>
+            <select name="storeCategory" required>
+                <?php
+                foreach ($storeCategoryList as $list) {
+                    echo '<option value="' . $list["storeCategoryNumber"] . '">' . $list["storeCategoryName"] . '</option>';
                 }
                 ?>
             </select>

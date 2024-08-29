@@ -1,11 +1,26 @@
-function escapeHtml(text) {
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded and parsed');  // ページ読み込み時の確認
+
+    const messageElement = document.getElementById('message');
+    if (messageElement && messageElement.dataset.message) {
+        alert(messageElement.dataset.message);
+    }
+
+    const categoriesElement = document.getElementById('categories');
+
+    // カテゴリのクリックイベントを監視
+    categoriesElement.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.tagName === 'A') {
+            e.preventDefault(); // デフォルトのリンク遷移を防ぐ
+            const path = target.getAttribute('data-path');  // データパス属性を直接取得
+            console.log('Category clicked:', path);  // カテゴリクリック時のログ
+
+            updateBreadcrumb(path);  // パンくずリストを更新
+            fetchProducts({ category: path });  // 商品リストを更新
+        }
+    });
+});
 
 // パンくずリストを更新する関数
 function updateBreadcrumb(path) {
@@ -15,13 +30,13 @@ function updateBreadcrumb(path) {
         const linkPath = parts.slice(0, index + 1).join('/');
         return `<a href="#" data-path="${linkPath}">${escapeHtml(part)}</a>`;
     }).join(' > ');
-    // カテゴリをクリックしたときの商品一覧の取得
-    fetchProducts({ category: path });
+    console.log('Breadcrumb updated:', breadcrumbElement.innerHTML);  // パンくずリスト更新時のログ
 }
 
 // 商品リストを更新する関数
 function updateProductList(products) {
     const productsElement = document.getElementById('products');
+    console.log('Updating product list with products:', products);  // 商品リスト更新時のログ
 
     const formElement = document.createElement('form');
     formElement.id = 'productForm';
@@ -71,6 +86,7 @@ async function fetchProducts(params) {
     try {
         const url = new URL('fetch_products.php', window.location.href);
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+        console.log('Fetching products from:', url.toString());  // リクエストURLの確認
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -82,21 +98,12 @@ async function fetchProducts(params) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const messageElement = document.getElementById('message');
-    if (messageElement && messageElement.dataset.message) {
-        alert(messageElement.dataset.message);
-    }
-
-    const categoriesElement = document.getElementById('categories');
-
-    // カテゴリのクリックイベントを監視
-    categoriesElement.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target.tagName === 'A') {
-            e.preventDefault(); // デフォルトのリンク遷移を防ぐ
-            const path = target.parentElement.getAttribute('data-path');
-            updateBreadcrumb(path);
-        }
-    });
-});
+// HTMLエスケープ関数
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}

@@ -12,7 +12,8 @@ $pdo = $utilConnDB->connect();
 /* HTMLからデータを受け取る */
 $productName = htmlspecialchars($_POST['productName'], ENT_QUOTES, 'utf-8');
 $price = htmlspecialchars($_POST['price'], ENT_QUOTES, 'utf-8');
-$category = htmlspecialchars($_POST['category'], ENT_QUOTES, 'utf-8');
+$shoppCategory = htmlspecialchars($_POST['shoppCategory'], ENT_QUOTES, 'utf-8');
+$storeCategory = htmlspecialchars($_POST['storeCategory'], ENT_QUOTES, 'utf-8');
 $stock = htmlspecialchars($_POST['stock'], ENT_QUOTES, 'utf-8');
 $productDescription = htmlspecialchars($_POST['productDescription'], ENT_QUOTES, 'utf-8');
 $releaseDate = htmlspecialchars($_POST['releaseDate'], ENT_QUOTES, 'utf-8');
@@ -117,8 +118,8 @@ if (isset($_FILES['image'])) {
         $result = $productInsertStmt->execute([
             ':productName' => $productName,
             ':price' => $price,
-            ':categoryNumber' => $category,
-            ':storeCategoryNumber' => null,
+            ':categoryNumber' => $shoppCategory,
+            ':storeCategoryNumber' => $storeCategory,
             ':stockQuantity' => $stock,
             ':productDescription' => $productDescription,
             ':dateAdded' => date("Y-m-d"),

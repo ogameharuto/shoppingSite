@@ -172,12 +172,11 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                             <?php if (!empty($categoryTree)): ?>
                                 <ul>
                                     <?php
-                                    function renderTree($tree, $parentPath = 'ストアトップ')
-                                    {
+                                    function renderTree($tree, $parentPath = 'ストアトップ') {
                                         foreach ($tree as $node) {
                                             $currentPath = $parentPath . '/' . $node['storeCategoryName'];
-                                            echo '<li data-path="' . $currentPath . '">';
-                                            echo '<a href="#" onclick="updateBreadcrumb(\'' . $currentPath . '\')">' . $node['storeCategoryName'] . '</a>';
+                                            echo '<li data-path="' . htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') . '">';
+                                            echo '<a href="#" data-path="' . htmlspecialchars($currentPath, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($node['storeCategoryName'], ENT_QUOTES, 'UTF-8') . '</a>';
                                             if (!empty($node['children'])) {
                                                 echo '<ul>';
                                                 renderTree($node['children'], $currentPath);
@@ -185,7 +184,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                                             }
                                             echo '</li>';
                                         }
-                                    }
+                                    }                                    
                                     // ツリーの表示
                                     renderTree($categoryTree);
                                     ?>
