@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
         echo "更新が正常に完了しました。";
 
-        header('Location: ../../taoka/A.php');
+        header('Location: ../../taoka/productManagerMenu.php');
     } catch (Exception $e) {
         // エラーが発生した場合はロールバック
         if ($pdo->inTransaction()) {

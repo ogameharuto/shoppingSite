@@ -46,7 +46,7 @@ $userName = $user['customerName'];
             </div>
             <div class="nav-icons">
                 <a href="http://localhost/shopp/script/cart/cartMain.php?userId=<?php echo urlencode($userId); ?>" class="icon cart">カート</a>
-                <a href="UFav01.php?userId=<?php echo urlencode($userId); ?>" class="icon favorites">お気に入り</a>
+                <a href="http://localhost/shopp/script/productDetails/favoriteList.php?userId=<?php echo urlencode($userId); ?>" class="icon favorites">お気に入り</a>
                 <a href="UOdr01.php?userId=<?php echo urlencode($userId); ?>" class="icon orders">注文履歴</a>
                 <a href="http://localhost/shopp/script/myPage.php?userId=<?php echo urlencode($userId); ?>" class="icon profile">マイページ</a>
             </div>

@@ -42,12 +42,6 @@ if (!$stores) {
 // 商品データと画像を取得
 $productData = $storeSQL->fetchProductDataAndImages($pdo, [$productNumber]); // 修正: 配列として渡す
 
-
-// 画像データをデバッグ
-echo "<pre>";
-print_r($productData);
-echo "</pre>";
-
 // セッションにデータを保存
 $_SESSION['product'] = $product;
 $_SESSION['categoryTreeHTML'] = $categoryTreeHTML;
