@@ -9,6 +9,7 @@ $sql = "
     SELECT p.productNumber, p.productName, p.price, p.categoryNumber, p.stockQuantity, p.productDescription, p.dateAdded, p.releaseDate, p.storeNumber, p.pageDisplayStatus, i.imageHash, i.imageName
     FROM product p
     LEFT JOIN images i ON p.imageNumber = i.imageNumber
+    WHERE p.pageDisplayStatus = 1
 ";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
