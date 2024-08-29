@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (defaultRadio) {
         defaultRadio.dispatchEvent(new Event('change'));
     };
-
     // フォームの送信時にバリデーションを行う
     document.getElementById('orderForm').addEventListener('submit', function (event) {
         const inputs = this.querySelectorAll('input[required]');
@@ -88,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault(); // バリデーションエラーがあればフォーム送信を防ぐ
         }
     });
-
     function isValidDate(month, year) {
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear() % 100;
