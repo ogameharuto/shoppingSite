@@ -31,11 +31,11 @@ if (isset($_SESSION['product'])) {
                 <thead>
                     <tr>
                         <th>商品コード</th>
-                        <th>商品名/オプション</th>
+                        <th>商品画像</th>
+                        <th>商品名</th>
                         <th>在庫数</th>
                         <th>指定方法</th>
                         <th>設定値</th>
-                        <th>在庫数を超えた注文</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,10 +62,6 @@ if (isset($_SESSION['product'])) {
                         </td>
                         <td>
                             <input type="text" name="value[<?php echo htmlspecialchars($product['productNumber']); ?>]">
-                        </td>
-                        <td>
-                            <input type="radio" name="allow_overflow[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="1"> 注文可能
-                            <input type="radio" name="disallow_overflow[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="0"> 注文不可
                         </td>
                     </tr>
                     <?php endforeach; ?>

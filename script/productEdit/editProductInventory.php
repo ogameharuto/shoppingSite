@@ -57,7 +57,7 @@ $products = $_SESSION['product'] ?? [];
                                 <input type="text" name="productName[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($product['productName']); ?>">
                             </td>
                             <td>
-                                <input type="text" name="price[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?>">
+                                <input type="text" name="price[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>">
                             </td>
                             <td>
                                 <input type="text" name="dateAdded[<?php echo htmlspecialchars($product['productNumber']); ?>]" value="<?php echo htmlspecialchars($product['dateAdded']); ?>">

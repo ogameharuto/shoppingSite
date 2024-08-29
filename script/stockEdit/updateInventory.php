@@ -15,8 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // データの取得
     $methods = $_POST['method'] ?? [];
     $values = $_POST['value'] ?? [];
-    $allowOverflow = $_POST['allow_overflow'] ?? [];
-    $disallowOverflow = $_POST['disallow_overflow'] ?? [];
 
     try {
         // トランザクションが既に開始されている場合はスキップ
