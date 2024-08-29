@@ -64,6 +64,17 @@ if ($stmt) {
         $quantity = $item['quantity'];
         $price = $item['price'];
 
+        // 在庫の確認
+        $sql = "SELECT stockQuantity FROM product WHERE productNumber = :productNumber";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':productNumber' => $productNumber]);
+        $currentStock = $stmt->fetchColumn();
+
+        if ($currentStock < $quantity) {
+            // 在庫が不足している場合
+            throw new Exception("商品番号 $productNumber の在庫が不足しています。");
+        }
+        
         $sql = "INSERT INTO orderdetail 
     (orderNumber, productNumber, quantity, price) 
     VALUES
@@ -79,6 +90,18 @@ if ($stmt) {
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
     }
+    // 在庫数の更新
+    $sql = "UPDATE product 
+        SET stockQuantity = stockQuantity - :quantity 
+        WHERE productNumber = :productNumber;";
+    
+    $params = [
+        ':quantity' => $quantity,
+        ':productNumber' => $productNumber
+    ];
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
 
     $result = $cartDAO->deleteCartItem($pdo, $customerNumber, $productNumber);
     if ($result) {
