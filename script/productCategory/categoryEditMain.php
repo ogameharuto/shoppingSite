@@ -2,7 +2,9 @@
 require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
+session_start();
 
+$storeNumber = $_SESSION['store']['storeNumber'] ?? null; // storeNumberを正しく取得
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // サニタイズと検証
     $storeCategoryNumber = isset($_POST['storeCategoryNumber']) ? intval($_POST['storeCategoryNumber']) : null;
@@ -15,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // 親カテゴリが存在するか確認
     if ($parentStoreCategoryNumber !== null) {
-        $query = "SELECT COUNT(*) FROM storecategory WHERE storeCategoryNumber = ?";
+        $query = "SELECT COUNT(*) FROM storecategory WHERE storeCategoryNumber = ? AND storeNumber = ?";
         $stmt = $pdo->prepare($query);
-        $stmt->execute([$parentStoreCategoryNumber]);
+        $stmt->execute([$parentStoreCategoryNumber, $storeNumber]);
         $exists = $stmt->fetchColumn();
         
         if (!$exists) {
@@ -26,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // 更新クエリの準備と実行
-    $query = "UPDATE storecategory SET storeCategoryName = :storeCategoryName, parentStoreCategoryNumber = :parentStoreCategoryNumber WHERE storeCategoryNumber = :storeCategoryNumber";
+    $query = "UPDATE storecategory SET storeCategoryName = :storeCategoryName, parentStoreCategoryNumber = :parentStoreCategoryNumber WHERE storeCategoryNumber = :storeCategoryNumber AND storeNumber = :storeNumber";
     $stmt = $pdo->prepare($query);
     
     try {
@@ -37,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([
             ':storeCategoryName' => $storeCategoryName,
             ':parentStoreCategoryNumber' => $parentStoreCategoryNumber,
-            ':storeCategoryNumber' => $storeCategoryNumber
+            ':storeCategoryNumber' => $storeCategoryNumber,
+            ':storeNumber' => $storeNumber // 正しくstoreNumberを渡す
         ]);
 
         // コミット
