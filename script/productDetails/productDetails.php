@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('商品番号:', productNumber);
 
             // AJAXリクエストで商品番号をサーバーに送信
-            fetch('addFavorite.php', {
+            fetch('favoriteproducts.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
