@@ -51,10 +51,6 @@ function renderStars($rating) {
                 <div class="top-section">
                 <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">会社概要</a>
                 </div>
-                <div class="bottom-section">
-                    <a href="#?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">カテゴリ</a>
-                    <a href="#">お問い合わせ</a>
-                </div>
             </div>
         </div>
         <div class="productList">
@@ -64,7 +60,7 @@ function renderStars($rating) {
                     <?php foreach ($images as $image): ?>
                         <div class="image-wrapper">
                             <img src="../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
-                            <button class="favorite-button" data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">&#9829;</button> <!-- ハート型ボタン -->
+                            <button class="favorite-button" data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">&#9829;</button>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -104,11 +100,6 @@ function renderStars($rating) {
                                 <div class="elContent">
                                 </div>
                             </div>
-                            <p class="elExpandMore">
-                                <button type="button" class="elMoreButton" data-itemComment-parts="button">
-                                    <span class="elMoreButtonText">もっと見る</span>
-                                </button>
-                            </p>
                         </div>
                     </div>
                 </div>
