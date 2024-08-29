@@ -1,6 +1,7 @@
 <?php
 require_once('../../utilConnDB.php');
-
+session_start();
+$storeNumber = $_SESSION['store'];
 try {
     $utilConnDB = new UtilConnDB();
     $pdo = $utilConnDB->connect();
@@ -18,10 +19,11 @@ try {
             }
 
             // カテゴリをDBに追加
-            $query = "INSERT INTO storecategory (storeCategoryName, parentStoreCategoryNumber) VALUES (:storeCategoryName, :parentStoreCategoryNumber)";
+            $query = "INSERT INTO storecategory (storeCategoryName, parentStoreCategoryNumber, storeNumber) VALUES (:storeCategoryName, :parentStoreCategoryNumber, :storeNumber)";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(':storeCategoryName', $storeCategoryName);
             $stmt->bindParam(':parentStoreCategoryNumber', $parentStoreCategoryNumber);
+            $stmt->bindParam(':storeNumber', $storeNumber['storeNumber']);
 
             if ($stmt->execute()) {
                 // 成功時にコミット
@@ -44,18 +46,29 @@ try {
         }
     }
 
-    // カテゴリデータの取得
-    $query = "SELECT * FROM storecategory";
-    $result = $pdo->query($query);
-
-    if (!$result) {
-        throw new Exception("クエリ実行に失敗しました: " . $pdo->errorInfo()[2]);
+    try {
+        // カテゴリデータの取得
+        $sql = "SELECT * FROM storecategory WHERE storeNumber = :storeNumber";
+        $stmt = $pdo->prepare($sql);
+    
+        // クエリの実行
+        $stmt->execute([':storeNumber' => $storeNumber['storeNumber']]);
+    
+        // 結果の取得
+        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        // 結果が空の場合の処理
+        if (empty($categories)) {
+            throw new Exception("クエリ実行に失敗しました: " . $pdo->errorInfo()[2]);
+        }
+    
+    
+    } catch (Exception $e) {
+        $message = "エラーが発生しました: " . $e->getMessage();
+        error_log($message);
+        echo $message;
     }
-
-    $categories = [];
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        $categories[] = $row;
-    }
+    
 
 } catch (Exception $e) {
     $message = "エラーが発生しました: " . $e->getMessage();

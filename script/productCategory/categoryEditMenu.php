@@ -2,6 +2,13 @@
 require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
+session_start();
+
+$storeNumber = $_SESSION['store'] ?? null;
+
+if (!$storeNumber) {
+    die("ストア番号が設定されていません。");
+}
 
 // カテゴリ番号が指定されているか確認
 if (!isset($_GET['storeCategoryNumber'])) {
@@ -21,9 +28,9 @@ if (!$category) {
 }
 
 // すべてのカテゴリを取得して親カテゴリの選択肢を生成
-$query = "SELECT * FROM storecategory WHERE storeCategoryNumber != ?";
+$query = "SELECT * FROM storecategory WHERE storeCategoryNumber != ? AND storeNumber = ?";
 $stmt = $pdo->prepare($query);
-$stmt->execute([$storeCategoryNumber]);
+$stmt->execute([$storeCategoryNumber, $storeNumber['storeNumber']]);
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -41,7 +48,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <label for="storeCategoryName">カテゴリ名:</label>
         <input type="text" id="storeCategoryName" name="storeCategoryName" value="<?php echo htmlspecialchars($category['storeCategoryName']); ?>" required>
         <label for="parentstoreCategoryNumber">親カテゴリ (任意):</label>
-        <select id="parentstoreCategoryNumber" name="parentstoreCategoryNumber">
+        <select id="parentstoreCategoryNumber" name="parentStoreCategoryNumber">
             <option value="">-- 親カテゴリを選択 --</option>
             <?php foreach ($categories as $cat): ?>
                 <option value="<?php echo htmlspecialchars($cat['storeCategoryNumber']); ?>"
@@ -49,7 +56,6 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php echo htmlspecialchars($cat['storeCategoryName']); ?>
                 </option>
             <?php endforeach; ?>
-            <!-- 親カテゴリなしの選択肢 -->
             <option value="" <?php echo $category['parentStoreCategoryNumber'] === null ? 'selected' : ''; ?>>親カテゴリなし</option>
         </select>
         <input type="submit" value="保存">
