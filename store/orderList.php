@@ -114,7 +114,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>注文管理 - 新規注文一覧</title>
-    <link rel="stylesheet" href="orderList.css">
+    <link rel="stylesheet" href="../css/orderList.css">
 </head>
 <body>
     <h1>注文管理 - 新規注文一覧</h1>

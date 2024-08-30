@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('../../utilConnDB.php');
-require_once('../storeSQL.php');
+require_once('../../storeSQL.php');
 
 $utilConnDB = new UtilConnDB();
 $storeSQL = new StoreSQL();

@@ -12,7 +12,7 @@ if (isset($_SESSION['product'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulk Edit Inventory</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
     <script>
         function confirmUpdate() {
             return confirm("在庫を更新してもよろしいですか？");
@@ -26,7 +26,7 @@ if (isset($_SESSION['product'])) {
             <p>在庫設定の指定方法を選択し、在庫数を入力します。</p>
         </div>
         <div class="content">
-        <form action="updateInventory.php" method="POST" onsubmit="return confirmUpdate();">
+        <form action="updateStock.php" method="POST" onsubmit="return confirmUpdate();">
             <table class="edit-table">
                 <thead>
                     <tr>

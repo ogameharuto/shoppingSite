@@ -28,7 +28,7 @@ if (isset($_FILES['image'])) {
     $imageError = $image['error'];
     $imageType = $image['type'];
 
-    $targetDir = "uploads/"; // アップロードするディレクトリ
+    $targetDir = "../../uploads/"; // アップロードするディレクトリ
     $targetFile = $targetDir . basename($imageName);
     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 

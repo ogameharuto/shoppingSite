@@ -90,10 +90,11 @@ if(empty($user['customerNumber'])){
 <head>
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
-    <link rel="stylesheet" href="clientToppage.css">
+    <link rel="stylesheet" href="css/clientToppage.css">
+    <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
-<?php include "header.php"; ?>
+<?php include "client/header.php"; ?>
 <div class="container">
     <div class="sidebar">
         <h2>カテゴリから探す</h2>
@@ -101,7 +102,7 @@ if(empty($user['customerNumber'])){
             <?php foreach ($categories as $category): ?>
                 <?php if ($category['parentCategoryNumber'] == 0): ?>
                     <li class="parent-category">
-                        <a href="categoryMain.php?categoryNumber=<?= htmlspecialchars($category['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="client/category/categoryMain.php?categoryNumber=<?= htmlspecialchars($category['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
                             <?= htmlspecialchars($category['categoryName'], ENT_QUOTES, 'UTF-8') ?>
                         </a>
                         <?php
@@ -113,7 +114,7 @@ if(empty($user['customerNumber'])){
                             <ul class="child-categories">
                                 <?php foreach ($childCategories as $childCategory): ?>
                                     <li>
-                                        <a href="categoryMain.php?categoryNumber=<?= htmlspecialchars($childCategory['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <a href="client/category/categoryMain.php?categoryNumber=<?= htmlspecialchars($childCategory['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
                                             <?= htmlspecialchars($childCategory['categoryName'], ENT_QUOTES, 'UTF-8') ?>
                                         </a>
                                     </li>
@@ -133,7 +134,7 @@ if(empty($user['customerNumber'])){
                 <div class="product-list">
                     <?php foreach ($products as $product): ?>
                         <div class="product">
-                            <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                            <a href="client/productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
                             <?php if (!empty($product['imageHash'])): ?>
                                 <img src="uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
                             <?php else: ?>
@@ -163,7 +164,7 @@ if(empty($user['customerNumber'])){
                             <div class="product-list">
                                 <?php foreach ($categoryProducts as $product): ?>
                                     <div class="product">
-                                        <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <a href="client/productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
                                             <?php if (!empty($product['imageHash'])): ?>
                                                 <img src="uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
                                             <?php else: ?>

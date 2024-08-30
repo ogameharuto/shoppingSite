@@ -1,5 +1,5 @@
 <?php
-require_once('../utilConnDB.php');
+require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 session_start();
@@ -25,7 +25,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ストア管理</title>
-    <link rel="stylesheet" href="store.css">
+    <link rel="stylesheet" href="../css/store.css">
 </head>
 <body>
     <h1>ストア管理</h1>
@@ -76,7 +76,7 @@ try {
                             <td><?php echo htmlspecialchars($storeItem['contactEmailAddress'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($storeItem['password'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
-                                <a href="storeInformation.php?id=<?php echo htmlspecialchars($storeItem['storeNumber'], ENT_QUOTES, 'UTF-8'); ?>">編集</a>
+                                <a href="informationEditMenu.php?id=<?php echo htmlspecialchars($storeItem['storeNumber'], ENT_QUOTES, 'UTF-8'); ?>">編集</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

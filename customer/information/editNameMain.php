@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
         
         // 成功時にリダイレクト
-        header('Location: UInfop01.php');
+        header('Location: informationEditMenu.php');
         exit();
     } catch (PDOException $e) {
         // エラー発生時はロールバック

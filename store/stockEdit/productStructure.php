@@ -6,7 +6,7 @@ $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 // ログイン確認
 if (!isset($_SESSION['store'])) {
-    header("Location: http://localhost/shopp/script/login/loginMenu.php");
+    header("Location: http://localhost/shopp/store/login/loginMenu.php");
     exit();
 }
 
@@ -114,11 +114,11 @@ $categoryTree = buildTree($categories);
     <div class="container">
         <div class="header">
             <div class="navbar">
-                <a href="http://localhost/shopp/script/storeToppage.php" class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
-                <a href="http://localhost/shopp/taoka/productManagerMenu.php" class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
-                <a href="http://localhost/shopp/script/stockEdit/productStructure.php" class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
-                <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php" class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
-                <a href="http://localhost/shopp/script/productCategory/categoryManagement.php" class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
+                <a href="../../storeToppage.php" class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
+                <a href="http://localhost/shopp/store/productManagerMenu.php" class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
+                <a href="http://localhost/shopp/store/stockEdit/productStructure.php" class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
+                <a href="http://localhost/shopp/store/imageIns/imageInsMenu.php" class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
+                <a href="http://localhost/shopp/store/productCategory/categoryManagement.php" class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
             </div>
         </div>
         <div class="content">
@@ -237,7 +237,7 @@ $categoryTree = buildTree($categories);
 
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'editProductInventoryMain.php';
+            form.action = 'editProductStockMain.php';
 
             selectedItems.forEach((item) => {
                 const input = document.createElement('input');

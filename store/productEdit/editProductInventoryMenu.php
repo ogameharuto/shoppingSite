@@ -28,7 +28,7 @@ $storeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品編集</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
     <script>
         function confirmUpdate() {
             return confirm("商品を更新してもよろしいですか？");
