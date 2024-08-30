@@ -127,11 +127,11 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                     class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
                 <a href="productManagerMenu.php"
                     class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
-                <a href="http://localhost/shopp/script/stockEdit/productStructure.php"
+                <a href="http://localhost/shopp/store/stockEdit/productStructure.php"
                     class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
-                <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php"
+                <a href="http://localhost/shopp/store/imageIns/imageInsMenu.php"
                     class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
-                <a href="http://localhost/shopp/script/productCategory/categoryManagement.php" 
+                <a href="http://localhost/shopp/store/productCategory/categoryManagement.php" 
                     class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
             </div>
         </div>
@@ -208,7 +208,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                     <button form="productForm" type="submit" id="deleteButton" onclick="{return checkDel()}">削除</button>
                 </div>
                 <div id="products">
-                    <form id="productForm" method="POST" action="delete_products.php">
+                    <form id="productForm" method="POST" action="productDel/productsDelete.php">
                         <table class="product-table">
                             <thead>
                                 <tr>
@@ -231,7 +231,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                                         <td><?php echo htmlspecialchars($row['productNumber'], ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
                                             <?php if (!empty($row['imageHash'])): ?>
-                                                <img src="productIns/uploads/<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                <img src="../uploads/<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>"
                                                     alt="Product Image" width="100">
                                             <?php else: ?>
                                                 画像なし
@@ -279,7 +279,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
         // POST リクエストを送信
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = 'productEdit/editProductInventoryMenu.php';
+        form.action = 'productEdit/editProductInventoryMain.php';
 
         selectedItems.forEach((item) => {
             const input = document.createElement('input');

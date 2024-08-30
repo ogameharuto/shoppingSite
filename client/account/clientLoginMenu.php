@@ -7,7 +7,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログイン</title>
-    <link rel="stylesheet" href="loginMenu.css">
+    <link rel="stylesheet" href="../../css/loginMenu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -33,7 +33,7 @@ session_start();
             unset($_SESSION['error']);
         }
         ?>
-        <a href="http://localhost/shopp/script/signUp/newRegistrationMenu.php">新規登録</a>
+        <a href="clientSignUpMenu.php">新規登録</a>
     </div>
     <script>
         function togglePasswordVisibility() {

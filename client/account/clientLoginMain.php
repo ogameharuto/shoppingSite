@@ -3,8 +3,8 @@ session_start();
 header('Content-Type:text/plain; charset=utf-8');
 
 require_once('../../utilConnDB.php');
-require_once('../storeSQL.php');
-require_once('../customerBeans.php');
+require_once('../../storeSQL.php');
+require_once('../clientBeans.php');
 
 $storeSQL = new StoreSQL();
 $utilConnDB = new UtilConnDB();

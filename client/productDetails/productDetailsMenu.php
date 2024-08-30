@@ -57,8 +57,8 @@ function renderStars($rating) {
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="productDetails.css" />
-    <link rel="stylesheet" type="text/css" href="../header.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/productDetails.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
     <title>商品詳細</title>
 </head>
 <body>
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.toggle('active');
 
             // AJAXリクエストで商品番号と顧客番号をサーバーに送信
-            fetch('toggleFavorite.php', {
+            fetch('../favorite/toggleFavorite.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

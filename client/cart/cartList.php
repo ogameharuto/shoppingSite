@@ -18,8 +18,8 @@ $hasItems = count($cartList) > 0;
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="cartList.css" />
-    <link rel="stylesheet" type="text/css" href="../header.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/cartList.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
     <title>カート一覧</title>
 </head>
 <body>
@@ -67,7 +67,7 @@ $hasItems = count($cartList) > 0;
                                             // Debugging: Print the $images array
                                             if (isset($images[$item['productNumber']])) {
                                                 foreach ($images[$item['productNumber']] as $image): ?>
-                                                    <a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                                                    <a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
                                                         <img src="../../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
                                                     </a>
                                                 <?php endforeach;
@@ -77,7 +77,7 @@ $hasItems = count($cartList) > 0;
                                             ?>
                                         </div>
                                         <div class="productDetail">
-                                            <a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?= urlencode($item['productNumber']) ?>" class="proDetail">
+                                            <a href="../productDetails/productDetailsMain.php?productNumber=<?= urlencode($item['productNumber']) ?>" class="proDetail">
                                                 <span class="productaa"><?= htmlspecialchars($item['productDescription'], ENT_QUOTES, 'UTF-8') ?></span>
                                             </a>
                                         </div>
@@ -147,7 +147,7 @@ $hasItems = count($cartList) > 0;
                                 合計金額 <?php echo number_format(htmlspecialchars($price)); ?>円
                             </div>
                         </div>
-                        <form class="order" action="../../taoka/order1.php" method="post">
+                        <form class="order" action="../order/orderProcedure.php" method="post">
                             <input type="submit" class="orderBtn" value="ご注文手続きへ">
                         </form>
                     </div>
@@ -178,7 +178,7 @@ $hasItems = count($cartList) > 0;
             <div class="cartNone">
                 カートに商品が入っていません
                 <p class="syopping">
-                <a href="http://localhost/shopp/script/clientToppage.php" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
+                <a href="../../clientToppage.php" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
                 </p>
             </div>
             <div class="topick">

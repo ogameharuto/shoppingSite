@@ -6,7 +6,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <title>注文完了</title>
-    <link rel="stylesheet" href="orderComplete.css">
+    <link rel="stylesheet" href="../../css/orderComplete.css">
 </head>
 
 <body>
@@ -14,7 +14,7 @@ session_start();
         <h1>注文が完了しました</h1>
         <p>ご注文いただき、ありがとうございます。</p>
         <p>ご注文番号: <?php echo htmlspecialchars($_SESSION['orderNumber']); ?></p>
-        <a href="../script/clientToppage.php">トップページへ戻る</a>
+        <a href="../../clientToppage.php">トップページへ戻る</a>
     </div>
 </body>
 </html>

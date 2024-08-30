@@ -8,20 +8,16 @@ $pdo = $utilConnDB->connect();
 // セッションから検索結果を取得
 $products = $_SESSION['products'] ?? [];
 $query = $_SESSION['searchTerm'] ?? '';
-$images = $_SESSION['images'] ?? [];
+$images = $_SESSION['sImages'] ?? [];
 $customerNumber = $_SESSION['customer']['customerNumber'];
 
-// セッションデータの削除
-unset($_SESSION['products']);
-unset($_SESSION['searchTerm']);
-unset($_SESSION['images']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="productSearchList.css" />
-    <link rel="stylesheet" type="text/css" href="../header.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/productSearchList.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
     <title>商品検索一覧</title>
 </head>
 <body>
@@ -101,7 +97,7 @@ unset($_SESSION['images']);
                                     $favoriteActive = true;
                                 }
                                 ?>
-                                <p><a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
+                                <p><a href="../productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
                                 <p>
                                     <span class="price"><?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?>円</span>
                                 </p>
@@ -131,7 +127,7 @@ unset($_SESSION['images']);
                     this.classList.toggle('active');
 
                     // AJAXリクエストで商品番号と顧客番号をサーバーに送信
-                    fetch('../productDetails/toggleFavorite.php', {
+                    fetch('../favorite/toggleFavorite.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

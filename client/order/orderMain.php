@@ -2,8 +2,8 @@
 date_default_timezone_set('Asia/Tokyo');
 session_start();
 /* インポート */
-require_once('../utilConnDB.php');
-require_once('../script/storeSQL.php');
+require_once('../../utilConnDB.php');
+require_once('../../storeSQL.php');
 $cartDAO = new StoreSQL();
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
@@ -120,5 +120,5 @@ if ($stmt) {
 
 //DB切断
 $utilConnDB->disconnect($pdo);
-header('Location: order4.php');
+header('Location: orderCompletion.php');
 ?>
