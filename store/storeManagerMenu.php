@@ -76,7 +76,7 @@ try {
                             <td><?php echo htmlspecialchars($storeItem['contactEmailAddress'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($storeItem['password'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
-                                <a href="editStore.php?id=<?php echo htmlspecialchars($storeItem['storeNumber'], ENT_QUOTES, 'UTF-8'); ?>">編集</a>
+                                <a href="storeInformation.php?id=<?php echo htmlspecialchars($storeItem['storeNumber'], ENT_QUOTES, 'UTF-8'); ?>">編集</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
