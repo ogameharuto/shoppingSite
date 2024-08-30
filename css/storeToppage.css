@@ -1,0 +1,151 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    padding: 10px 0;
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-logo h1 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.header-links a {
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.header-links a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.sidebar {
+    width: 300px;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-section {
+    margin-bottom: 20px;
+}
+
+.sidebar-section h2 {
+    background-color: lightskyblue;
+    margin: 0px;
+    font-size: 1.2em;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    border: solid 1px;
+    border-color: lightblue;
+}
+
+.sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: solid 1px;
+}
+
+.sidebar-list li {
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.sidebar-list .badge {
+    background-color: #ff4500;
+    color: #fff;
+    border-radius: 12px;
+    padding: 2px 8px;
+    margin-left: 10px;
+    font-size: 0.9em;
+}
+
+.sidebar-list li a {
+    color: #000;
+    text-decoration: none;
+}
+
+.sidebar-list li a:hover {
+    text-decoration: underline;
+}
+.subTitle{
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+.content-header {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    border: solid 1px;
+}
+
+.content-header span {
+    font-weight: bold;
+}
+
+.collapsible-header {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+}
+
+.collapsible-content {
+    display: none;
+    padding: 10px;
+    border-top: none;
+    border: 1px solid #ddd;
+    border-top: none;
+    background-color: #f9f9f9;
+}
+
+.content-body {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 5px;
+}
+.name{
+    padding-left: 54%;
+}
+.notifications {
+    margin-bottom: 20px;
+}
+
+.notifications h3 {
+    font-size: 1.1em;
+    margin-top: 0;
+}
+
+.notifications p {
+    margin: 10px 0;
+}
