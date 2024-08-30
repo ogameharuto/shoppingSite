@@ -23,7 +23,7 @@ if ($customer) {
     $_SESSION['customer'] = $customer;
     /* DB切断 */
     $utilConnDB->disconnect($pdo);
-    header('Location: ../clientToppage.php');
+    header('Location: ../../clientToppage.php');
     exit;
 } else {
     $_SESSION['error'] = "メールアドレスまたはパスワードが正しくありません。";
