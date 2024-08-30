@@ -97,7 +97,7 @@ if (isset($_POST['categoryName'])) {
         $status = $product['pageDisplayStatus'] ? '公開中' : '非公開';
 
         // 商品画像を追加
-        $productImage = !empty($product['imageName']) ? "<img src='../uploads/{$product['imageName']}' alt='{$product['imageName']}' width='100'>" : '画像なし';
+        $productImage = !empty($product['imageName']) ? "<img src='../../uploads/{$product['imageName']}' alt='{$product['imageName']}' width='100'>" : '画像なし';
 
         $productListHTML .= "<tr>
             <td><input type='checkbox' name='product[]' value='{$product['productNumber']}'></td>

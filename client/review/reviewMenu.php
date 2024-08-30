@@ -41,7 +41,7 @@ $reviews = $stmtReviews->fetchAll();
 <body>
     <div class="product-info">
         <?php if ($product): ?>
-            <img src="../uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productDescription'], ENT_QUOTES, 'UTF-8') ?>" width="150" height="150">
+            <img src="../../uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productDescription'], ENT_QUOTES, 'UTF-8') ?>" width="150" height="150">
             <p class="product-name"><?= htmlspecialchars($product['productDescription'], ENT_QUOTES, 'UTF-8') ?></p>
         <?php else: ?>
             <p>商品情報が見つかりません。</p>
@@ -74,7 +74,7 @@ $reviews = $stmtReviews->fetchAll();
         <?php if ($reviews): ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review">
-                    <img src="../uploads/<?= htmlspecialchars($review['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($review['productDescription'], ENT_QUOTES, 'UTF-8') ?>" width="100" height="100">
+                    <img src="../../uploads/<?= htmlspecialchars($review['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($review['productDescription'], ENT_QUOTES, 'UTF-8') ?>" width="100" height="100">
                     <p class="product-name"><?= htmlspecialchars($review['productDescription'], ENT_QUOTES, 'UTF-8') ?></p>
                     <p class="evaluation">
                         評価:

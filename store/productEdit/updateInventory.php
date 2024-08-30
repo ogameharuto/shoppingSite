@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 画像のアップロード処理
             $imageNumber = null; // デフォルトでは null に設定
             if (isset($productImages['name'][$productNumber]) && !empty($productImages['name'][$productNumber])) {
-                $targetDir = "../uploads/";
+                $targetDir = "../../uploads/";
                 $targetFile = $targetDir . basename($productImages["name"][$productNumber]);
                 $uploadOk = 1;
                 $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
