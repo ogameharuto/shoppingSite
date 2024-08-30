@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_image_number']
             $deleteStmt = $pdo->prepare($deleteSql);
             $deleteStmt->execute([':imageNumber' => $imageNumber, ':storeNumber' => $storeNumber]);
 
-            $filePath = 'uploads/' . $imageName;
+            $filePath = '../../../uploads/' . $imageName;
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
@@ -99,7 +99,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <tr>
                     <td><?php echo $index + 1; ?></td>
                     <td><?php echo htmlspecialchars($image['imageName']); ?></td>
-                    <td><img src="../uploads/<?php echo htmlspecialchars($image['imageName']); ?>" alt="<?php echo htmlspecialchars($image['imageName']); ?>"></td>
+                    <td><img src="../../uploads/<?php echo htmlspecialchars($image['imageName']); ?>" alt="<?php echo htmlspecialchars($image['imageName']); ?>"></td>
                     <td><?php echo htmlspecialchars($image['addedDate']); ?></td>
                     <td>
                         <form action="" method="post">

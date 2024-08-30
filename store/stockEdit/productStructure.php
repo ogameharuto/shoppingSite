@@ -108,7 +108,7 @@ $categoryTree = buildTree($categories);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在庫管理</title>
-    <link rel="stylesheet" href="productStructure.css">
+    <link rel="stylesheet" href="../../css/productStructure.css">
 </head>
 <body>
     <div class="container">
@@ -202,7 +202,7 @@ $categoryTree = buildTree($categories);
                                 <td><?php echo htmlspecialchars($row['productNumber'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php if (!empty($row['imageHash'])): ?>
-                                        <img src="../uploads/<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>" width="100">
+                                        <img src="../../uploads/<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>" width="100">
                                     <?php else: ?>
                                         画像なし
                                     <?php endif; ?>
