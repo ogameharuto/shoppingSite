@@ -29,7 +29,7 @@ try {
 </head>
 <body>
     <h1>ストア管理</h1>
-    <button type="button" onclick="location.href='storeToppage.php'">戻る</button>
+    <button type="button" onclick="location.href='../storeToppage.php'">戻る</button>
     <div class="table-container">
         <table>
             <thead>
