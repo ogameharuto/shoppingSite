@@ -26,7 +26,7 @@ $hasItems = count($cartList) > 0;
     <div class="whole">
         <div class="top-bar topheader">
             <div class="logo">
-                <a href="http://localhost/shopp/script/clientToppage.php">
+                <a href="http://localhost/shopp/script/customerToppage.php">
                     <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
                 </a>
             </div>
@@ -178,7 +178,7 @@ $hasItems = count($cartList) > 0;
             <div class="cartNone">
                 カートに商品が入っていません
                 <p class="syopping">
-                <a href="http://localhost/shopp/script/clientToppage.php" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
+                <a href="http://localhost/shopp/script/customerToppage.php" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
                 </p>
             </div>
             <div class="topick">

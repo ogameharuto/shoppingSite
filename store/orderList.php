@@ -5,7 +5,7 @@ session_start();
 // ログイン確認
 if (!isset($_SESSION['store'])) {
     $_SESSION['message'] = "ログインが必要です。";
-    header("Location: account/clientLoginMenu.php");
+    header("Location: account/customerLoginMenu.php");
     exit();
 }
 

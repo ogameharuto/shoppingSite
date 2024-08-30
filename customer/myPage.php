@@ -7,7 +7,7 @@ $userName = $customer['customerName'] ?? null;
 // ログイン確認
 if ($userName == "ゲスト") {
     print($userName);
-    header("Location: http://localhost/shopp/script/login/clientLoginMenu.php");
+    header("Location: http://localhost/shopp/script/login/customerLoginMenu.php");
 }
 ?>
 <!DOCTYPE html>
