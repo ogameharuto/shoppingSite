@@ -42,7 +42,6 @@ $sql = "SELECT customerName
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':customerNumber' => $_SESSION['customer']['customerNumber'] ?? null]);
         $customerName = $stmt->fetch(PDO::FETCH_ASSOC);
-        echo $customerName['customerName'];
 
 if($customerName['customerName'] == 'ゲスト'){
     $_SESSION['login'] = null;
@@ -110,17 +109,11 @@ else{
 <head>
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
-<<<<<<< HEAD:customerToppage.php
     <link rel="stylesheet" href="css/customerToppage.css">
+    <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
 <?php include "customer/header.php"; ?>
-=======
-    <link rel="stylesheet" href="clientToppage.css">
-</head>
-<body>
-<?php include "header.php"; ?>
->>>>>>> origin/main:clientToppage.php
 <div class="container">
     <div class="sidebar">
         <h2>カテゴリから探す</h2>
@@ -128,11 +121,7 @@ else{
             <?php foreach ($categories as $category): ?>
                 <?php if ($category['parentCategoryNumber'] == 0): ?>
                     <li class="parent-category">
-<<<<<<< HEAD:customerToppage.php
                         <a href="customer/category/categoryMain.php?categoryNumber=<?= htmlspecialchars($category['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
-=======
-                        <a href="categoryMain.php?categoryNumber=<?= htmlspecialchars($category['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
->>>>>>> origin/main:clientToppage.php
                             <?= htmlspecialchars($category['categoryName'], ENT_QUOTES, 'UTF-8') ?>
                         </a>
                         <?php
@@ -144,11 +133,7 @@ else{
                             <ul class="child-categories">
                                 <?php foreach ($childCategories as $childCategory): ?>
                                     <li>
-<<<<<<< HEAD:customerToppage.php
                                         <a href="customer/category/categoryMain.php?categoryNumber=<?= htmlspecialchars($childCategory['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
-=======
-                                        <a href="categoryMain.php?categoryNumber=<?= htmlspecialchars($childCategory['categoryNumber'], ENT_QUOTES, 'UTF-8') ?>">
->>>>>>> origin/main:clientToppage.php
                                             <?= htmlspecialchars($childCategory['categoryName'], ENT_QUOTES, 'UTF-8') ?>
                                         </a>
                                     </li>
@@ -168,11 +153,7 @@ else{
                 <div class="product-list">
                     <?php foreach ($products as $product): ?>
                         <div class="product">
-<<<<<<< HEAD:customerToppage.php
                             <a href="customer/productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
-=======
-                            <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
->>>>>>> origin/main:clientToppage.php
                             <?php if (!empty($product['imageHash'])): ?>
                                 <img src="uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
                             <?php else: ?>
@@ -202,11 +183,7 @@ else{
                             <div class="product-list">
                                 <?php foreach ($categoryProducts as $product): ?>
                                     <div class="product">
-<<<<<<< HEAD:customerToppage.php
                                         <a href="customer/productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
-=======
-                                        <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
->>>>>>> origin/main:clientToppage.php
                                             <?php if (!empty($product['imageHash'])): ?>
                                                 <img src="uploads/<?= htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
                                             <?php else: ?>

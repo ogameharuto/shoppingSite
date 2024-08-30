@@ -7,7 +7,7 @@ $userName = $customer['customerName'] ?? null;
 // ログイン確認
 if ($userName == "ゲスト") {
     print($userName);
-    header("Location: http://localhost/shopp/script/login/customerLoginMenu.php");
+    header("Location: account/customerLoginMenu.php");
 }
 ?>
 <!DOCTYPE html>
@@ -16,8 +16,8 @@ if ($userName == "ゲスト") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>マイページ</title>
-    <link rel="stylesheet" href="myPage.css">
-    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="../css/myPage.css">
+    <link rel="stylesheet" href="../css/header.css">
     <script>
         function navigateTo(url) {
             window.location.href = url;
@@ -31,7 +31,7 @@ if ($userName == "ゲスト") {
     <nav>
         <div class="left-side">
             <h4 class="box">
-                <a href="http://localhost/shopp/script/customerInformation/customerInformation.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
+                <a href="information/customerInformation.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
             </h4>
         </div>
         <div class="right-side">

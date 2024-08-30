@@ -14,7 +14,7 @@ session_start();
         <h1>注文が完了しました</h1>
         <p>ご注文いただき、ありがとうございます。</p>
         <p>ご注文番号: <?php echo htmlspecialchars($_SESSION['orderNumber']); ?></p>
-        <a href="../script/customerToppage.php">トップページへ戻る</a>
+        <a href="../../customerToppage.php">トップページへ戻る</a>
     </div>
 </body>
 </html>

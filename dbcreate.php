@@ -273,7 +273,7 @@ $pdo->exec($sql);
 // カートデータ挿入
 $sql = "INSERT INTO cart (customerNumber, productNumber, quantity, dateAdded) VALUES
   (1, 1, 1, '2024-07-29 09:00:00'),
-  (1, 3, 2, '2024-07-29 09:05:00'),
+  (1, 2, 2, '2024-07-29 09:05:00'),
   (2, 2, 1, '2024-07-29 09:10:00');";
 $pdo->exec($sql);
 
