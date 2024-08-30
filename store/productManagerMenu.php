@@ -9,7 +9,7 @@ $pdo = $utilConnDB->connect();
 
 // ログイン確認
 if (!isset($_SESSION['store'])) {
-    header("Location: http://localhost/shopp/script/login/loginMenu.php");
+    header("Location: account/loginMenu.php");
     exit();
 }
 
@@ -107,7 +107,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
 <head>
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
-    <link rel="stylesheet" href="../script/stockEdit/productStructure.css">
+    <link rel="stylesheet" href="../css/productStructure.css">
     <script src="product.js" defer></script>
 </head>
 
@@ -123,9 +123,9 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
     <div class="container">
         <div class="header">
             <div class="navbar">
-                <a href="http://localhost/shopp/script/storeToppage.php" 
+                <a href="../storeToppage.php" 
                     class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
-                <a href="http://localhost/shopp/taoka/productManagerMenu.php"
+                <a href="productManagerMenu.php"
                     class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
                 <a href="http://localhost/shopp/script/stockEdit/productStructure.php"
                     class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
@@ -231,7 +231,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
                                         <td><?php echo htmlspecialchars($row['productNumber'], ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
                                             <?php if (!empty($row['imageHash'])): ?>
-                                                <img src="../script/uploads/<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                <img src="productIns/uploads/<?php echo htmlspecialchars($row['imageName'], ENT_QUOTES, 'UTF-8'); ?>"
                                                     alt="Product Image" width="100">
                                             <?php else: ?>
                                                 画像なし
@@ -279,7 +279,7 @@ $categoriesJson = json_encode($categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HE
         // POST リクエストを送信
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '../script/productEdit/editProductInventoryMain.php';
+        form.action = 'productEdit/editProductInventoryMenu.php';
 
         selectedItems.forEach((item) => {
             const input = document.createElement('input');

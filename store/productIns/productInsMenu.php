@@ -8,14 +8,17 @@
 */
 
 /* インポート */
-require_once ('../utilConnDB.php');
+require_once ('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-$sql = "SELECT storeCategoryNumber, storeCategoryName FROM storeCategory";
+session_start();
+$storeNumber = $_SESSION['store']['storeNumber'];
+
+$sql = "SELECT storeCategoryNumber, storeCategoryName FROM storeCategory WHERE storeNumber = :storeNumber";
 
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$stmt->execute([':storeNumber' => $storeNumber]);
 $storeCategoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $sql = "SELECT categoryName, categoryNumber FROM category";

@@ -4,7 +4,7 @@ $storeNumber = $_SESSION['store'];
 
 // ログイン確認
 if (!isset($_SESSION['store'])) {
-    header("Location: http://localhost/shopp/store/account/storeLoginMenu.php");
+    header("Location: store/account/storeLoginMenu.php");
     exit();
 }
 
@@ -38,7 +38,7 @@ if (!isset($_SESSION['store'])) {
                     <li class="collapsible">
                         <div class="collapsible-header">注文管理</div>
                         <div class="collapsible-content">
-                        <p><a href="store/orderList.php">注文管理</a></p>
+                        <p><a href="orderList.php">注文管理</a></p>
                         </div>
                     </li>
                     <li class="collapsible">
@@ -46,15 +46,15 @@ if (!isset($_SESSION['store'])) {
                         <div class="collapsible-content">
                             <p><a href="store/productIns/productInsMenu.php">商品データ登録</a></p>
                             <p><a href="store/productManagerMenu.php">商品管理</a></p>
-                            <p><a href="store/productCategory/categoryManagement.php">カテゴリ管理</a></p>
-                            <p><a href="store/imageIns/imageInsMenu.php">画像管理</a></p>
-                            <p><a href="store/stockEdit/productStructure.php">在庫管理</a></p>
+                            <p><a href="productCategory/categoryManagement.php">カテゴリ管理</a></p>
+                            <p><a href="imageIns/imageInsMenu.php">画像管理</a></p>
+                            <p><a href="stockEdit/productStructure.php">在庫管理</a></p>
                         </div>
                     </li>
                     <li class="collapsible">
                         <div class="collapsible-header">ストア構築</div>
                         <div class="collapsible-content">
-                            <p><a href="store/storeManagerMenu.php">ストア情報設定</a></p>
+                            <p><a href="http://localhost/shopp/script/storeManagerMenu.php">ストア情報設定</a></p>
                         </div>
                     </li>
                 </ul>

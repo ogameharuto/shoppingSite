@@ -25,7 +25,7 @@ if (isset($_GET['storeNumber'])) {
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../storeInformation.css">
+    <link rel="stylesheet" href="storeInformation.css">
     <title>ストア情報</title>
 </head>
 <body>

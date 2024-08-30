@@ -4,5 +4,5 @@ unset($_SESSION['store']);
 
 unset($_SESSION['customer']);
 
-header('Location: loginMenu.php');
+header('Location: storeLoginMenu.php');
 ?>

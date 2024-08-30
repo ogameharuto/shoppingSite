@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登録確認</title>
-    <link rel="stylesheet" href="signUpMenu.css">
+    <link rel="stylesheet" href="../../css/signUpMenu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <h2>登録内容確認</h2>
-        <form action="signUpMain.php" method="post">
+        <form action="storeSignUpMain.php" method="post">
             <div class="group">
                 <label for="companyName">会社名</label>
                 <p><?php echo htmlspecialchars($_POST['companyName']); ?></p>
@@ -93,7 +93,7 @@
             </div>
             <button type="submit">登録を確定する</button>
         </form>
-        <form action="signUpMenu.php" method="post">
+        <form action="storeSignUpMenu.php" method="post">
             <?php
             foreach ($_POST as $key => $value) {
                 echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
