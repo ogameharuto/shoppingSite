@@ -8,6 +8,7 @@ $userName = $customer['customerName'] ?? null;
 if ($userName == "ゲスト") {
     print($userName);
     header("Location: account/customerLoginMenu.php");
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -21,6 +22,11 @@ if ($userName == "ゲスト") {
     <script>
         function navigateTo(url) {
             window.location.href = url;
+        }
+
+        function navigateToOrderHistory(customerNumber) {
+            const url = `orderHistory/orderHistoryMenu.php?customerNumber=${customerNumber}`;
+            navigateTo(url);
         }
     </script>
 </head>
@@ -36,11 +42,7 @@ if ($userName == "ゲスト") {
         </div>
         <div class="right-side">
             <ul>
-                <li><button onclick="navigateTo('')">注文履歴</button></li>
-                <li><button onclick="navigateTo('')">利用履歴</button></li>
-                <li><button onclick="navigateTo('')">サポート</button></li>
-                <li><button onclick="navigateTo('')">クーポン</button></li>
-                <li><button onclick="navigateTo('')">マイレビュー</button></li>
+                <li><button onclick="navigateToOrderHistory(<?php echo htmlspecialchars($userId); ?>)">注文履歴</button></li>
             </ul>
         </div>
     </nav>

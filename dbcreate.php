@@ -364,7 +364,7 @@ session_unset();
 
 <body>
 
-  <form name="myForm1" action="../taoka/index.php" method="post">
+  <form name="myForm1" action="customerToppage.php" method="post">
     <h2>実習No.3 データベース初期化（デバッグ用）</h2>
     データベースを初期化しました。
     <p />

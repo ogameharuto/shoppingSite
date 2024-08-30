@@ -11,8 +11,6 @@ $reviews = isset($_SESSION['reviews']) ? $_SESSION['reviews'] : [];
 $stores = isset($_SESSION['stores']) ? $_SESSION['stores'] : null;
 $images = isset($_SESSION['image']) ? $_SESSION['image'] : [];
 $customerNumber = isset($_SESSION['customer']['customerNumber']) ? $_SESSION['customer']['customerNumber'] : null;
-$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
-
 if (!$product || !$stores) {
     echo "表示するデータがありません。";
     exit;
@@ -202,7 +200,6 @@ function renderStars($rating) {
                                     <div class="elInputWrap">
                                         <input type="text" name="quantity" class="elQuantityInput" value="1" pattern="^[0-9０-９]+$" data-quantity-parts="input" maxlength="3">
                                     </div>
-                                    <span><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
                                 </div>
                                 <ul class="elQuantityConditions">
                                     <li class="elQuantityCondition">お一人さま、100点限り</li>
@@ -250,26 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('エラーが発生しました:', error);
             });
-        });
-    });
-});
-document.addEventListener('DOMContentLoaded', function() {
-    window.addEventListener('beforeunload', function(event) {
-        fetch('clearError.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ action: 'clearError' })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.success) {
-                console.error('エラーが発生しました:', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('エラーが発生しました:', error);
         });
     });
 });

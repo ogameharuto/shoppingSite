@@ -7,6 +7,7 @@ $cartList = $_SESSION['cartList'] ?? [];
 $couponNumber = $_SESSION['couponNumber'] ?? 0;
 $images = isset($_SESSION['images']) ? $_SESSION['images'] : [];
 $userName = $_SESSION['customer'] ?? null;
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 
 unset($_SESSION['couponNumber']);
 $price = 0;
@@ -44,6 +45,9 @@ $hasItems = count($cartList) > 0;
         <div class="cartListText">
             <h1 class="topTitle">ショッピングカート一覧</h1>
         </div>
+        <?php if ($error != null): ?>
+            <span class="error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
+        <?php endif; ?>
         <?php if ($hasItems): ?>
             <div class="shipping">
                 1週間以内に発送
@@ -209,6 +213,26 @@ function confirmDeletion(event) {
         event.preventDefault(); 
     }
 }
+document.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('beforeunload', function(event) {
+        fetch('clearError.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action: 'clearError' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                console.error('エラーが発生しました:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('エラーが発生しました:', error);
+        });
+    });
+});
 </script>
 </body>
 </html>
