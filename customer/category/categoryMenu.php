@@ -14,7 +14,7 @@ $categories = isset($_SESSION['category']) ? $_SESSION['category'] : [];
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($parentCategory['categoryName'], ENT_QUOTES, 'UTF-8') ?> - 商品一覧</title>
-    <link rel="stylesheet" href="clientToppage.css">
+    <link rel="stylesheet" href="customerToppage.css">
 </head>
 <body>
 <?php include "header.php"; ?>

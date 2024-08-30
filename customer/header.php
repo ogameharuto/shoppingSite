@@ -24,7 +24,7 @@ $userName = $user['customerName'];
     <header class="header">
         <div class="top-bar topheader">
             <div class="logo">
-                <a href="http://localhost/shopp/script/clientToppage.php">
+                <a href="http://localhost/shopp/script/customerToppage.php">
                     <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
                 </a>
             </div>
@@ -33,7 +33,18 @@ $userName = $user['customerName'];
             </div>
             <div class="top-links">
                 <a href="http://localhost/shopp/script/login/loginMenu.php">Yahoo! JAPAN 無料でお店を開こう！</a>
-                <a href="login/clientLogOut.php">ログアウト</a>
+                <?php
+                if(isset($_SESSION['login']))
+                {
+                    echo '<a href="customer/account/customerLogOut.php">ログアウト</a>';
+                }
+                else
+                {
+                    echo isset($_SESSION['login']);
+                    echo '<a href="customer/account/customerSignUpMenu.php">新規登録</a>';
+                    echo '<a href="customer/account/customerLoginMenu.php">ログイン</a>';
+                }
+                ?>
             </div>
         </div>
         <div class="middle-bar">
