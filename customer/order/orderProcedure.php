@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
     <link rel="stylesheet" href="../../css/order.css">
+    <script src="order.js"></script>
 </head>
 
 <body>

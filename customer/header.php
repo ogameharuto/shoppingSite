@@ -25,7 +25,7 @@ $userName = $user['customerName'] ?? '';
         <div class="top-bar topheader">
             <div class="logo">
                 <a href="http://localhost/shopp/customerToppage.php">
-                    <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
+                    <img src="http://localhost/shopp/yahooLogoImage/shopping_r_34_2x.png" alt="Yahoo! JAPAN" onclick="location.reload()">
                 </a>
             </div>
             <div class="user-info">
@@ -35,10 +35,10 @@ $userName = $user['customerName'] ?? '';
                 <a href="http://localhost/shopp/store/account/storeLoginMenu.php">Yahoo! JAPAN 無料でお店を開こう！</a>
                 <?php
                 if ($userName === 'ゲスト' || !$user) {
-                    echo '<a href="customer/account/customerLoginMenu.php">ログイン</a>';
-                    echo '<a href="customer/account/customerSignUpMenu.php">新規登録</a>';
+                    echo '<a href="http://localhost/shopp/store/account/customerLoginMenu.php">ログイン</a>';
+                    echo '<a href="http://localhost/shopp/store/account/customerSignUpMenu.php">新規登録</a>';
                 } else {
-                    echo '<a href="customer/account/customerLogOut.php">ログアウト</a>';
+                    echo '<a href="http://localhost/shopp/store/account/customerLogOut.php">ログアウト</a>';
                 }
                 ?>
             </div>

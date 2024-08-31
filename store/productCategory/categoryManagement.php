@@ -44,13 +44,13 @@ try {
         <div class="navbar">
             <a href="../storeToppage.php" 
                 class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
-            <a href="http://localhost/shopp/store/productManagerMenu.php"
+            <a href="../productManagerMenu.php"
                 class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
-            <a href="http://localhost/shopp/store/stockEdit/productStructure.php"
+            <a href="../stockEdit/productStructure.php"
                 class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
-            <a href="http://localhost/shopp/store/imageIns/imageInsMenu.php"
+            <a href="../imageIns/imageInsMenu.php"
                 class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
-            <a href="http://localhost/shopp/store/productCategory/categoryManagement.php"
+            <a href="../productCategory/categoryManagement.php"
                 class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
         </div>
     </div>

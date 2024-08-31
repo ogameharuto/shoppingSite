@@ -37,7 +37,6 @@ if ($storeNumber) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -48,7 +47,7 @@ if ($storeNumber) {
 </head>
 <body>
     <?php include "../header.php"; ?>
-    <h1>カテゴリの商品一覧</h1>
+    <h1 class="title">カテゴリの商品一覧</h1>
         <div class="container">
         <div class="categories">
             <h2>カテゴリ</h2>
@@ -74,7 +73,7 @@ if ($storeNumber) {
                             <?php endif; ?>
                             <div class="product-info">
                                 <h2><a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>"><?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></h2>
-                                <p>価格: <?= htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>円</p>
+                                <p>価格: <?= number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')) ?>円</p>
                             </div>
                         </div>
                     <?php endforeach; ?>
