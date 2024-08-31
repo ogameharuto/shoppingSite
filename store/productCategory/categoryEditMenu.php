@@ -4,6 +4,12 @@ $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 session_start();
 
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: ../account/storeLoginMenu.php");
+    exit();
+}
+
 $storeNumber = $_SESSION['store'] ?? null;
 
 if (!$storeNumber) {

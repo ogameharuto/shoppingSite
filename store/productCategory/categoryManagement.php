@@ -4,6 +4,12 @@ require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: ../account/storeLoginMenu.php");
+    exit();
+}
+
 $storeNumber = $_SESSION['store']['storeNumber'];
 $current_page = basename($_SERVER['PHP_SELF']);
 // カテゴリデータの取得

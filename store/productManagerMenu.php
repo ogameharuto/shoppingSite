@@ -9,7 +9,7 @@ $pdo = $utilConnDB->connect();
 
 // ログイン確認
 if (!isset($_SESSION['store'])) {
-    header("Location: account/loginMenu.php");
+    header("Location: account/storeLoginMenu.php");
     exit();
 }
 

@@ -33,74 +33,54 @@ if (isset($_GET['productNumber'])) {
     exit;
 }
 
-$sql = "SELECT customerName
-        FROM customer
-        WHERE customerNumber = :customerNumber
-        ";
-        
-        // パラメータをバインド
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':customerNumber' => $_SESSION['customer']['customerNumber'] ?? null]);
-        $customerName = $stmt->fetch(PDO::FETCH_ASSOC);
+// 顧客名の取得
+$sql = "SELECT customerName FROM customer WHERE customerNumber = :customerNumber";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([':customerNumber' => $_SESSION['customer']['customerNumber'] ?? null]);
+$customerName = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if($customerName['customerName'] == 'ゲスト'){
-    $_SESSION['login'] = null;
-}
-else if(isset($_SESSION['customer'])){
-    $user = $_SESSION['customer'];
-}
-
-if(empty($user['customerNumber'])){
-    $mailAddress = "";
-    try {
-        // メールアドレスを生成
+// ゲスト処理
+if (!isset($_SESSION['customer']) || empty($_SESSION['customer']['customerNumber'])) {
+    if (!isset($_SESSION['customer']) || $_SESSION['customer']['customerName'] != 'ゲスト') {
         $mailAddress = "random_email_" . uniqid() . "@example.com";
 
-        // INSERTクエリの準備
-        $sql = "
-        INSERT INTO customer (customerName, furigana, address, postCode, dateOfBirth, mailAddress, telephoneNumber, password) 
-        VALUES('ゲスト', 'ゲスト', 'なし', 'なし', '1980-01-01', :mailAddress, 'なし', 'なし')";
-        
-        // パラメータをバインド
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':mailAddress' => $mailAddress]);
+        try {
+            // ゲスト顧客の追加
+            $sql = "
+                INSERT INTO customer (customerName, furigana, address, postCode, dateOfBirth, mailAddress, telephoneNumber, password) 
+                VALUES('ゲスト', 'ゲスト', 'なし', 'なし', '1980-01-01', :mailAddress, 'なし', 'なし')";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':mailAddress' => $mailAddress]);
 
-        // コミット
-        $pdo->commit();
-    } catch (PDOException $e) {
-        // エラーハンドリング
-        echo "Error: " . $e->getMessage();
-        $pdo->rollBack(); // ロールバック
-        exit;
-    }
-
-    // 登録されたcustomerNumberを取得
-    try {
-        $sql = "
-        SELECT customerNumber
-        FROM customer
-        WHERE mailAddress = :mailAddress
-        ";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':mailAddress' => $mailAddress]);
-
-        // 単一の行を取得
-        $customer = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($customer) {
-            $customerNumber = intval($customer['customerNumber']);
-            $array = [];
-            $array['customerNumber'] = $customerNumber;
-            $array['customerName'] = 'ゲスト';
-            $_SESSION['customer'] = $array;
+            // コミット
+            $pdo->commit();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            $pdo->rollBack();
+            exit;
         }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-        exit;
-    };
+
+        try {
+            // 登録されたcustomerNumberを取得
+            $sql = "SELECT customerNumber FROM customer WHERE mailAddress = :mailAddress";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':mailAddress' => $mailAddress]);
+            $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($customer) {
+                $customerNumber = intval($customer['customerNumber']);
+                $_SESSION['customer'] = [
+                    'customerNumber' => $customerNumber,
+                    'customerName' => 'ゲスト'
+                ];
+            }
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            exit;
+        }
+    }
     $_SESSION['login'] = null;
-}
-else{
+} else {
     $_SESSION['login'] = "true";
 }
 ?>

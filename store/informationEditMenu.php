@@ -1,8 +1,13 @@
 <?php
+session_start();
 require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
-
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: account/storeLoginMenu.php");
+    exit();
+}
 
 try {
     // 編集するストアのIDを取得

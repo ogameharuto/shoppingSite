@@ -1,7 +1,7 @@
 <?php
-$user = $_SESSION['customer'];
-$userId = $user['customerNumber'];
-$userName = $user['customerName'];
+$user = $_SESSION['customer'] ?? null;
+$userId = $user['customerNumber'] ?? '';
+$userName = $user['customerName'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -29,20 +29,16 @@ $userName = $user['customerName'];
                 </a>
             </div>
             <div class="user-info">
-                <p>ようこそ、<?php echo htmlspecialchars($_SESSION['customer']['customerName'], ENT_QUOTES, 'UTF-8'); ?> さん LYPプレミアム会員登録 (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
+                <p>ようこそ、<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?> さん LYPプレミアム会員登録 (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
             </div>
             <div class="top-links">
                 <a href="http://localhost/shopp/store/account/storeLoginMenu.php">Yahoo! JAPAN 無料でお店を開こう！</a>
                 <?php
-                if(isset($_SESSION['login']))
-                {
-                    echo '<a href="customer/account/customerLogOut.php">ログアウト</a>';
-                }
-                else
-                {
-                    echo isset($_SESSION['login']);
-                    echo '<a href="customer/account/customerSignUpMenu.php">新規登録</a>';
+                if ($userName === 'ゲスト' || !$user) {
                     echo '<a href="customer/account/customerLoginMenu.php">ログイン</a>';
+                    echo '<a href="customer/account/customerSignUpMenu.php">新規登録</a>';
+                } else {
+                    echo '<a href="customer/account/customerLogOut.php">ログアウト</a>';
                 }
                 ?>
             </div>

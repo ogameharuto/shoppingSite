@@ -68,7 +68,7 @@ function renderStars($rating) {
             <span><?= htmlspecialchars($stores["storeName"], ENT_QUOTES, 'UTF-8'); ?></span>
             <div class="storeMenu">
                 <div class="top-section">
-                <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">会社概要</a>
+                <a href="../storeInformation/storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">会社概要</a>
                 </div>
             </div>
         </div>

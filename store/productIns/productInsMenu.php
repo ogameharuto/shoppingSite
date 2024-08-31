@@ -13,6 +13,13 @@ $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
 session_start();
+
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: ../account/storeLoginMenu.php");
+    exit();
+}
+
 $storeNumber = $_SESSION['store']['storeNumber'];
 
 $sql = "SELECT storeCategoryNumber, storeCategoryName FROM storeCategory WHERE storeNumber = :storeNumber";
