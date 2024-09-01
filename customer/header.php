@@ -32,7 +32,8 @@ $userName = $user['customerName'] ?? '';
                 <p>ようこそ、<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?> さん LYPプレミアム会員登録 (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
             </div>
             <div class="top-links">
-                <a href="http://localhost/shopp/store/account/storeLoginMenu.php">Yahoo! JAPAN 無料でお店を開こう！</a>
+                <a href="http://localhost/shopp/dbcreate.php">DB初期化（デバック用）</a><br>
+                <a href="http://localhost/shopp/store/account/storeLoginMenu.php">Yahoo! JAPAN 無料でお店を開こう！</a><br>
                 <?php
                 if ($userName === 'ゲスト' || !$user) {
                     echo '<a href="http://localhost/shopp/store/account/customerLoginMenu.php">ログイン</a>';
@@ -40,8 +41,7 @@ $userName = $user['customerName'] ?? '';
                 } else {
                     echo '<a href="http://localhost/shopp/store/account/customerLogOut.php">ログアウト</a>';
                 }
-                ?>
-            </div>
+                ?>            </div>
         </div>
         <div class="middle-bar">
             <p>毎日5% - LYPプレミアム特典 + 2%の商品券付与終了について </p>

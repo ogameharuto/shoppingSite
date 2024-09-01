@@ -84,7 +84,7 @@ try {
     }
 
     header('Content-Type: application/json');
-    echo json_encode(array_values($filteredProducts)); // 配列形式に変換
+    echo json_encode(array_values($filteredProducts));
 } catch (PDOException $e) {
     echo json_encode(['error' => 'SQLエラー: ' . $e->getMessage()]);
 } finally {

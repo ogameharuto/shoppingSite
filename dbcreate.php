@@ -363,13 +363,11 @@ session_unset();
 </head>
 
 <body>
-
-  <form name="myForm1" action="customerToppage.php" method="post">
-    <h2>実習No.3 データベース初期化（デバッグ用）</h2>
-    データベースを初期化しました。
-    <p />
-    <input type="submit" value="戻る" />
-  </form>
+<h2>データベース初期化（デバッグ用）</h2>
+    データベースを初期化しました。<br>
+    <p><a href="store/account/storeLoginMenu.php">ストアクリエイターProのログイン</a></p>
+    <p><a href="customer/account/customerLoginMenu.php">ヤフーショッピングのログイン</a></p>
+    <p><a href="customerToppage.php">ヤフーショッピングサイト</a></p>
 </body>
 
 </html>
