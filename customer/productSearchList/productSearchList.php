@@ -10,6 +10,7 @@ $products = $_SESSION['products'] ?? [];
 $query = $_SESSION['searchTerm'] ?? '';
 $images = $_SESSION['sImages'] ?? [];
 $customerNumber = $_SESSION['customer']['customerNumber'];
+$customerName = $_SESSION['customer']['customerName'];
 
 ?>
 <!DOCTYPE html>
@@ -101,9 +102,10 @@ $customerNumber = $_SESSION['customer']['customerNumber'];
                                 <p>
                                     <span class="price"><?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?>円</span>
                                 </p>
-                                <button class="favorite-button <?php echo $favoriteActive ? 'active' : ''; ?>"
-                                    data-product-number="<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" 
-                                    data-customer-number="<?php echo htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8'); ?>">&#9829;
+                                <button class="favorite-button <?= $favoriteActive ? 'active' : '' ?>"
+                                    data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>" 
+                                    data-customer-number="<?= htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8') ?>"
+                                    data-customer-name="<?= htmlspecialchars($customerName, ENT_QUOTES, 'UTF-8') ?>">&#9829;
                                 </button>
                             </div>
                         </div>
@@ -114,41 +116,46 @@ $customerNumber = $_SESSION['customer']['customerNumber'];
         </div>
     </main>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const favoriteButtons = document.querySelectorAll('.favorite-button');
+    document.addEventListener('DOMContentLoaded', function() {
+        const favoriteButtons = document.querySelectorAll('.favorite-button');
 
-            favoriteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const productNumber = this.getAttribute('data-product-number');
-                    const customerNumber = this.getAttribute('data-customer-number');
-                    const isActive = this.classList.contains('active');
+        favoriteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productNumber = this.getAttribute('data-product-number');
+                const customerNumber = this.getAttribute('data-customer-number');
+                const customerName = this.getAttribute('data-customer-name');
+                const isActive = this.classList.contains('active');
 
-                    // ボタンの色を変更
-                    this.classList.toggle('active');
+                if (customerName === 'ゲスト') {
+                    alert('ログインしてください。');
+                    return;
+                }
 
-                    // AJAXリクエストで商品番号と顧客番号をサーバーに送信
-                    fetch('../favorite/toggleFavorite.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ productNumber: productNumber, customerNumber: customerNumber, isActive: isActive })
+                // ボタンの色を変更
+                this.classList.toggle('active');
 
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log('お気に入りリストが更新されました。');
-                        } else {
-                            console.log('エラーが発生しました:', data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('エラーが発生しました:', error);
-                    });
+                // AJAXリクエストで商品番号と顧客番号をサーバーに送信
+                fetch('../favorite/toggleFavorite.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productNumber: productNumber, customerNumber: customerNumber, isActive: isActive })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('商品がお気に入りに追加されました。');
+                    } else {
+                        console.log('エラーが発生しました:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('エラーが発生しました:', error);
                 });
             });
         });
+    });
     </script>
 </body>
 </html>
