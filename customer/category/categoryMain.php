@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once('../utilConnDB.php');
-require_once('storeSQL.php');
+require_once('../../utilConnDB.php');
+require_once('../../storeSQL.php');
 
 $utilConnDB = new UtilConnDB();
 $storeSQL = new StoreSQL();
@@ -74,6 +74,6 @@ $_SESSION['parentCategories'] = $storeSQL->categorySelectParent($pdo);
 $_SESSION['category'] = $storeSQL->getCategories($pdo);
 
 // リダイレクト先にカテゴリ番号を追加
-header('Location: category.php?categoryNumber=' . $parentCategoryNumber);
+header('Location: categoryMenu.php?categoryNumber=' . $parentCategoryNumber);
 exit(); // リダイレクト後の処理を終了
 ?>

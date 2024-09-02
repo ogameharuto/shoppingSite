@@ -1,7 +1,7 @@
 <?php
 session_start();
 /* インポート */
-require_once('../utilConnDB.php');
+require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 
 /*
@@ -83,12 +83,12 @@ $_SESSION['checkOut']['email'] = $email;
 <head>
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
-    <link rel="stylesheet" href="order.css">
+    <link rel="stylesheet" href="../../css/order.css">
 </head>
 
 <body>
-    <?php include "../script/header.php"; ?>
-    <form action="order3.php" method="post" class="orderbody">
+    <?php include "../header.php"; ?>
+    <form action="orderMain.php" method="post" class="orderbody">
         <h1>ご注文内容の確認</h1>
         <hr color="#d3d3d3">
         <p class="center">注意：ご注文は確定していません</p>

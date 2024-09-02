@@ -165,3 +165,56 @@ form button:hover {
     display: flex;
     align-items: center;
 }
+.form-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.form-container .form-left,
+.form-container .form-right {
+    flex: 1;
+}
+
+.form-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.stars {
+    display: flex;
+    gap: 5px;
+}
+button,
+a.button-like {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover,
+a.button-like:hover {
+    background-color: #0056b3;
+    color: #fff; 
+}
+
+button:focus,
+a.button-like:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.5);
+}

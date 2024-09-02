@@ -11,8 +11,7 @@ $reviews = isset($_SESSION['reviews']) ? $_SESSION['reviews'] : [];
 $stores = isset($_SESSION['stores']) ? $_SESSION['stores'] : null;
 $images = isset($_SESSION['image']) ? $_SESSION['image'] : [];
 $customerNumber = isset($_SESSION['customer']['customerNumber']) ? $_SESSION['customer']['customerNumber'] : null;
-$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
-
+$customerName = $_SESSION['customer']['customerName'] ?? 'ゲスト';
 if (!$product || !$stores) {
     echo "表示するデータがありません。";
     exit;
@@ -57,8 +56,8 @@ function renderStars($rating) {
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="productDetails.css" />
-    <link rel="stylesheet" type="text/css" href="../header.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/productDetails.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
     <title>商品詳細</title>
 </head>
 <body>
@@ -70,7 +69,7 @@ function renderStars($rating) {
             <span><?= htmlspecialchars($stores["storeName"], ENT_QUOTES, 'UTF-8'); ?></span>
             <div class="storeMenu">
                 <div class="top-section">
-                <a href="../storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">会社概要</a>
+                <a href="../storeInformation/storeInformation.php?storeNumber=<?= htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8') ?>">会社概要</a>
                 </div>
             </div>
         </div>
@@ -83,7 +82,8 @@ function renderStars($rating) {
                             <img src="../../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
                             <button class="favorite-button <?= $favoriteActive ? 'active' : '' ?>"
                                     data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>" 
-                                    data-customer-number="<?= htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8') ?>">&#9829;
+                                    data-customer-number="<?= htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8') ?>"
+                                    data-customer-name="<?= htmlspecialchars($customerName, ENT_QUOTES, 'UTF-8') ?>">&#9829;
                             </button>
                         </div>
                     <?php endforeach; ?>
@@ -183,16 +183,11 @@ function renderStars($rating) {
                                 </div>
                                 <p class="elPostageWrap isFree">
                                     <span class="elPostage">送料無料</span>
-                                    <span class="elPref">（東京都）</span>
                                 </p>
                             </div>
                             <div class="elItemOptionsArea">
                                 <div class="elItemOptionsAreaInner" data-cartsummary-parts="scrollWrapper">
                                     <dl class="elScrollItem" data-cartsummary-parts="scrollItem">
-                                        <dt class="elItemOptionsTitle">
-                                            <p class="elTitle">確認事項</p>
-                                            <a href="javascript:void(0);" class="elChange" data-cartdialog-show="confirmations">変更</a>
-                                        </dt>
                                     </dl>
                                 </div>
                             </div>
@@ -202,10 +197,9 @@ function renderStars($rating) {
                                     <div class="elInputWrap">
                                         <input type="text" name="quantity" class="elQuantityInput" value="1" pattern="^[0-9０-９]+$" data-quantity-parts="input" maxlength="3">
                                     </div>
-                                    <span><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
                                 </div>
                                 <ul class="elQuantityConditions">
-                                    <li class="elQuantityCondition">お一人さま、100点限り</li>
+                                    <li class="elQuantityCondition">残り在庫数<?= htmlspecialchars($product['stockQuantity'], ENT_QUOTES, 'UTF-8') ?></li>
                                 </ul>
                             </div>
                             <div class="elActionsArea">
@@ -226,13 +220,19 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const productNumber = this.getAttribute('data-product-number');
             const customerNumber = this.getAttribute('data-customer-number');
+            const customerName = this.getAttribute('data-customer-name');
             const isActive = this.classList.contains('active');
+
+            if (customerName === 'ゲスト') {
+                alert('ログインしてください。');
+                return;
+            }
 
             // ボタンの色を変更
             this.classList.toggle('active');
 
             // AJAXリクエストで商品番号と顧客番号をサーバーに送信
-            fetch('toggleFavorite.php', {
+            fetch('../favorite/toggleFavorite.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -250,26 +250,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('エラーが発生しました:', error);
             });
-        });
-    });
-});
-document.addEventListener('DOMContentLoaded', function() {
-    window.addEventListener('beforeunload', function(event) {
-        fetch('clearError.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ action: 'clearError' })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.success) {
-                console.error('エラーが発生しました:', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('エラーが発生しました:', error);
         });
     });
 });

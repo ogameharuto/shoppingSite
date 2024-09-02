@@ -14,10 +14,11 @@ $categories = isset($_SESSION['category']) ? $_SESSION['category'] : [];
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($parentCategory['categoryName'], ENT_QUOTES, 'UTF-8') ?> - 商品一覧</title>
-    <link rel="stylesheet" href="customerToppage.css">
+    <link rel="stylesheet" href="../../css/customerToppage.css">
+    <link rel="stylesheet" href="../../css/header.css">
 </head>
 <body>
-<?php include "header.php"; ?>
+<?php include "../header.php"; ?>
 <div class="container">
     <div class="sidebar">
         <h2>カテゴリから探す</h2>
@@ -55,10 +56,10 @@ $categories = isset($_SESSION['category']) ? $_SESSION['category'] : [];
             <?php if (!empty($products)): ?>
                 <?php foreach ($products as $product): ?>
                     <div class="product">
-                        <a href="productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
                             <?php if (!empty($product['images'])): ?>
                                 <?php foreach ($product['images'] as $imageName): ?>
-                                    <img src="uploads/<?= htmlspecialchars($imageName, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <img src="../../uploads/<?= htmlspecialchars($imageName, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <img src="default-image.png" alt="商品画像がありません" width="120" height="120">

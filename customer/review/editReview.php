@@ -29,7 +29,7 @@ if ($reviewNumber && $customerNumber) {
 <head>
     <meta charset="UTF-8">
     <title>レビューの編集</title>
-    <link rel="stylesheet" type="text/css" href="reviewMenu.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/reviewMenu.css" />
 </head>
 <body>
     <h2>レビューの編集</h2>

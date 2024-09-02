@@ -4,7 +4,16 @@ require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-$customerNumber = $_GET['userId'];
+$customer = $_SESSION['customer'] ?? null;
+$customerNumber = $customer['customerNumber'] ?? null;
+$userName = $customer['customerName'] ?? null;
+
+// ログイン確認
+if ($userName == "ゲスト") {
+    print($userName);
+    header("Location: ../account/customerLoginMenu.php");
+    exit();
+}
 
 try {
     if (!$pdo->inTransaction()) {
@@ -33,9 +42,11 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お気に入り</title>
-    <link rel="stylesheet" href="../store.css">
+    <link rel="stylesheet" href="../../css/store.css">
+    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
 </head>
 <body>
+    <?php include "../header.php"; ?>
     <h1>お気に入り</h1>
     <table>
         <thead>
@@ -52,7 +63,7 @@ try {
                     <tr>
                         <td><img src="../../uploads/<?php echo htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8'); ?>" alt="
                             <?php echo htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8'); ?>" width="100"></td>
-                        <td><a href="productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></td>
+                        <td><a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></td>
                         <td><?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?></td>
                         <td><?php echo htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8'); ?></td>
                     </tr>

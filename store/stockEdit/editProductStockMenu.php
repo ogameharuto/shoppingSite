@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// ログイン確認
+if (!isset($_SESSION['store'])) {
+    header("Location: ../account/storeLoginMenu.php");
+    exit();
+}
+
 // 商品一覧ページから送信された選択された商品のIDを取得
 if (isset($_SESSION['product'])) {
    $products = $_SESSION['product'];
@@ -12,7 +18,7 @@ if (isset($_SESSION['product'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulk Edit Inventory</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
     <script>
         function confirmUpdate() {
             return confirm("在庫を更新してもよろしいですか？");
@@ -26,7 +32,7 @@ if (isset($_SESSION['product'])) {
             <p>在庫設定の指定方法を選択し、在庫数を入力します。</p>
         </div>
         <div class="content">
-        <form action="updateInventory.php" method="POST" onsubmit="return confirmUpdate();">
+        <form action="updateStock.php" method="POST" onsubmit="return confirmUpdate();">
             <table class="edit-table">
                 <thead>
                     <tr>
@@ -44,7 +50,7 @@ if (isset($_SESSION['product'])) {
                         <td><?php echo htmlspecialchars($product['productNumber']); ?></td>
                             <td>
                                 <?php if (!empty($product['imageHash'])): ?>
-                                    <img src="../../../uploads/<?php echo htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8'); ?>" width="100">
+                                    <img src="../../uploads/<?php echo htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8'); ?>" width="100">
                                 <?php else: ?>
                                     画像なし
                                 <?php endif; ?>

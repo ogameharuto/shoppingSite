@@ -3,7 +3,7 @@ session_start();
 
 // データベース接続設定
 require_once('../../utilConnDB.php');
-require_once('../storeSQL.php');
+require_once('../../storeSQL.php');
 
 $storeSQL = new StoreSQL();
 $utilConnDB = new UtilConnDB();
@@ -28,6 +28,6 @@ if (!empty($selectedProductNumbers)) {
     $_SESSION['error'] = "商品が選択されていません。";
 }
 // 在庫編集ページにリダイレクト
-header('Location: editProductInventory.php');
+header('Location: editProductInventoryMenu.php');
 exit;
 ?>

@@ -134,6 +134,7 @@ public function selectCartItems($pdo, $customerNumber) {
             p.price AS price, 
             p.dateAdded AS dateAdded,
             p.releaseDate AS releaseDate,
+            p.pageDisplayStatus AS pageDisplayStatus,
             i.imageHash AS imageHash, 
             i.imageName AS imageName,
             sc.storeCategoryNumber AS storeCategoryNumber,
@@ -343,6 +344,23 @@ public function selectCartItems($pdo, $customerNumber) {
             return false;
         }
     }
+    public function deleteCartItems($pdo, $customerNumber, $productNumbers) {
+        if (empty($productNumbers)) {
+            return false;
+        }
+    
+        // プレースホルダーを生成
+        $placeholders = implode(',', array_fill(0, count($productNumbers), '?'));
+        $sql = "DELETE FROM cart WHERE customerNumber = ? AND productNumber IN ($placeholders)";
+        $stmt = $pdo->prepare($sql);
+    
+        // バインドパラメータを準備
+        $params = array_merge([$customerNumber], $productNumbers);
+    
+        // パラメータをバインドして実行
+        return $stmt->execute($params);
+    }
+    
 
     //カートの合計金額更新
     public function updateCartItem($pdo, $customerNumber, $productNumber, $quantity) {

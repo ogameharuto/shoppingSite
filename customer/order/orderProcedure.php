@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>ショッピングサイト</title>
-    <link rel="stylesheet" href="order.css">
+    <link rel="stylesheet" href="../../css/order.css">
     <script src="order.js"></script>
 </head>
 
 <body>
     <div class="orderbody">
-        <form id="orderForm" method="post" action="order2.php">
+        <form id="orderForm" method="post" action="orderConfirmation.php">
             <h1>ご注文手続き</h1>
             <hr color="#d3d3d3">
             <h2>お届け先</h2>

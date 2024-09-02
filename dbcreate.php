@@ -273,7 +273,7 @@ $pdo->exec($sql);
 // カートデータ挿入
 $sql = "INSERT INTO cart (customerNumber, productNumber, quantity, dateAdded) VALUES
   (1, 1, 1, '2024-07-29 09:00:00'),
-  (1, 3, 2, '2024-07-29 09:05:00'),
+  (1, 2, 2, '2024-07-29 09:05:00'),
   (2, 2, 1, '2024-07-29 09:10:00');";
 $pdo->exec($sql);
 
@@ -363,13 +363,11 @@ session_unset();
 </head>
 
 <body>
-
-  <form name="myForm1" action="../taoka/index.php" method="post">
-    <h2>実習No.3 データベース初期化（デバッグ用）</h2>
-    データベースを初期化しました。
-    <p />
-    <input type="submit" value="戻る" />
-  </form>
+<h2>データベース初期化（デバッグ用）</h2>
+    データベースを初期化しました。<br>
+    <p><a href="store/account/storeLoginMenu.php">ストアクリエイターProのログイン</a></p>
+    <p><a href="customer/account/customerLoginMenu.php">ヤフーショッピングのログイン</a></p>
+    <p><a href="customerToppage.php">ヤフーショッピングサイト</a></p>
 </body>
 
 </html>
