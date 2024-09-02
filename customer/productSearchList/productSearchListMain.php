@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('../../utilConnDB.php');
-require_once('../../storeSQL.php');
+require_once('../storeSQL.php');
 
 $utilConnDB = new UtilConnDB();
 $storeSQL = new StoreSQL();
@@ -36,7 +36,7 @@ foreach ($productData as $data) {
 // セッションにデータを保存
 $_SESSION['searchTerm'] = $query;
 $_SESSION['products'] = $products;
-$_SESSION['sImages'] = $imagesByProduct;
+$_SESSION['images'] = $imagesByProduct;
 
 // 検索結果ページにリダイレクト
 header('Location: productSearchList.php');

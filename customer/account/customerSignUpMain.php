@@ -41,7 +41,7 @@ try {
     $pdo->commit();
 
     echo '登録が完了しました。';
-    header('Location: customerLoginMenu.php');
+    header('Location: http://localhost/shopp/script/login/customerLoginMenu.php');
 } catch (PDOException $e) {
     echo 'データベースエラー: ' . htmlspecialchars($e->getMessage());
 } catch (Exception $e) {

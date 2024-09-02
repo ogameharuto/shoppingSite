@@ -41,7 +41,7 @@ $pdo = null;
 </head>
 <body>
     <h1>顧客情報変更</h1>
-    <form action="editNameMain.php" method="post">
+    <form action="updateCustomerNameMain.php" method="post">
         <div class="section-container">
             <h2>顧客名・フリガナ・生年月日</h2>
             <label for="customerName">顧客名:</label>

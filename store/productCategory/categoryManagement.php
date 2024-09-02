@@ -4,12 +4,6 @@ require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-// ログイン確認
-if (!isset($_SESSION['store'])) {
-    header("Location: ../account/storeLoginMenu.php");
-    exit();
-}
-
 $storeNumber = $_SESSION['store']['storeNumber'];
 $current_page = basename($_SERVER['PHP_SELF']);
 // カテゴリデータの取得
@@ -37,20 +31,20 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カテゴリ管理</title>
     <link rel="stylesheet" href="categoryManagement.css">
-    <link rel="stylesheet" href="../../css/productStructure.css">
+    <link rel="stylesheet" href="../stockEdit/productStructure.css">
 </head>
 <body>
     <div class="header">
         <div class="navbar">
-            <a href="../storeToppage.php" 
+            <a href="http://localhost/shopp/script/storeToppage.php" 
                 class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
-            <a href="../productManagerMenu.php"
+            <a href="http://localhost/shopp/taoka/productManagerMenu.php"
                 class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
-            <a href="../stockEdit/productStructure.php"
+            <a href="http://localhost/shopp/script/stockEdit/productStructure.php"
                 class="nav-item <?php echo ($current_page == 'productStructure.php') ? 'active' : ''; ?>">在庫管理</a>
-            <a href="../imageIns/imageInsMenu.php"
+            <a href="http://localhost/shopp/script/imageIns/imageInsMenu.php"
                 class="nav-item <?php echo ($current_page == 'imageInsMenu.php') ? 'active' : ''; ?>">画像管理</a>
-            <a href="../productCategory/categoryManagement.php"
+            <a href="http://localhost/shopp/script/productCategory/categoryManagement.php"
                 class="nav-item <?php echo ($current_page == 'categoryManagement.php') ? 'active' : ''; ?>">カテゴリ管理</a>
         </div>
     </div>

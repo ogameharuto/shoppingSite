@@ -7,7 +7,6 @@ $cartList = $_SESSION['cartList'] ?? [];
 $couponNumber = $_SESSION['couponNumber'] ?? 0;
 $images = isset($_SESSION['images']) ? $_SESSION['images'] : [];
 $userName = $_SESSION['customer'] ?? null;
-$error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
 
 unset($_SESSION['couponNumber']);
 $price = 0;
@@ -19,31 +18,32 @@ $hasItems = count($cartList) > 0;
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="../../css/cartList.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
+    <link rel="stylesheet" type="text/css" href="cartList.css" />
+    <link rel="stylesheet" type="text/css" href="../header.css" />
     <title>カート一覧</title>
 </head>
 <body>
     <div class="whole">
         <div class="top-bar topheader">
             <div class="logo">
-                <a href="../../customerToppage.php">
-                    <img src="../../yahooLogoImage/shopping_r_34_2x.png" alt="Yahoo! JAPAN" onclick="location.reload()">
+                <a href="http://localhost/shopp/script/customerToppage.php">
+                    <img src="http://localhost/shopp/taoka/Yahoo_Syopping_Logo.png" alt="Yahoo! JAPAN" onclick="location.reload()">
                 </a>
             </div>
             <div class="user-info">
-                <p>ようこそ、<?php echo htmlspecialchars($userName['customerName'] ?? 'ゲスト', ENT_QUOTES, 'UTF-8'); ?> さん LYPプレミアム会員登録(合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
+                <p>ようこそ、<?php echo htmlspecialchars($userName['customerName'] ?? 'ゲスト', ENT_QUOTES, 'UTF-8'); ?> さん <a href="https://www.google.com/">LYPプレミアム会員登録</a> (合計3,000円相当プレゼント！最大3ヶ月無料でお試し)</p>
             </div>
             <div class="top-links">
-                <a href="../../store/account/storeLoginMenu.php">Yahoo! JAPAN 無料でお店を開こう！</a>
+                <a href="https://www.google.com/">Yahoo! JAPAN 無料でお店を開こう！</a>
+                <a href="USup01.php?userId=<?php echo urlencode($userId); ?>">ヘルプ</a>
             </div>
+        </div>
+        <div class="advertisement">
+            お得情報表示
         </div>
         <div class="cartListText">
             <h1 class="topTitle">ショッピングカート一覧</h1>
         </div>
-        <?php if ($error != null): ?>
-            <span class="error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
-        <?php endif; ?>
         <?php if ($hasItems): ?>
             <div class="shipping">
                 1週間以内に発送
@@ -67,7 +67,7 @@ $hasItems = count($cartList) > 0;
                                             // Debugging: Print the $images array
                                             if (isset($images[$item['productNumber']])) {
                                                 foreach ($images[$item['productNumber']] as $image): ?>
-                                                    <a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                                                    <a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
                                                         <img src="../../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="120" height="120">
                                                     </a>
                                                 <?php endforeach;
@@ -77,7 +77,7 @@ $hasItems = count($cartList) > 0;
                                             ?>
                                         </div>
                                         <div class="productDetail">
-                                            <a href="../productDetails/productDetailsMain.php?productNumber=<?= urlencode($item['productNumber']) ?>" class="proDetail">
+                                            <a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?= urlencode($item['productNumber']) ?>" class="proDetail">
                                                 <span class="productaa"><?= htmlspecialchars($item['productDescription'], ENT_QUOTES, 'UTF-8') ?></span>
                                             </a>
                                         </div>
@@ -147,7 +147,7 @@ $hasItems = count($cartList) > 0;
                                 合計金額 <?php echo number_format(htmlspecialchars($price)); ?>円
                             </div>
                         </div>
-                        <form class="order" action="../order/orderProcedure.php" method="post">
+                        <form class="order" action="../../taoka/order1.php" method="post">
                             <input type="submit" class="orderBtn" value="ご注文手続きへ">
                         </form>
                     </div>
@@ -178,7 +178,7 @@ $hasItems = count($cartList) > 0;
             <div class="cartNone">
                 カートに商品が入っていません
                 <p class="syopping">
-                <a href="../../customerToppage.php" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
+                <a href="http://localhost/shopp/script/customerToppage.php" class="Button ButtonFilled shopping"><span>買い物を続ける</span></a>
                 </p>
             </div>
             <div class="topick">
@@ -209,26 +209,6 @@ function confirmDeletion(event) {
         event.preventDefault(); 
     }
 }
-document.addEventListener('DOMContentLoaded', function() {
-    window.addEventListener('beforeunload', function(event) {
-        fetch('clearError.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ action: 'clearError' })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.success) {
-                console.error('エラーが発生しました:', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('エラーが発生しました:', error);
-        });
-    });
-});
 </script>
 </body>
 </html>

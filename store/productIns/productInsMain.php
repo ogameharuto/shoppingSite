@@ -4,7 +4,7 @@ session_start();
 $storeNumber = $_SESSION['store']['storeNumber'];
 
 /* インポート */
-require_once('../../utilConnDB.php');
+require_once('../utilConnDB.php');
 
 /* インスタンス生成 */
 $utilConnDB = new UtilConnDB();
@@ -28,7 +28,7 @@ if (isset($_FILES['image'])) {
     $imageError = $image['error'];
     $imageType = $image['type'];
 
-    $targetDir = "../../uploads/"; // アップロードするディレクトリ
+    $targetDir = "../script/uploads/"; // アップロードするディレクトリ
     $targetFile = $targetDir . basename($imageName);
     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
@@ -133,7 +133,7 @@ if (isset($_FILES['image'])) {
         if ($result) {
             $pdo->commit();
             $_SESSION['message'] = '登録が完了しました。';
-            header('Location: ../productManagerMenu.php');
+            header('Location: productManagerMenu.php');
             exit;
         } else {
             // 商品登録に失敗した場合、ロールバック

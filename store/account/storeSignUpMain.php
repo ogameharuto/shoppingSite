@@ -2,8 +2,8 @@
 header('Content-Type:text/plain; charset=utf-8');
 
 /* インポート */
-require_once('../../storeSQL.php');
-require_once('../../storeBeans.php');
+require_once('../storeSQL.php');
+require_once('../companyBeans.php');
 require_once('../../utilConnDB.php');
 
 /* セッションの開始 */
@@ -50,6 +50,6 @@ $storeBeans->setPassword(htmlspecialchars($_POST['pass'] ?? '', ENT_QUOTES, 'utf
 
 
 /* 次に実行するモジュール */
-header('Location: storeSignUPComplete.php');
+header('Location: signComplete.php');
 exit;
 ?>

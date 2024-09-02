@@ -1,13 +1,8 @@
 <?php
-session_start();
 require_once('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
-// ログイン確認
-if (!isset($_SESSION['store'])) {
-    header("Location: account/storeLoginMenu.php");
-    exit();
-}
+
 
 try {
     // 編集するストアのIDを取得
@@ -36,11 +31,11 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ストア編集</title>
-    <link rel="stylesheet" href="../css/editstore.css">
+    <link rel="stylesheet" href="editstore.css">
 </head>
 <body>
     <h1>ストア編集</h1>
-    <form action="informationEditMain.php" method="post"enctype="multipart/form-data">
+    <form action="updateStore.php" method="post"enctype="multipart/form-data">
         <input type="hidden" name="storeNumber" value="<?php echo htmlspecialchars($store['storeNumber'], ENT_QUOTES, 'UTF-8'); ?>">
         
         <label for="companyName">会社名:</label>

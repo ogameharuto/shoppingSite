@@ -8,17 +8,20 @@ $pdo = $utilConnDB->connect();
 // セッションから検索結果を取得
 $products = $_SESSION['products'] ?? [];
 $query = $_SESSION['searchTerm'] ?? '';
-$images = $_SESSION['sImages'] ?? [];
+$images = $_SESSION['images'] ?? [];
 $customerNumber = $_SESSION['customer']['customerNumber'];
-$customerName = $_SESSION['customer']['customerName'];
 
+// セッションデータの削除
+unset($_SESSION['products']);
+unset($_SESSION['searchTerm']);
+unset($_SESSION['images']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="../../css/productSearchList.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/header.css" />
+    <link rel="stylesheet" type="text/css" href="productSearchList.css" />
+    <link rel="stylesheet" type="text/css" href="../header.css" />
     <title>商品検索一覧</title>
 </head>
 <body>
@@ -98,14 +101,13 @@ $customerName = $_SESSION['customer']['customerName'];
                                     $favoriteActive = true;
                                 }
                                 ?>
-                                <p><a href="../productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
+                                <p><a href="http://localhost/shopp/script/productDetails/productDetailsMain.php?productNumber=<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" class="text"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></p>
                                 <p>
                                     <span class="price"><?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?>円</span>
                                 </p>
-                                <button class="favorite-button <?= $favoriteActive ? 'active' : '' ?>"
-                                    data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>" 
-                                    data-customer-number="<?= htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8') ?>"
-                                    data-customer-name="<?= htmlspecialchars($customerName, ENT_QUOTES, 'UTF-8') ?>">&#9829;
+                                <button class="favorite-button <?php echo $favoriteActive ? 'active' : ''; ?>"
+                                    data-product-number="<?php echo htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                    data-customer-number="<?php echo htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8'); ?>">&#9829;
                                 </button>
                             </div>
                         </div>
@@ -116,46 +118,41 @@ $customerName = $_SESSION['customer']['customerName'];
         </div>
     </main>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const favoriteButtons = document.querySelectorAll('.favorite-button');
+        document.addEventListener('DOMContentLoaded', function() {
+            const favoriteButtons = document.querySelectorAll('.favorite-button');
 
-        favoriteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const productNumber = this.getAttribute('data-product-number');
-                const customerNumber = this.getAttribute('data-customer-number');
-                const customerName = this.getAttribute('data-customer-name');
-                const isActive = this.classList.contains('active');
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productNumber = this.getAttribute('data-product-number');
+                    const customerNumber = this.getAttribute('data-customer-number');
+                    const isActive = this.classList.contains('active');
 
-                if (customerName === 'ゲスト') {
-                    alert('ログインしてください。');
-                    return;
-                }
+                    // ボタンの色を変更
+                    this.classList.toggle('active');
 
-                // ボタンの色を変更
-                this.classList.toggle('active');
+                    // AJAXリクエストで商品番号と顧客番号をサーバーに送信
+                    fetch('../productDetails/toggleFavorite.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productNumber: productNumber, customerNumber: customerNumber, isActive: isActive })
 
-                // AJAXリクエストで商品番号と顧客番号をサーバーに送信
-                fetch('../favorite/toggleFavorite.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ productNumber: productNumber, customerNumber: customerNumber, isActive: isActive })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('商品がお気に入りに追加されました。');
-                    } else {
-                        console.log('エラーが発生しました:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('エラーが発生しました:', error);
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('お気に入りリストが更新されました。');
+                        } else {
+                            console.log('エラーが発生しました:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('エラーが発生しました:', error);
+                    });
                 });
             });
         });
-    });
     </script>
 </body>
 </html>

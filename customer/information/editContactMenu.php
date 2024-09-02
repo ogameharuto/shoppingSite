@@ -76,7 +76,7 @@ $pdo = null;
 <head>
     <meta charset="UTF-8">
     <title>顧客情報変更</title>
-    <link rel="stylesheet" href="../../css/UInfo01.css">
+    <link rel="stylesheet" href="UInfo01.css">
 </head>
 <body>
     <h1>顧客情報変更</h1>

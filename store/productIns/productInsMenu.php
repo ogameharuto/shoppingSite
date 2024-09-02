@@ -8,24 +8,14 @@
 */
 
 /* インポート */
-require_once ('../../utilConnDB.php');
+require_once ('../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-session_start();
-
-// ログイン確認
-if (!isset($_SESSION['store'])) {
-    header("Location: ../account/storeLoginMenu.php");
-    exit();
-}
-
-$storeNumber = $_SESSION['store']['storeNumber'];
-
-$sql = "SELECT storeCategoryNumber, storeCategoryName FROM storeCategory WHERE storeNumber = :storeNumber";
+$sql = "SELECT storeCategoryNumber, storeCategoryName FROM storeCategory";
 
 $stmt = $pdo->prepare($sql);
-$stmt->execute([':storeNumber' => $storeNumber]);
+$stmt->execute();
 $storeCategoryList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $sql = "SELECT categoryName, categoryNumber FROM category";

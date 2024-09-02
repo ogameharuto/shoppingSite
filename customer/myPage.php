@@ -7,8 +7,7 @@ $userName = $customer['customerName'] ?? null;
 // ログイン確認
 if ($userName == "ゲスト") {
     print($userName);
-    header("Location: account/customerLoginMenu.php");
-    exit();
+    header("Location: http://localhost/shopp/script/login/customerLoginMenu.php");
 }
 ?>
 <!DOCTYPE html>
@@ -17,16 +16,11 @@ if ($userName == "ゲスト") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>マイページ</title>
-    <link rel="stylesheet" href="../css/myPage.css">
-    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="myPage.css">
+    <link rel="stylesheet" href="header.css">
     <script>
         function navigateTo(url) {
             window.location.href = url;
-        }
-
-        function navigateToOrderHistory(customerNumber) {
-            const url = `orderHistory/orderHistoryMenu.php?customerNumber=${customerNumber}`;
-            navigateTo(url);
         }
     </script>
 </head>
@@ -37,12 +31,16 @@ if ($userName == "ゲスト") {
     <nav>
         <div class="left-side">
             <h4 class="box">
-                <a href="information/customerInformation.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
+                <a href="http://localhost/shopp/script/customerInformation/customerInformation.php?userId=<?php echo urlencode($userId); ?>">会員情報を見る</a>
             </h4>
         </div>
         <div class="right-side">
             <ul>
-                <li><button onclick="navigateToOrderHistory(<?php echo htmlspecialchars($userId); ?>)">注文履歴</button></li>
+                <li><button onclick="navigateTo('')">注文履歴</button></li>
+                <li><button onclick="navigateTo('')">利用履歴</button></li>
+                <li><button onclick="navigateTo('')">サポート</button></li>
+                <li><button onclick="navigateTo('')">クーポン</button></li>
+                <li><button onclick="navigateTo('')">マイレビュー</button></li>
             </ul>
         </div>
     </nav>

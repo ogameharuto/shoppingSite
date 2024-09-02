@@ -4,7 +4,7 @@ $storeNumber = $_SESSION['store'];
 
 // ログイン確認
 if (!isset($_SESSION['store'])) {
-    header("Location: store/account/storeLoginMenu.php");
+    header("Location: http://localhost/shopp/store/account/storeLoginMenu.php");
     exit();
 }
 

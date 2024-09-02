@@ -24,12 +24,12 @@ if ($userId !== null) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>顧客管理</title>
-    <link rel="stylesheet" href="../../css/customerInformation.css">
+    <link rel="stylesheet" href="customerInformation.css">
 </head>
 <body>
     <div class="navbar">
-        <a href="customerInformation.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'customerInformation.php') ? 'active' : ''; ?>">顧客情報</a>
-        <a href="informationEditMenu.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'UInfop01.php') ? 'active' : ''; ?>">顧客情報編集</a>
+        <a href="http://localhost/shopp/script/customerInformation/customerInformation.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'customerInformation.php') ? 'active' : ''; ?>">顧客情報</a>
+        <a href="http://localhost/shopp/script/customerInformation/UInfop01.php?userId=<?php echo urlencode($userId); ?>" class="nav-item <?php echo ($current_page == 'UInfop01.php') ? 'active' : ''; ?>">顧客情報編集</a>
     </div>
     <h1>顧客管理</h1>
     <form action="../myPage.php" method="get">

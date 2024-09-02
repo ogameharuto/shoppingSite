@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('../../utilConnDB.php');
-require_once('../../storeSQL.php');
+require_once('../storeSQL.php');
 
 $utilConnDB = new UtilConnDB();
 $storeSQL = new StoreSQL();
@@ -18,7 +18,7 @@ $customerNumber = $customer['customerNumber'];
 $productNumber = isset($_POST['productNumber']) ? intval($_POST['productNumber']) : null;
 $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
 
-$url = "../cart/cartMain.php?productNumber=" . urlencode($productNumber);
+$url = "productDetailsMain.php?productNumber=" . urlencode($productNumber);
 
 if (!$productNumber) {
     echo "無効なリクエストです。";
@@ -40,21 +40,19 @@ try {
     if ($product) {
         $stockQuantity = $product['stockQuantity'];
 
-        // 既存のカートアイテムを取得
-        $cartItem = $storeSQL->getCartItem($pdo, $customerNumber, $productNumber);
-        $existingQuantity = $cartItem ? $cartItem['quantity'] : 0;
-
-        // 既存の数量と新しい数量の合計が在庫数を超えていないか確認
-        if ($existingQuantity + $quantity > $stockQuantity) {
+        if ($quantity > $stockQuantity) {
             // 在庫数を超えている場合の処理
             $_SESSION['error'] = "在庫数を超えています。";
             header('Location: ' . $url);
             exit;
         }
 
+        // 既存のアイテムをチェック
+        $cartItem = $storeSQL->getCartItem($pdo, $customerNumber, $productNumber);
+
         if ($cartItem) {
             // 既存のアイテムがある場合は数量を更新
-            $newQuantity = $existingQuantity + $quantity;
+            $newQuantity = $cartItem['quantity'] + $quantity;
             $storeSQL->updateCartItemQuantity($pdo, $newQuantity, $customerNumber, $productNumber);
         } else {
             // 新規アイテムを追加

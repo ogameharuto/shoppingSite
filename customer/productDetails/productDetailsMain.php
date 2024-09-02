@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('../../utilConnDB.php');
-require_once('../../storeSQL.php');
+require_once('../storeSQL.php');
 
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
@@ -50,6 +50,6 @@ $_SESSION['stores'] = $stores;
 $_SESSION['image'] = $productData;
 
 // 次に実行するモジュール
-header('Location: productDetailsMenu.php');
+header('Location: productDetails.php');
 exit;
 ?>

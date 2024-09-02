@@ -5,19 +5,10 @@ require_once('../../utilConnDB.php');
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
 
-// 商品IDをセッションから取得、なければGETパラメータから取得し、セッションに保存
-if (!isset($_SESSION['productNumber'])) {
-    $_SESSION['productNumber'] = isset($_GET['productNumber']) ? $_GET['productNumber'] : null;
-}
+// 商品IDを取得
+$productNumber = 1;
 
-$productNumber = $_SESSION['productNumber'];
-
-if ($productNumber === null) {
-    echo "商品番号が指定されていません。";
-    exit;
-}
-$customerNumber = $_SESSION['customer']['customerNumber'];
-
+$customerNumber = 1;
 
 // 商品情報を取得
 $sqlProduct = 'SELECT p.productDescription, i.imageName 
@@ -45,7 +36,7 @@ $reviews = $stmtReviews->fetchAll();
 <head>
     <meta charset="UTF-8">
     <title>商品レビュー</title>
-    <link rel="stylesheet" type="text/css" href="../../css/reviewMenu.css" />
+    <link rel="stylesheet" type="text/css" href="reviewMenu.css" />
 </head>
 <body>
     <div class="product-info">
@@ -74,9 +65,8 @@ $reviews = $stmtReviews->fetchAll();
             <label for="reviewText">レビュー:</label>
             <textarea name="reviewText" id="reviewText" rows="4" maxlength="300" required></textarea>
         </div>
-        <div class="form-actions">
-        <button type="submit">レビューを投稿する</button>
-            <a href="../../customerToppage.php" class="back-to-top">トップページに戻る</a>
+        <div>
+            <button type="submit">レビューを投稿する</button>
         </div>
     </form>
     <h2>投稿したレビュー</h2>

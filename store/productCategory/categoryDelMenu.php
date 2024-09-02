@@ -1,15 +1,7 @@
 <?php
-session_start();
 require_once('../../utilConnDB.php');
 $utilConnDB=New UtilConnDB();
 $pdo=$utilConnDB->connect();
-
-// ログイン確認
-if (!isset($_SESSION['store'])) {
-    header("Location: ../account/storeLoginMenu.php");
-    exit();
-}
-
 // カテゴリデータの取得
 $query = "SELECT * FROM storecategory";
 $result = $pdo->query($query);

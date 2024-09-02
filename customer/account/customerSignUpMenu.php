@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規登録</title>
-    <link rel="stylesheet" href="../../css/newRegistrationMenu.css">
+    <link rel="stylesheet" href="newRegistrationMenu.css">
+    <script src="newRegistration.js" defer></script> <!-- JavaScript ファイルを読み込み -->
 </head>
 <body>
     <h1>新規登録</h1>
-    <form id="registrationForm" action="clientSignUpMain.php" method="post">
+    <form id="registrationForm" action="newRegistrationMain.php" method="post" onsubmit="return validateForm()">
         <label for="customerName">顧客名: <span class="required">必須</span></label>
         <input type="text" id="customerName" name="customerName" placeholder="例: 山田 太郎" required><br>
         

@@ -2,8 +2,8 @@
 date_default_timezone_set('Asia/Tokyo');
 session_start();
 /* インポート */
-require_once('../../utilConnDB.php');
-require_once('../../storeSQL.php');
+require_once('../utilConnDB.php');
+require_once('../script/storeSQL.php');
 $cartDAO = new StoreSQL();
 $utilConnDB = new UtilConnDB();
 $pdo = $utilConnDB->connect();
@@ -26,46 +26,38 @@ $billingPhone = $_SESSION['checkOut']['billingPhone'];
 
 $paymentMethodStatus = $_SESSION['checkOut']['payment'];
 
-// トランザクション開始
-if (!$pdo->inTransaction()) {
-    $pdo->beginTransaction();
-}
+$sql = "INSERT INTO customer_orders 
+(customerNumber, orderDateTime, orderStatus, deliveryName, deliveryFurigana, deliveryAddress,
+deliveryPostCode, deliveryPhone, deliveryDateTime, paymentMethodStatus, billingName, 
+billingFurigana, billingAddress, billingPostCode, billingPhone
+) 
+VALUES
+(:customerNumber, :orderDateTime, :orderStatus, :deliveryName, :deliveryFurigana, :deliveryAddress,
+:deliveryPostCode, :deliveryPhone, :deliveryDateTime, :paymentMethodStatus, :billingName, 
+:billingFurigana, :billingAddress, :billingPostCode, :billingPhone);";
+$params[':customerNumber'] = $_SESSION['customer']['customerNumber'];
+$params[':orderDateTime'] = date("Y-m-d H:i:s");
+$params[':orderStatus'] = $orderStatus;
+$params[':deliveryName'] = $deliveryName;
+$params[':deliveryFurigana'] = $deliveryFurigana;
+$params[':deliveryAddress'] = $deliveryAddress;
+$params[':deliveryPostCode'] = $deliveryPostCode;
+$params[':deliveryPhone'] = $deliveryPhone;
+$params[':deliveryDateTime'] = $deliveryDateTime;
+$params[':paymentMethodStatus'] = $paymentMethodStatus;
+$params[':billingName'] = $billingName;
+$params[':billingFurigana'] = $billingFurigana;
+$params[':billingAddress'] = $billingAddress;
+$params[':billingPostCode'] = $billingPostCode;
+$params[':billingPhone'] = $billingPhone;
 
-try {
-    // 注文データの挿入
-    $sql = "INSERT INTO customer_orders 
-    (customerNumber, orderDateTime, orderStatus, deliveryName, deliveryFurigana, deliveryAddress,
-    deliveryPostCode, deliveryPhone, deliveryDateTime, paymentMethodStatus, billingName, 
-    billingFurigana, billingAddress, billingPostCode, billingPhone
-    ) 
-    VALUES
-    (:customerNumber, :orderDateTime, :orderStatus, :deliveryName, :deliveryFurigana, :deliveryAddress,
-    :deliveryPostCode, :deliveryPhone, :deliveryDateTime, :paymentMethodStatus, :billingName, 
-    :billingFurigana, :billingAddress, :billingPostCode, :billingPhone);";
-    
-    $params = [
-        ':customerNumber' => $_SESSION['customer']['customerNumber'],
-        ':orderDateTime' => date("Y-m-d H:i:s"),
-        ':orderStatus' => $orderStatus,
-        ':deliveryName' => $deliveryName,
-        ':deliveryFurigana' => $deliveryFurigana,
-        ':deliveryAddress' => $deliveryAddress,
-        ':deliveryPostCode' => $deliveryPostCode,
-        ':deliveryPhone' => $deliveryPhone,
-        ':deliveryDateTime' => $deliveryDateTime,
-        ':paymentMethodStatus' => $paymentMethodStatus,
-        ':billingName' => $billingName,
-        ':billingFurigana' => $billingFurigana,
-        ':billingAddress' => $billingAddress,
-        ':billingPostCode' => $billingPostCode,
-        ':billingPhone' => $billingPhone
-    ];
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-    
+if ($stmt) {
     $orderNumber = $pdo->lastInsertId();
     $customerNumber = $_SESSION['customer']['customerNumber'];
+    $productNumber = $orderProductNumber;
     $cartList = $_SESSION['cartList'];
 
     foreach ($cartList as $item) {
@@ -84,11 +76,10 @@ try {
             throw new Exception("商品番号 $productNumber の在庫が不足しています。");
         }
         
-        // 注文詳細の挿入
         $sql = "INSERT INTO orderdetail 
-        (orderNumber, productNumber, quantity, price) 
-        VALUES
-        (:orderNumber, :productNumber, :quantity, :price);";
+    (orderNumber, productNumber, quantity, price) 
+    VALUES
+    (:orderNumber, :productNumber, :quantity, :price);";
 
         $params = [
             ':orderNumber' => $orderNumber,
@@ -99,25 +90,21 @@ try {
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
-
-        // 在庫数の更新
-        $sql = "UPDATE product 
+    }
+    // 在庫数の更新
+    $sql = "UPDATE product 
         SET stockQuantity = stockQuantity - :quantity 
         WHERE productNumber = :productNumber;";
-        
-        $params = [
-            ':quantity' => $quantity,
-            ':productNumber' => $productNumber
-        ];
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
-    }
-
-    // カートからの削除
-    $productNumbers = array_column($cartList, 'productNumber');
-    $result = $cartDAO->deleteCartItems($pdo, $customerNumber, $productNumbers);
     
+    $params = [
+        ':quantity' => $quantity,
+        ':productNumber' => $productNumber
+    ];
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    $result = $cartDAO->deleteCartItem($pdo, $customerNumber, $productNumber);
     if ($result) {
         unset($_SESSION['cartList']);
         unset($_SESSION['checkOut']);
@@ -125,15 +112,13 @@ try {
         $_SESSION['orderNumber'] = $orderNumber;
         $pdo->commit();
     } else {
-        throw new Exception("カートの削除に失敗しました。");
+        throw new Exception("削除が失敗しました。");
     }
-} catch (Exception $e) {
-    $pdo->rollBack();
-    echo "エラー: " . $e->getMessage();
+} else {
+    $pdo->rollback();
 }
 
-// DB切断
+//DB切断
 $utilConnDB->disconnect($pdo);
-header('Location: orderCompletion.php');
-exit();
+header('Location: order4.php');
 ?>
