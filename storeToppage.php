@@ -23,6 +23,7 @@ if (!isset($_SESSION['store'])) {
             <div class="header-logo">
                 <h1>Yahoo! JAPAN ストアクリエイターPro</h1>
             </div>
+            <a href="customerToppage.php">ショッピングサイト</a>
         </div>
     </header>
     <div class="content-header">
