@@ -82,7 +82,7 @@ function updateProductList(products) {
                 <td><input type="checkbox" name="products[]" value="${escapeHtml(product.productNumber)}"></td>
                 <td>${escapeHtml(product.productNumber)}</td>
                 <td>
-                    ${product.imageName ? `<img src="../script/uploads/${escapeHtml(product.imageName)}" alt="Product Image" width="100">` : '画像なし'}
+                    ${product.imageName ? `<img src="../uploads/${escapeHtml(product.imageName)}" alt="Product Image" width="100">` : '画像なし'}
                 </td>
                 <td>${escapeHtml(product.productName)}</td>
                 <td>${product.pageDisplayStatus == 1 ? '公開中' : '非公開'}</td>
@@ -98,7 +98,7 @@ function updateProductList(products) {
 // 商品リストをフェッチする関数
 async function fetchProducts(params) {
     try {
-        const url = new URL('fetch_products.php', window.location.href);
+        const url = new URL('stockEdit/fetchCategoryProducts.php', window.location.href);
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
         console.log('Fetching products from:', url.toString());  // リクエストURLの確認
         const response = await fetch(url);
