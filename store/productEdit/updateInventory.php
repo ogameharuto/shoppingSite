@@ -92,17 +92,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $imageNumber = $existingImage['imageNumber'];
                     } else {
                         // 画像をデータベースに挿入
-                        $sql = "INSERT INTO images (imageName, imageHash) VALUES (:imageName, :imageHash)";
+                        $sql = "INSERT INTO images (imageName, imageHash, storeNumber) VALUES (:imageName, :imageHash, :storeNumber)";
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute([
                             'imageName' => basename($productImages["name"][$productNumber]),
                             'imageHash' => $hashValue,
+                            'storeNumber' => $_SESSION['store']['storeNumber'] // 現在のストア番号をセット
                         ]);
                         $imageNumber = $pdo->lastInsertId();
                     }
 
                     // アップロードされたファイルを移動
-                    move_uploaded_file($productImages["tmp_name"][$productNumber], $targetFile);
+                    if (!move_uploaded_file($productImages["tmp_name"][$productNumber], $targetFile)) {
+                        echo "ファイルのアップロードに失敗しました。";
+                        $uploadOk = 0;
+                    }
                 }
             }
 
@@ -134,20 +138,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // トランザクションをコミット
         $pdo->commit();
 
-        echo "商品情報が正常に更新されました。";
-
+        // リダイレクトを適切な位置に移動
         header('Location: ../productManagerMenu.php');
+        exit;
+
     } catch (PDOException $e) {
         // エラーが発生した場合、トランザクションをロールバック
         $pdo->rollBack();
-        echo "エラーが発生しました: " . $e->getMessage();
-        header('Location: editProductInventoryMenu.php');
+        echo "エラーが発生しました: " . htmlspecialchars($e->getMessage());
     }
 
     $utilConnDB->disconnect($pdo);
 } else {
     echo "無効なリクエストです。";
-    header('Location: editProductInventoryMenu.php');
-
+    //header('Location: editProductInventoryMenu.php');
 }
 ?>
