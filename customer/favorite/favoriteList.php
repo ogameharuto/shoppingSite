@@ -21,12 +21,12 @@ try {
     }
     // 挿入されたデータを取得して表示するためのクエリ
     $productsSql = "
-        SELECT fp.productNumber, fp.customerNumber,  p.productName, p.price, p.storeNumber ,i.imageNumber,i.imageName
+        SELECT fp.productNumber, fp.customerNumber, p.productName, p.price, s.storeName, i.imageName
         FROM favoriteproducts fp
         JOIN product p ON fp.productNumber = p.productNumber
         JOIN images i ON p.imageNumber = i.imageNumber
+        JOIN store s ON p.storeNumber = s.storeNumber
         WHERE fp.customerNumber = :customerNumber
-
     ";
     $productsStmt = $pdo->prepare($productsSql);
     $productsStmt->execute([':customerNumber' => $customerNumber,]);
@@ -65,7 +65,7 @@ try {
                             <?php echo htmlspecialchars($product['imageName'], ENT_QUOTES, 'UTF-8'); ?>" width="100"></td>
                         <td><a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>"><?php echo htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8'); ?></a></td>
                         <td><?php echo number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')); ?></td>
-                        <td><?php echo htmlspecialchars($product['storeNumber'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php echo htmlspecialchars($product['storeName'], ENT_QUOTES, 'UTF-8'); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>

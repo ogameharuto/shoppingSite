@@ -29,8 +29,8 @@ $sql .= " ORDER BY co.orderDateTime DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':customerNumber', $customerNumber, PDO::PARAM_INT);
 if ($productName) {
-    $productName = "%$productName%";
-    $stmt->bindParam(':productName', $productName, PDO::PARAM_STR);
+    $likeProductName = "%$productName%";
+    $stmt->bindParam(':productName', $likeProductName, PDO::PARAM_STR);
 }
 $stmt->execute();
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -67,7 +67,6 @@ foreach ($orders as $order) {
 <body>
     <h1>注文履歴一覧</h1>
 
-    <!-- 検索フォーム -->
     <form method="GET" action="">
         <input type="text" name="productName" placeholder="商品名" value="<?= htmlspecialchars($productName) ?>">
         <input type="hidden" name="customerNumber" value="<?= htmlspecialchars($customerNumber) ?>">

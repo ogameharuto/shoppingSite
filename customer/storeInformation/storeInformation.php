@@ -7,11 +7,11 @@ $pdo = $utilConnDB->connect();
 if (isset($_GET['storeNumber'])) {
     $storeNumber = (int) $_GET['storeNumber'];
     
+    // ストア情報を取得
     $sql = 'SELECT * FROM store WHERE storeNumber = :storeNumber';
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':storeNumber', $storeNumber, PDO::PARAM_INT);
     $stmt->execute();
-    
     $store = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$store) {
         echo "ストア情報が見つかりませんでした。";
@@ -25,6 +25,18 @@ if (isset($_GET['storeNumber'])) {
     $stmt->execute();
     $storeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // カテゴリを親子構造に整形
+    $categoryTree = [];
+    foreach ($storeCategories as $category) {
+        if ($category['parentStoreCategoryNumber'] == 0) {
+            // 親カテゴリ
+            $categoryTree[$category['storeCategoryNumber']] = $category;
+            $categoryTree[$category['storeCategoryNumber']]['children'] = [];
+        } else {
+            // 子カテゴリ
+            $categoryTree[$category['parentStoreCategoryNumber']]['children'][] = $category;
+        }
+    }
 } else {
     echo "ストア番号が指定されていません。";
     exit;
@@ -44,11 +56,35 @@ if (isset($_GET['storeNumber'])) {
         <div class="sidebar">
             <h2>カテゴリ一覧</h2>
             <ul>
-                <?php foreach ($storeCategories as $category): ?>
+                <?php foreach ($categoryTree as $parentCategory): ?>
                     <li>
-                        <a href="storeCategoryProductLsit.php?storeNumber=<?= htmlspecialchars($storeNumber, ENT_QUOTES, 'UTF-8'); ?>&storeCategoryNumber=<?= htmlspecialchars($category['storeCategoryNumber'], ENT_QUOTES, 'UTF-8'); ?>">
-                            <?= htmlspecialchars($category['storeCategoryName'], ENT_QUOTES, 'UTF-8'); ?>
+                        <a href="#" class="parent-link" data-category-id="<?= htmlspecialchars($parentCategory['storeCategoryNumber'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <?= htmlspecialchars($parentCategory['storeCategoryName'], ENT_QUOTES, 'UTF-8'); ?>
                         </a>
+                        <?php if (!empty($parentCategory['children'])): ?>
+                            <ul class="child-categories">
+                                <li>
+                                    <a href="storeCategoryProductLsit.php?storeNumber=<?= htmlspecialchars($storeNumber, ENT_QUOTES, 'UTF-8'); ?>&storeCategoryNumber=<?= htmlspecialchars($parentCategory['storeCategoryNumber'], ENT_QUOTES, 'UTF-8'); ?>&showAll=true">
+                                        すべての商品
+                                    </a>
+                                </li>
+                                <?php foreach ($parentCategory['children'] as $childCategory): ?>
+                                    <li>
+                                        <a href="storeCategoryProductLsit.php?storeNumber=<?= htmlspecialchars($storeNumber, ENT_QUOTES, 'UTF-8'); ?>&storeCategoryNumber=<?= htmlspecialchars($childCategory['storeCategoryNumber'], ENT_QUOTES, 'UTF-8'); ?>">
+                                            <?= htmlspecialchars($childCategory['storeCategoryName'], ENT_QUOTES, 'UTF-8'); ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <ul class="child-categories">
+                                <li>
+                                    <a href="storeCategoryProductLsit.php?storeNumber=<?= htmlspecialchars($storeNumber, ENT_QUOTES, 'UTF-8'); ?>&storeCategoryNumber=<?= htmlspecialchars($parentCategory['storeCategoryNumber'], ENT_QUOTES, 'UTF-8'); ?>&showAll=true">
+                                        すべての商品
+                                    </a>
+                                </li>
+                            </ul>
+                        <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -114,5 +150,21 @@ if (isset($_GET['storeNumber'])) {
             </div>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.parent-link').forEach(function(parentLink) {
+            parentLink.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const childCategories = this.parentElement.querySelector('.child-categories');
+                if (childCategories) {
+                    const isDisplayed = childCategories.style.display === 'block';
+                    document.querySelectorAll('.child-categories').forEach(function(ul) {
+                        ul.style.display = 'none';
+                    });
+                    childCategories.style.display = isDisplayed ? 'none' : 'block';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -79,7 +79,7 @@ function renderStars($rating) {
                 <?php if (!empty($images)): ?>
                     <?php foreach ($images as $image): ?>
                         <div class="image-wrapper">
-                            <img src="../../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" width="300" height="300">
+                            <img src="../../uploads/<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($image['imageName'], ENT_QUOTES, 'UTF-8') ?>">
                             <button class="favorite-button <?= $favoriteActive ? 'active' : '' ?>"
                                     data-product-number="<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>" 
                                     data-customer-number="<?= htmlspecialchars($customerNumber, ENT_QUOTES, 'UTF-8') ?>"

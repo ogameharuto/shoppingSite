@@ -124,12 +124,6 @@ body {
     box-sizing: border-box; /* 幅の問題を防ぐために追加 */
 }
 
-/* 商品画像のスタイル */
-.product img {
-    max-width: 100%;
-    height: auto;
-}
-
 .product p {
     margin: 5px 0;
 }
