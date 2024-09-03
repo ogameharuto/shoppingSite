@@ -42,7 +42,7 @@ try {
 <body>
     <div class="header">
         <div class="navbar">
-            <a href="../storeToppage.php" 
+            <a href="../../storeToppage.php" 
                 class="nav-item <?php echo ($current_page == 'storeToppage.php') ? 'active' : ''; ?>">トップ</a>
             <a href="../productManagerMenu.php"
                 class="nav-item <?php echo ($current_page == 'productManagerMenu.php') ? 'active' : ''; ?>">商品管理</a>
