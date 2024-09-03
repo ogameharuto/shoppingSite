@@ -8,12 +8,7 @@ $pdo = $utilConnDB->connect();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 'productImage' がセットされているか確認
-    if (!isset($_FILES['productImage'])) {
-        echo "ファイルがアップロードされていません。";
-        exit;
-    }
-
-    $productImages = $_FILES['productImage'];
+    $productImages = $_FILES['productImage'] ?? [];
     $productNames = $_POST['productName'] ?? [];
     $specialPrices = $_POST['price'] ?? [];
     $startDates = $_POST['dateAdded'] ?? [];
@@ -44,8 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoryNumber = $categoryNumbers[$productNumber] ?? null;
             $pageDisplayStatus = $pageDisplayStatuses[$productNumber] ?? null;
 
+            // 既存の画像番号を取得
+            $sql = "SELECT imageNumber FROM product WHERE productNumber = :productNumber";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['productNumber' => $productNumber]);
+            $currentImage = $stmt->fetch(PDO::FETCH_ASSOC);
+            $imageNumber = $currentImage['imageNumber'] ?? null;
+
             // 画像のアップロード処理
-            $imageNumber = null; // デフォルトでは null に設定
             if (isset($productImages['name'][$productNumber]) && !empty($productImages['name'][$productNumber])) {
                 $targetDir = "../../uploads/";
                 $targetFile = $targetDir . basename($productImages["name"][$productNumber]);
@@ -135,7 +136,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
 
         echo "商品情報が正常に更新されました。";
-
         header('Location: ../productManagerMenu.php');
     } catch (PDOException $e) {
         // エラーが発生した場合、トランザクションをロールバック
@@ -148,6 +148,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo "無効なリクエストです。";
     header('Location: editProductInventoryMenu.php');
-
 }
 ?>
