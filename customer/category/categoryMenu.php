@@ -3,9 +3,7 @@ session_start();
 
 // セッションからデータを取得
 $parentCategory = isset($_SESSION['parentCategory']) ? $_SESSION['parentCategory'] : null;
-$childCategories = isset($_SESSION['childCategories']) ? $_SESSION['childCategories'] : [];
 $products = isset($_SESSION['products']) ? $_SESSION['products'] : [];
-$parentCategories = isset($_SESSION['parentCategories']) ? $_SESSION['parentCategories'] : [];
 $categories = isset($_SESSION['category']) ? $_SESSION['category'] : [];
 ?>
 
@@ -16,6 +14,16 @@ $categories = isset($_SESSION['category']) ? $_SESSION['category'] : [];
     <title><?= htmlspecialchars($parentCategory['categoryName'], ENT_QUOTES, 'UTF-8') ?> - 商品一覧</title>
     <link rel="stylesheet" href="../../css/customerToppage.css">
     <link rel="stylesheet" href="../../css/header.css">
+    <style>
+        .product-list img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
 <?php include "../header.php"; ?>
@@ -52,27 +60,48 @@ $categories = isset($_SESSION['category']) ? $_SESSION['category'] : [];
     </div>
     <div class="main-content">
         <h1><?= htmlspecialchars($parentCategory['categoryName'], ENT_QUOTES, 'UTF-8') ?>の商品一覧</h1>
-        <div class="product-list">
-            <?php if (!empty($products)): ?>
-                <?php foreach ($products as $product): ?>
-                    <div class="product">
-                        <a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
-                            <?php if (!empty($product['images'])): ?>
-                                <?php foreach ($product['images'] as $imageName): ?>
-                                    <img src="../../uploads/<?= htmlspecialchars($imageName, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <img src="default-image.png" alt="商品画像がありません" width="120" height="120">
-                            <?php endif; ?>
-                            <p>価格: <?= number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')) ?>円</p>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>このカテゴリには商品がありません。</p>
-            <?php endif; ?>
+        <div class="product-list-wrapper">
+            <button class="slide-buttonP left">&lt;</button>
+            <div class="product-list">
+                <?php if (!empty($products)): ?>
+                    <?php foreach ($products as $product): ?>
+                        <div class="product">
+                            <a href="../productDetails/productDetailsMain.php?productNumber=<?= htmlspecialchars($product['productNumber'], ENT_QUOTES, 'UTF-8') ?>">
+                                <?php if (!empty($product['images'])): ?>
+                                    <img src="../../uploads/<?= htmlspecialchars($product['images'][0], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['productName'], ENT_QUOTES, 'UTF-8') ?>">
+                                <?php else: ?>
+                                    <img src="default-image.png" alt="商品画像がありません">
+                                <?php endif; ?>
+                                <p>価格: <?= number_format(htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8')) ?>円</p>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>このカテゴリには商品がありません。</p>
+                <?php endif; ?>
+            </div>
+            <button class="slide-buttonP right">&gt;</button>
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slideButtons = document.querySelectorAll('.slide-buttonP');
+        const productList = document.querySelector('.product-list');
+
+        slideButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const isLeftButton = this.classList.contains('left');
+                const scrollAmount = 500;
+
+                if (isLeftButton) {
+                    productList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                } else {
+                    productList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
