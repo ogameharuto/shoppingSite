@@ -41,7 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $newStock = $currentStockDb + $value;
                     break;
                 case '引く':
-                    $newStock = $currentStockDb - $value;
+                    if($currentStockDb - $value < 0 ){
+                        $newStock = 0;
+                    }else{
+                        $newStock = $currentStockDb - $value;
+                    }
                     break;
                 case '値にする':
                     $newStock = $value;

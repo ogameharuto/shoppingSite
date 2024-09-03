@@ -270,13 +270,6 @@ $sql = 'CREATE TABLE cart (
 );';
 $pdo->exec($sql);
 
-// カートデータ挿入
-$sql = "INSERT INTO cart (customerNumber, productNumber, quantity, dateAdded) VALUES
-  (1, 1, 1, '2024-07-29 09:00:00'),
-  (1, 2, 2, '2024-07-29 09:05:00'),
-  (2, 2, 1, '2024-07-29 09:10:00');";
-$pdo->exec($sql);
-
 // お問い合わせ対応日時設定番号テーブル作成
 $sql = 'CREATE TABLE dateAndTimeSettings (
   dateAndTimeSettingsNumber INT AUTO_INCREMENT PRIMARY KEY,
@@ -311,8 +304,7 @@ $pdo->exec($sql);
 // レビューデータ挿入
 $sql = "INSERT INTO review (customerNumber, productNumber, reviewText, purchaseFlag, evaluation) VALUES
   (1, 1, '素晴らしい製品です！', 1, '5'),
-  (2, 2, 'とても満足しています。', 1, '4'),
-  (1, 3, '少し期待外れでした。', 1, '3');";
+  (2, 2, 'とても満足しています。', 1, '4');";
 $pdo->exec($sql);
 
 // お届け方法データ挿入
