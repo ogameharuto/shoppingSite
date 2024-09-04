@@ -154,6 +154,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="action-buttons">
             <button type="submit">検索</button>
             <a href="<?php echo $_SERVER['PHP_SELF']; ?>">検索条件クリア</a>
+            <a href="../storeToppage.php">トップページに戻る</a>
         </div>
     </form>
 
